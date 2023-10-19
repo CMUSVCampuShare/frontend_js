@@ -1,15 +1,23 @@
-
 import React from "react";
+import { Link } from "react-router-dom";
 import { FaHome, FaComments, FaCar, FaUser } from "react-icons/fa";
-import '../css/navbar.css';
+import "../css/navbar.css";
 
 function Navbar() {
   return (
     <div className="bottom-nav-bar">
-     <FaHome className="icon" />
-      <FaCar className="icon" />
-      <FaComments className="icon" />
-      <FaUser className="icon" />
+      <Link to="/">
+        <FaHome className="icon" />
+      </Link>
+      <Link to="/chat">
+        <FaComments className="icon" />
+      </Link>
+      <Link to="/ride">
+        <FaCar className="icon" />
+      </Link>
+      <Link to="/profile">
+        <FaUser className="icon" />
+      </Link>
     </div>
   );
 }
