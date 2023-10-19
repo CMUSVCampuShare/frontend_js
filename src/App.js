@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import logo from "./campushare.png";
+import Navbar from "./js/navbar";
 import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
   const [showContent, setShowContent] = useState(true);
@@ -19,12 +21,15 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <header className={`App-header ${showContent ? "" : "hide-content"}`}>
-        <img src={logo} className="" alt="logo" />
-        CampuShare
-      </header>
-    </div>
+    <>
+      <div className="App">
+        <header className={`App-header ${showContent ? "" : "hide-content"}`}>
+          <img src={logo} className="" alt="logo" />
+          CampuShare
+        </header>
+        <Navbar></Navbar>
+      </div>
+    </>
   );
 }
 
