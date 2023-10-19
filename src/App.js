@@ -6,6 +6,7 @@ import Home from "./js/home";
 import Chat from "./js/chat";
 import Ride from "./js/ride";
 import Profile from "./js/profile";
+import Login from "./js/login";
 import "./App.css";
 
 function App() {
@@ -36,6 +37,8 @@ function App() {
           <Route path="/chat" element={<Chat />} />
           <Route path="/ride" element={<Ride />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Chat />} />
         </Routes>
       </div>
     </Router>
