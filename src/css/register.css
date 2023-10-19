@@ -1,0 +1,114 @@
+/* login.css */
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #fff;
+}
+
+img {
+  max-width: 80%;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 40px;
+  margin-bottom: 20px;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  display: flex;
+  color: #263A6D;
+}
+
+.form-group {
+  display: flex;
+  width: 75vw;
+  flex-direction: column;
+  margin-bottom: 10px;
+  justify-content: center;
+  display: flex;
+}
+
+label {
+  font-size: 14px;
+  margin-bottom: 10px;
+  justify-content: start;
+  display: flex;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: #4A73DA;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  width: 60vw ;
+margin: 20px 0 20px 0;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+p {
+  font-size: 14px;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Login.css */
+
+/* Style the select element */
+select {
+  width: 80vw;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  background-color: #fff; /* Background color for the select box */
+  font-size: 14px; /* Font size for the select text */
+  display: flex;
+  justify-content: center;
+}
+
+/* Style the option elements within the select */
+option {
+  font-size: 14px; /* Font size for the options */
+  background-color: #fff; /* Background color for the options */
+  color: #333; /* Text color for the options */
+  padding: 3px;
+  border: none;
+  display: flex;
+}
+
+/* Style the select when it's focused */
+select:focus {
+  outline: none;
+  border-color: #007bff; /* Change the border color on focus */
+}
+
+/* Style the options when hovered over */
+option:hover {
+  background-color: #007bff; /* Change background color on hover */
+  color: #fff;
+ /* Change text color on hover */
+}
