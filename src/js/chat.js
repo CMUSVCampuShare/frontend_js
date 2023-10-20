@@ -43,7 +43,8 @@ function Chat() {
         <button className="send" onClick={handleSendMessage}>Send</button>
       </div>
     </div>
-      <Navbar /></>
+      <Navbar />
+   </>
 
   );
 }
