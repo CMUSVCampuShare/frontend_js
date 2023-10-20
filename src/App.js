@@ -8,6 +8,7 @@ import Ride from "./js/ride";
 import Profile from "./js/profile";
 import Login from "./js/login";
 import Register from "./js/register";
+import Post from "./js/post";
 import "./App.css";
 
 function App() {
@@ -32,14 +33,16 @@ function App() {
           <img src={logo} alt="logo" />
           CampuShare
         </header>
-{/*         <Navbar />
- */}        <Routes>
+        {/*         <Navbar />
+         */}{" "}
+        <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/ride" element={<Ride />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/post" element={<Post />} />
         </Routes>
       </div>
     </Router>
