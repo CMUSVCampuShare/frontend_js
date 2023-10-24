@@ -142,3 +142,26 @@
 .comment-item:last-child {
   border-bottom: none;
 }
+
+.create-post-button-container {
+  text-align: right;
+  position: absolute;
+  top: 10px; /* adjust as necessary for desired vertical positioning */
+  right: 10px; /* adjust as necessary for desired horizontal positioning */
+  z-index: 10;
+}
+
+.create-post-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  width: 130px;
+}
+
+.create-post-button:hover {
+  background-color: #0056b3;
+}

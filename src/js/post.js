@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../css/post.css";
+import CreatePostModal from "./modal";
 
 function Post({ author, message, availability, comments }) {
   const [showComments, setShowComments] = useState(false);
@@ -34,7 +35,7 @@ function Post({ author, message, availability, comments }) {
   );
 }
 
-function Posts() {
+function Posts({ isDriver }) {
   const postData = [
     {
       author: "ANDREW",
@@ -51,8 +52,21 @@ function Posts() {
     },
   ];
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="posts-container">
+      {/* Commenting out the check for isDriver to display the Create Post button for all users */}
+      {/* {isDriver && ( */}
+      <div className="create-post-button-container">
+        <button
+          className="create-post-button"
+          onClick={() => setIsModalOpen(true)}
+        >
+          Create Post
+        </button>
+      </div>
+      {/* )} */}
       {postData.map((post, index) => (
         <Post
           key={index}
@@ -62,6 +76,10 @@ function Posts() {
           comments={post.comments}
         />
       ))}
+      <CreatePostModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
