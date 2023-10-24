@@ -1,6 +1,15 @@
+.posts-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  padding: 0 5%; /* Optional: 5% padding on left and right sides for some spacing */
+}
+
 .post-container {
-  width: 100%;
+  width: 90%; /* Takes up 90% of the available width of its parent container */
   padding: 20px;
+  /* margin: 5px; Add some vertical spacing between posts */
   font-family: Arial, sans-serif;
   text-align: left;
 }
@@ -9,14 +18,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 .post-content {
   border: 1px solid #dbe1e8;
-  background-color: #ebe0e0;
+  background-color: #e5e9eb;
   padding: 15px;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   border-radius: 5px;
   align-content: left;
 }
@@ -28,7 +37,7 @@
 }
 
 .post-message {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   text-align: left;
 }
 
@@ -47,12 +56,12 @@
 .join-ride-button {
   padding: 10px 20px;
   border: none;
-  background-color: #007bff;
+  background-color: #2d83df;
   color: #fff;
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s ease;
-  padding: 10px 15px;
+  padding: 10px 10px;
 }
 
 .join-ride-button:hover {
@@ -75,14 +84,11 @@
 .comments-dropdown {
   display: none;
   border: 1px solid #ccc;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: calc(100% - 70px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1;
   background-color: #fff;
   text-align: left;
+  margin-top: 10px; /* Some spacing from the button */
 }
 
 .comments-dropdown.active {
