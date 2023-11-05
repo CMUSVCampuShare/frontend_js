@@ -1,0 +1,91 @@
+/* Popup.css */
+
+
+.popup {
+  display: none;
+  width: 60%;
+  height: 50%;
+  background: rgba(0, 0, 0, 0);
+  z-index: 999;
+  position: relative; /* Add position: relative to make it a reference for absolute positioning */
+  border: 1px solid #DEE2E6;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add the box shadow */
+}
+
+.popup.open {
+  display: flex;
+  height: 50%;
+  width: 65%;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: #fff;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Add position: relative to make it a reference for absolute positioning */
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between; /* Push the button to the right */
+}
+
+.close-button {
+  background: none;
+  border-radius: 50%;
+  padding:  0.5em 0.8em 0.5em;
+  font-size: 12px;
+  cursor: pointer;
+  width: 10px; /* Increase the width for easier clicking */
+  height: 20px; /* Set a fixed height for a square button */
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -50px; /* Adjust top position as needed */
+  right: -25px; /* Push the button to the top-right corner */
+    background-color: #E5E5E5;
+
+}
+
+.popup-body {
+  margin: 10px 0;
+}
+
+label {
+  font-weight: bold;
+}
+
+textarea,
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #E5E5E5;
+}
+
+.popup-footer {
+  text-align: center;
+
+}
+
+.popup-button {
+  background-color: #4A73DA;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 80%;
+}
+
+.popup-button:hover {
+  background-color: #0056b3;
+}
+
