@@ -9,6 +9,7 @@ import Profile from "./js/profile";
 import Login from "./js/login";
 import Register from "./js/register";
 import Post from "./js/post";
+import Join from "./js/join";
 import "./App.css";
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/post" element={<Post />} />
+          <Route path="/join" element={<Join />} />
         </Routes>
       </div>
     </Router>

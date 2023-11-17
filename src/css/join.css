@@ -1,0 +1,70 @@
+.join-request-container {
+  padding: 20px; /* Add padding around the entire container */
+  max-width: 400px;
+  margin: auto;
+  font-family: "Arial", sans-serif;
+  border: 1px solid #e1e1e1; /* Add a border for the container */
+  border-radius: 10px; /* Optional: if you want rounded corners */
+}
+
+.header {
+  text-align: center;
+  padding: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.request-info,
+.trip-info,
+.actions {
+  padding: 20px;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.passenger-name {
+  padding: 10px 0;
+}
+
+.map-placeholder {
+  height: 200px;
+  background-color: #f3f3f3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.trip-info {
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-around; /* This will add space between the buttons */
+}
+
+.button {
+  background-color: #4e3f63;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin: 0 10px; /* Add margin to create gap between buttons */
+}
+
+.button:hover {
+  background-color: #3700b3;
+}
+
+/* Add additional styles for approve and reject buttons if needed */
+.button.approve {
+  /* Additional styles for approve button */
+}
+
+.button.reject {
+  /* Additional styles for reject button */
+}

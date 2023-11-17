@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../css/modal.css"; // assuming you store the styles here
+import "../css/modal.css";
 
 function CreatePostModal({ isOpen, onClose }) {
   return (
