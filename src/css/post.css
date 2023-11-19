@@ -28,6 +28,10 @@
   cursor: pointer;
 }
 
+.create-post h2 {
+  color: #0056b3;
+}
+
 .post {
   border: 1px solid #ccc;
   padding: 20px;
@@ -37,10 +41,6 @@
 
 .post h2 {
   margin-bottom: 10px;
-  color: #0056b3;
-}
-
-.create-post h2 {
   color: #0056b3;
 }
 
