@@ -17,27 +17,34 @@ const PostWall = () => {
   const [editMode, setEditMode] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
 
-  // TO DO: Fetch posts from Springboot API
-  useEffect(() => {
-    // REMOVE: Placeholder post to see how the post looks
-    const fetchedPosts = [
-      {
-        postId: '1',
-        userId: 'user123',
-        title: 'Sample Title',
-        from: 'Location A',
-        to: 'Location B',
-        details: 'Sample details',
-        type: 'Ride',
-        noOfSeats: 3,
-        status: 'Ongoing',
-        timestamp: new Date().toString(),
-        comments: [],
-      },
-    ];
+  // // TO DO: Fetch posts from Springboot API
+  // useEffect(() => {
+  //   // REMOVE: Placeholder post to see how the post looks
+  //   const fetchedPosts = [
+  //     {
+  //       postId: '1',
+  //       userId: 'user123',
+  //       title: 'Sample Title',
+  //       from: 'Location A',
+  //       to: 'Location B',
+  //       details: 'Sample details',
+  //       type: 'Ride',
+  //       noOfSeats: 3,
+  //       status: 'Ongoing',
+  //       timestamp: new Date().toString(),
+  //       comments: [],
+  //     },
+  //   ];
 
-    // TO DO: Update state with fetched posts
-    setPosts(fetchedPosts);
+  //   // TO DO: Update state with fetched posts
+  //   setPosts(fetchedPosts);
+  // }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:8082/posts')
+      .then(response => response.json())
+      .then(data => setPosts(data))
+      .catch(error => console.error('Error fetching posts:', error));
   }, []);
 
   const Post = ({ post }) => {
