@@ -197,9 +197,24 @@ const PostWall = () => {
     });
   };
 
+  // const handleDeletePost = (postId) => {
+  //   const updatedPosts = posts.filter((p) => p.postId !== postId);
+  //   setPosts(updatedPosts);
+  // };
+
   const handleDeletePost = (postId) => {
-    const updatedPosts = posts.filter((p) => p.postId !== postId);
-    setPosts(updatedPosts);
+    fetch(`http://localhost:8082/posts/${postId}`, {
+      method: 'DELETE',
+    })
+      .then(response => {
+        if (response.ok) {
+          const updatedPosts = posts.filter((p) => p.postId !== postId);
+          setPosts(updatedPosts);
+        } else {
+          throw new Error('Failed to delete post');
+        }
+      })
+      .catch(error => console.error('Error deleting post:', error));
   };
 
   return (
