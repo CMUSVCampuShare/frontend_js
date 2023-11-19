@@ -77,6 +77,8 @@ const PostWall = () => {
               onChange={(e) => setCommentText(e.target.value)}
             />
             <button onClick={() => handleAddComment(post.postId)}>Comment</button>
+            <button>Join</button>
+            <button>Edit Post</button>
           </div>
         </div>
       </div>
