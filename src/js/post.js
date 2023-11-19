@@ -8,9 +8,9 @@ const PostWall = () => {
     from: '',
     to: '',
     details: '',
-    type: 'Ride',
+    type: 'RIDE',
     noOfSeats: 0,
-    status: 'Ongoing',
+    status: 'ONGOING',
     timestamp: new Date().toString(),
     comments: [],
   });
@@ -134,9 +134,9 @@ const PostWall = () => {
               value={newPostData.status}
               onChange={(e) => setNewPostData({ ...newPostData, status: e.target.value })}
             >
-              <option value="Ongoing">Ongoing</option>
-              <option value="Complete">Complete</option>
-              <option value="Canceled">Canceled</option>
+              <option value="Ongoing">ONGOING</option>
+              <option value="Complete">COMPLETE</option>
+              <option value="Canceled">CANCELED</option>
             </select>
             <p>{post.timestamp}</p>
             <button onClick={handleUpdatePost}>Save Updates</button>
@@ -294,9 +294,9 @@ const PostWall = () => {
           onChange={(e) => setNewPostData({ ...newPostData, type: e.target.value })}
         >
           <option value="">Select Type</option>
-          <option value="Ride">Ride</option>
-          <option value="Lunch">Lunch</option>
-          <option value="Food Pickup">Food Pickup</option>
+          <option value="Ride">RIDE</option>
+          <option value="Lunch">LUNCH</option>
+          <option value="Food Pickup">FOOD PICKUP</option>
         </select>
         <input
           type="number"
@@ -310,9 +310,10 @@ const PostWall = () => {
           value={newPostData.status}
           onChange={(e) => setNewPostData({ ...newPostData, status: e.target.value })}
         >
-          <option value="Ongoing">Ongoing</option>
-          <option value="Complete">Complete</option>
-          <option value="Canceled">Canceled</option>
+          <option value="">Select Status</option>
+          <option value="Ongoing">ONGOING</option>
+          <option value="Complete">COMPLETE</option>
+          <option value="Canceled">CANCELED</option>
         </select>
         <button onClick={handleCreatePost}>Create Post</button>
       </div>
