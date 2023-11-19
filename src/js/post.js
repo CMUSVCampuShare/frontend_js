@@ -1,87 +1,171 @@
-import React, { useState } from "react";
-import "../css/post.css";
-import CreatePostModal from "./modal";
+import React, { useState, useEffect } from 'react';
+import '../css/post.css';
 
-function Post({ author, message, availability, comments }) {
-  const [showComments, setShowComments] = useState(false);
+const PostWall = () => {
+  const [posts, setPosts] = useState([]);
+  const [newPostData, setNewPostData] = useState({
+    title: '',
+    from: '',
+    to: '',
+    details: '',
+    type: 'Ride',
+    noOfSeats: 0,
+    status: 'Ongoing',
+    timestamp: new Date().toString(),
+    comments: [],
+  });
 
-  return (
-    <div className="post-container">
-      <div className="post-content">
-        <div className="post-author">{author}</div>
-        <div className="post-message">{message}</div>
+  // TO DO: Fetch posts from Springboot API
+  useEffect(() => {
+    // REMOVE: Placeholder post to see how the post looks
+    const fetchedPosts = [
+      {
+        postId: '1',
+        userId: 'user123',
+        title: 'Sample Title',
+        from: 'Location A',
+        to: 'Location B',
+        details: 'Sample details',
+        type: 'Ride',
+        noOfSeats: 3,
+        status: 'Ongoing',
+        timestamp: new Date().toString(),
+        comments: [],
+      },
+    ];
 
-        <div className="post-join-section">
-          <button
-            className="comment-post-button"
-            onClick={() => setShowComments(!showComments)}
-          >
-            🗨️
-          </button>
+    // TO DO: Update state with fetched posts
+    setPosts(fetchedPosts);
+  }, []);
 
-          <div className={`comments-dropdown ${showComments ? "active" : ""}`}>
-            {comments.map((comment, index) => (
-              <div key={index} className="comment-item">
-                {comment}
-              </div>
-            ))}
+  const Post = ({ post }) => {
+    const [commentText, setCommentText] = useState('');
+
+    const handleAddComment = (postId) => {
+      const updatedPosts = posts.map((p) => {
+        if (p.postId === postId) {
+          const updatedPost = { ...p };
+          updatedPost.comments.push({ text: commentText, timestamp: new Date().toString() });
+          return updatedPost;
+        }
+        return p;
+      });
+
+      setPosts(updatedPosts);
+      setCommentText('');
+    };
+
+    return (
+      <div className="post">
+        <h2>{post.title}</h2>
+        <p>From: {post.from}</p>
+        <p>To: {post.to}</p>
+        <p>Details: {post.details}</p>
+        <p>Type: {post.type}</p>
+        <p>No of Seats: {post.noOfSeats}</p>
+        <p>Status: {post.status}</p>
+        <p>Timestamp: {post.timestamp}</p>
+        <div className="comments">
+          {post.comments.map((comment, index) => (
+            <p key={index}>{comment.text}</p>
+          ))}
+          <div>
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+            />
+            <button onClick={() => handleAddComment(post.postId)}>Comment</button>
           </div>
-
-          <div className="post-availability">{availability}</div>
-          <button className="join-ride-button">Join Ride</button>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  };
 
-function Posts({ isDriver }) {
-  const postData = [
-    {
-      author: "ANDREW",
-      message:
-        "Hi! I'll be riding to campus at 11am. Join my ride by clicking the button below!",
-      availability: "2/5",
-      comments: ["Great! See you then.", "Is there still a spot left?"],
-    },
-    {
-      author: "EMILY",
-      message: "Riding to the downtown library at 1pm. Anyone interested?",
-      availability: "3/4",
-      comments: ["Sounds good!", "Count me in!"],
-    },
-  ];
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleCreatePost = () => {
+    const updatedPosts = [
+      ...posts,
+      {
+        ...newPostData,
+        postId: (posts.length + 1).toString(),
+        comments: [],
+      },
+    ];
+    setPosts(updatedPosts);
+    setNewPostData({
+      title: '',
+      from: '',
+      to: '',
+      details: '',
+      type: '',
+      noOfSeats: 0,
+      status: 'Ongoing',
+      timestamp: new Date().toString(),
+      comments: [],
+    });
+  };
 
   return (
-    <div className="posts-container">
-      {/* Commenting out the check for isDriver to display the Create Post button for all users */}
-      {/* {isDriver && ( */}
-      <div className="create-post-button-container">
-        <button
-          className="create-post-button"
-          onClick={() => setIsModalOpen(true)}
-        >
-          Create Post
-        </button>
-      </div>
-      {/* )} */}
-      {postData.map((post, index) => (
-        <Post
-          key={index}
-          author={post.author}
-          message={post.message}
-          availability={post.availability}
-          comments={post.comments}
+    <div className="post-wall">
+      <h1>Post Wall</h1>
+      <div className="create-post">
+        <h2>Create New Post</h2>
+        <input
+          type="text"
+          placeholder="Title"
+          value={newPostData.title}
+          onChange={(e) => setNewPostData({ ...newPostData, title: e.target.value })}
         />
+        <input
+          type="text"
+          placeholder="From"
+          value={newPostData.from}
+          onChange={(e) => setNewPostData({ ...newPostData, from: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="To"
+          value={newPostData.to}
+          onChange={(e) => setNewPostData({ ...newPostData, to: e.target.value })}
+        />
+        <textarea
+          placeholder="Details"
+          value={newPostData.details}
+          onChange={(e) => setNewPostData({ ...newPostData, details: e.target.value })}
+        ></textarea>
+        <select
+          value={newPostData.type}
+          onChange={(e) => setNewPostData({ ...newPostData, type: e.target.value })}
+        >
+          <option value="">Select Type</option>
+          <option value="Ride">Ride</option>
+          <option value="Lunch">Lunch</option>
+          <option value="Food Pickup">Food Pickup</option>
+        </select>
+        <input
+          type="number"
+          placeholder="Number of Seats"
+          value={newPostData.noOfSeats}
+          onChange={(e) =>
+            setNewPostData({ ...newPostData, noOfSeats: parseInt(e.target.value) || 0 })
+          }
+        />
+        <select
+          value={newPostData.status}
+          onChange={(e) => setNewPostData({ ...newPostData, status: e.target.value })}
+        >
+          <option value="Ongoing">Ongoing</option>
+          <option value="Complete">Complete</option>
+          <option value="Canceled">Canceled</option>
+        </select>
+        <button onClick={handleCreatePost}>Create Post</button>
+      </div>
+      {posts.map((post) => (
+        <Post key={post.postId} post={post} />
       ))}
-      <CreatePostModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
     </div>
   );
-}
+};
 
-export default Posts;
+export default PostWall;
