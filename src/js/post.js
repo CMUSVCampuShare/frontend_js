@@ -79,6 +79,7 @@ const PostWall = () => {
             <button onClick={() => handleAddComment(post.postId)}>Comment</button>
             <button>Join</button>
             <button>Edit Post</button>
+            <button onClick={() => handleDeletePost(post.postId)}>Delete Post</button>
           </div>
         </div>
       </div>
@@ -106,6 +107,11 @@ const PostWall = () => {
       timestamp: new Date().toString(),
       comments: [],
     });
+  };
+
+  const handleDeletePost = (postId) => {
+    const updatedPosts = posts.filter((p) => p.postId !== postId);
+    setPosts(updatedPosts);
   };
 
   return (
