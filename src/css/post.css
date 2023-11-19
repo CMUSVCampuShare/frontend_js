@@ -19,6 +19,25 @@
   font-size: 16px;
 }
 
+.update-post input[type='text'] {
+  width: 80%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.update-post input[type='number'] {
+  width: 80%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.update-post select {
+  margin-left: 10%;
+  width: 80%;
+}
+
 .create-post button {
   padding: 8px 16px;
   font-size: 16px;
