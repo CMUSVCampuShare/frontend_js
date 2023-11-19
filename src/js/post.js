@@ -121,14 +121,14 @@ const PostWall = () => {
               type="text"
               placeholder="Edit Deatils"
               value={newPostData.details}
-              onChange={(e) => setNewPostData({ ...newPostData, from: e.target.value })}
+              onChange={(e) => setNewPostData({ ...newPostData, details: e.target.value })}
             />
             <p>{post.type}</p>
             <input
               type="number"
               placeholder="Edit Number of Seats"
               value={newPostData.noOfSeats}
-              onChange={(e) => setNewPostData({ ...newPostData, from: e.target.value })}
+              onChange={(e) => setNewPostData({ ...newPostData, noOfSeats: e.target.value })}
             />
             <select
               value={newPostData.status}
