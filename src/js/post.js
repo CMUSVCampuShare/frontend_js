@@ -174,28 +174,72 @@ const PostWall = () => {
     );
   };
 
+  // const handleCreatePost = () => {
+  //   const updatedPosts = [
+  //     ...posts,
+  //     {
+  //       ...newPostData,
+  //       postId: (posts.length + 1).toString(),
+  //       comments: [],
+  //     },
+  //   ];
+  //   setPosts(updatedPosts);
+  //   setNewPostData({
+  //     title: '',
+  //     from: '',
+  //     to: '',
+  //     details: '',
+  //     type: '',
+  //     noOfSeats: 0,
+  //     status: 'Ongoing',
+  //     timestamp: new Date().toString(),
+  //     comments: [],
+  //   });
+  // };
+
   const handleCreatePost = () => {
-    const updatedPosts = [
-      ...posts,
-      {
-        ...newPostData,
-        postId: (posts.length + 1).toString(),
-        comments: [],
+    const newPostDataForBackend = {
+      userId: "15", // TO DO: Need to update to actual userId
+      title: newPostData.title,
+      from: newPostData.from,
+      to: newPostData.to,
+      details: newPostData.details,
+      type: newPostData.type.toUpperCase(),
+      noOfSeats: newPostData.noOfSeats || 0,
+      status: newPostData.status.toUpperCase(),
+    };
+
+    fetch('http://localhost:8082/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    ];
-    setPosts(updatedPosts);
-    setNewPostData({
-      title: '',
-      from: '',
-      to: '',
-      details: '',
-      type: '',
-      noOfSeats: 0,
-      status: 'Ongoing',
-      timestamp: new Date().toString(),
-      comments: [],
-    });
+      body: JSON.stringify(newPostDataForBackend),
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Failed to create post');
+        }
+      })
+      .then(createdPost => {
+        setPosts([...posts, createdPost]);
+        setNewPostData({
+          title: '',
+          from: '',
+          to: '',
+          details: '',
+          type: '',
+          noOfSeats: 0,
+          status: 'Ongoing',
+          timestamp: new Date().toString(),
+          comments: [],
+        });
+      })
+      .catch(error => console.error('Error creating post:', error));
   };
+
 
   // const handleDeletePost = (postId) => {
   //   const updatedPosts = posts.filter((p) => p.postId !== postId);
