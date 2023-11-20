@@ -50,18 +50,54 @@ const PostWall = () => {
   const Post = ({ post }) => {
     const [commentText, setCommentText] = useState('');
 
-    const handleAddComment = (postId) => {
-      const updatedPosts = posts.map((p) => {
-        if (p.postId === postId) {
-          const updatedPost = { ...p };
-          updatedPost.comments.push({ text: commentText, timestamp: new Date().toString() });
-          return updatedPost;
-        }
-        return p;
-      });
+    // const handleAddComment = (postId) => {
+    //   const updatedPosts = posts.map((p) => {
+    //     if (p.postId === postId) {
+    //       const updatedPost = { ...p };
+    //       updatedPost.comments.push({ text: commentText, timestamp: new Date().toString() });
+    //       return updatedPost;
+    //     }
+    //     return p;
+    //   });
 
-      setPosts(updatedPosts);
-      setCommentText('');
+    //   setPosts(updatedPosts);
+    //   setCommentText('');
+    // };
+
+    const handleAddComment = (postId) => {
+      const commentData = {
+        postId: postId,
+        comment: commentText,
+      };
+
+      fetch(`http://localhost:8082/posts/${postId}/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(commentData),
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Failed to add comment');
+          }
+        })
+        .then(createdComment => {
+          const updatedPosts = posts.map((p) => {
+            if (p.postId === postId) {
+              const updatedPost = { ...p };
+              updatedPost.comments.push({ text: commentText });
+              return updatedPost;
+            }
+            return p;
+          });
+
+          setPosts(updatedPosts);
+          setCommentText('');
+        })
+        .catch(error => console.error('Error adding comment:', error));
     };
 
     const handleEditPost = (post) => {
