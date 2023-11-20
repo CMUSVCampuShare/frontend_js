@@ -50,44 +50,54 @@ const PostWall = () => {
   const Post = ({ post }) => {
     const [commentText, setCommentText] = useState("");
 
+    // const handleAddComment = (postId) => {
+    //   const updatedPosts = posts.map((p) => {
+    //     if (p.postId === postId) {
+    //       const updatedPost = { ...p };
+    //       updatedPost.comments.push({ text: commentText, timestamp: new Date().toString() });
+    //       return updatedPost;
+    //     }
+    //     return p;
+    //   });
+
+    //   setPosts(updatedPosts);
+    //   setCommentText('');
+    // };
+
     const handleAddComment = (postId) => {
-      const updatedPosts = posts.map((p) => {
-        if (p.postId === postId) {
-          const updatedPost = { ...p };
-          updatedPost.comments.push({
-            text: commentText,
-            timestamp: new Date().toString(),
-          });
-          return updatedPost;
-        }
-        return p;
-      });
-
-      setPosts(updatedPosts);
-      setCommentText("");
-    };
-
-    const joinPost = (postId) => {
-      const joinData = {
-        driverID: "24190f52-f241-41b9-b623-fdc02c6b7cd2", // TO DO: Need to update to actual userId
-        passengerID: "24190f52-f241-41b9-b623-fdc02c6b7cd2",
+      const commentData = {
+        postId: postId,
+        comment: commentText,
       };
 
-      fetch(`http://localhost:8080/join?postID=${postId}`, {
-        method: "POST",
+      fetch(`http://localhost:8082/posts/${postId}/comments`, {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(joinData),
+        body: JSON.stringify(commentData),
       })
-        .then((response) => {
+        .then(response => {
           if (response.ok) {
             return response.json();
           } else {
-            throw new Error("Failed to send join request");
+            throw new Error('Failed to add comment');
           }
         })
-        .catch((error) => console.error("Error sending join request: ", error));
+        .then(createdComment => {
+          const updatedPosts = posts.map((p) => {
+            if (p.postId === postId) {
+              const updatedPost = { ...p };
+              updatedPost.comments.push({ text: commentText });
+              return updatedPost;
+            }
+            return p;
+          });
+
+          setPosts(updatedPosts);
+          setCommentText('');
+        })
+        .catch(error => console.error('Error adding comment:', error));
     };
 
     const handleEditPost = (post) => {
@@ -390,7 +400,7 @@ const PostWall = () => {
           <option value="">Select Type</option>
           <option value="Ride">RIDE</option>
           <option value="Lunch">LUNCH</option>
-          <option value="Food Pickup">FOOD PICKUP</option>
+          <option value="FoodPickup">FOODPICKUP</option>
         </select>
         <input
           type="number"
