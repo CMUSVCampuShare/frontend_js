@@ -196,8 +196,8 @@ const PostWall = () => {
           break;
       }
       const joinData = {
-        driverID: "24190f52-f241-41b9-b623-fdc02c6b7cd2", // TO DO: Need to update to actual userId
-        passengerID: "24190f52-f241-41b9-b623-fdc02c6b7cd2",
+        driverID: selectedPost.userId,
+        passengerID: "24190f52-f241-41b9-b623-fdc02c6b7cd2", // TO DO: Need to update to logged-in userId
       };
 
       fetch(url, {
