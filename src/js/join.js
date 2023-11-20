@@ -1,4 +1,5 @@
 import React from "react";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import "../css/join.css"; // Make sure to create a separate CSS file for styles
 
 const Join = () => {
@@ -11,9 +12,10 @@ const Join = () => {
     console.log("Trip rejected");
   };
 
-  // Variables for passenger name and trip time
+  // Variables for passenger name, trip time and coordinates
   const passengerName = "Passenger Name Placeholder";
   const tripTimeIncrease = "5"; // in minutes
+  const markerPosition = { lat: 37.7749, lng: -122.4194 };
 
   return (
     <div className="join-request-container">
@@ -25,8 +27,14 @@ const Join = () => {
         <div className="passenger-name">{passengerName}</div>
       </div>
       <div className="map-placeholder">
-        {/* Placeholder for the map */}
-        Map will be displayed here.
+        <LoadScript googleMapsApiKey="AIzaSyALoxyWDM0Ut92xSQyZyVS_wVDMXV9SUPg">
+          <GoogleMap
+            center={markerPosition}
+            zoom={12} // You can adjust the zoom level
+          >
+            <Marker position={markerPosition} />
+          </GoogleMap>
+        </LoadScript>
       </div>
       <div className="trip-info">
         Trip Time increased by {tripTimeIncrease} mins
