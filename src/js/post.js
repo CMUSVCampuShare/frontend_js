@@ -377,7 +377,7 @@ const PostWall = () => {
           <option value="">Select Type</option>
           <option value="Ride">RIDE</option>
           <option value="Lunch">LUNCH</option>
-          <option value="Food Pickup">FOOD PICKUP</option>
+          <option value="FoodPickup">FOODPICKUP</option>
         </select>
         <input
           type="number"
