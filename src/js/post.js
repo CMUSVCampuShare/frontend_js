@@ -41,10 +41,10 @@ const PostWall = () => {
   // }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8082/posts")
-      .then((response) => response.json())
-      .then((data) => setPosts(data))
-      .catch((error) => console.error("Error fetching posts:", error));
+    fetch('http://localhost:8082/posts/active')
+      .then(response => response.json())
+      .then(data => setPosts(data))
+      .catch(error => console.error('Error fetching posts:', error));
   }, []);
 
   const Post = ({ post }) => {
@@ -106,26 +106,69 @@ const PostWall = () => {
       });
     };
 
+    // const handleUpdatePost = () => {
+    //   const updatedPosts = posts.map((p) =>
+    //     p.postId === editingPost.postId ? { ...newPostData, postId: p.postId } : p
+    //   );
+    //   setPosts(updatedPosts);
+    //   setEditMode(false);
+    //   setEditingPost(null);
+    //   setNewPostData({
+    //     title: '',
+    //     from: '',
+    //     to: '',
+    //     details: '',
+    //     type: '',
+    //     noOfSeats: 0,
+    //     status: 'ONGOING',
+    //     timestamp: new Date().toString(),
+    //     comments: [],
+    //   });
+    // };
+
     const handleUpdatePost = () => {
-      const updatedPosts = posts.map((p) =>
-        p.postId === editingPost.postId
-          ? { ...newPostData, postId: p.postId }
-          : p
-      );
-      setPosts(updatedPosts);
-      setEditMode(false);
-      setEditingPost(null);
-      setNewPostData({
-        title: "",
-        from: "",
-        to: "",
-        details: "",
-        type: "",
-        noOfSeats: 0,
-        status: "Ongoing",
-        timestamp: new Date().toString(),
-        comments: [],
-      });
+      const postDataForBackend = {
+        userId: "15",
+        title: newPostData.title,
+        from: newPostData.from,
+        to: newPostData.to,
+        details: newPostData.details,
+        type: newPostData.type.toUpperCase(),
+        noOfSeats: newPostData.noOfSeats || 0,
+        status: newPostData.status.toUpperCase(),
+      };
+
+      fetch(`http://localhost:8082/posts/${editingPost.postId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postDataForBackend),
+      })
+        .then(response => {
+          if (response.ok) {
+            const updatedPosts = posts.map((p) =>
+              p.postId === editingPost.postId ? { ...newPostData, postId: p.postId } : p
+            );
+            setPosts(updatedPosts);
+            setEditMode(false);
+            setEditingPost(null);
+            setNewPostData({
+              title: '',
+              from: '',
+              to: '',
+              details: '',
+              type: '',
+              noOfSeats: 0,
+              status: 'ONGOING',
+              timestamp: new Date().toString(),
+              comments: [],
+            });
+          } else {
+            throw new Error('Failed to update post');
+          }
+        })
+        .catch(error => console.error('Error updating post:', error));
     };
 
     return (
