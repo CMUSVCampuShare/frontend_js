@@ -41,10 +41,10 @@ const PostWall = () => {
   // }, []);
 
   useEffect(() => {
-    fetch('http://localhost:8082/posts/active')
-      .then(response => response.json())
-      .then(data => setPosts(data))
-      .catch(error => console.error('Error fetching posts:', error));
+    fetch("http://localhost:8082/posts/active")
+      .then((response) => response.json())
+      .then((data) => setPosts(data))
+      .catch((error) => console.error("Error fetching posts:", error));
   }, []);
 
   const Post = ({ post }) => {
@@ -71,20 +71,20 @@ const PostWall = () => {
       };
 
       fetch(`http://localhost:8082/posts/${postId}/comments`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(commentData),
       })
-        .then(response => {
+        .then((response) => {
           if (response.ok) {
             return response.json();
           } else {
-            throw new Error('Failed to add comment');
+            throw new Error("Failed to add comment");
           }
         })
-        .then(createdComment => {
+        .then((createdComment) => {
           const updatedPosts = posts.map((p) => {
             if (p.postId === postId) {
               const updatedPost = { ...p };
@@ -95,9 +95,9 @@ const PostWall = () => {
           });
 
           setPosts(updatedPosts);
-          setCommentText('');
+          setCommentText("");
         })
-        .catch(error => console.error('Error adding comment:', error));
+        .catch((error) => console.error("Error adding comment:", error));
     };
 
     const handleEditPost = (post) => {
@@ -149,36 +149,61 @@ const PostWall = () => {
       };
 
       fetch(`http://localhost:8082/posts/${editingPost.postId}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(postDataForBackend),
       })
-        .then(response => {
+        .then((response) => {
           if (response.ok) {
             const updatedPosts = posts.map((p) =>
-              p.postId === editingPost.postId ? { ...newPostData, postId: p.postId } : p
+              p.postId === editingPost.postId
+                ? { ...newPostData, postId: p.postId }
+                : p
             );
             setPosts(updatedPosts);
             setEditMode(false);
             setEditingPost(null);
             setNewPostData({
-              title: '',
-              from: '',
-              to: '',
-              details: '',
-              type: '',
+              title: "",
+              from: "",
+              to: "",
+              details: "",
+              type: "",
               noOfSeats: 0,
-              status: 'ONGOING',
+              status: "ONGOING",
               timestamp: new Date().toString(),
               comments: [],
             });
           } else {
-            throw new Error('Failed to update post');
+            throw new Error("Failed to update post");
           }
         })
-        .catch(error => console.error('Error updating post:', error));
+        .catch((error) => console.error("Error updating post:", error));
+    };
+
+    const joinPost = (postId) => {
+      const joinData = {
+        driverID: "24190f52-f241-41b9-b623-fdc02c6b7cd2", // TO DO: Need to update to actual userId
+        passengerID: "24190f52-f241-41b9-b623-fdc02c6b7cd2",
+      };
+
+      fetch(`http://localhost:8080/join?postID=${postId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(joinData),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Failed to send join request");
+          }
+        })
+        .catch((error) => console.error("Error sending join request: ", error));
     };
 
     return (
