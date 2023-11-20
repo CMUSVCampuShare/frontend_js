@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import '../css/post.css';
+import React, { useState, useEffect } from "react";
+import "../css/post.css";
 
 const PostWall = () => {
   const [posts, setPosts] = useState([]);
   const [newPostData, setNewPostData] = useState({
-    title: '',
-    from: '',
-    to: '',
-    details: '',
-    type: 'RIDE',
+    title: "",
+    from: "",
+    to: "",
+    details: "",
+    type: "RIDE",
     noOfSeats: 0,
-    status: 'ONGOING',
+    status: "ONGOING",
     timestamp: new Date().toString(),
     comments: [],
   });
@@ -41,27 +41,53 @@ const PostWall = () => {
   // }, []);
 
   useEffect(() => {
-    fetch('http://localhost:8082/posts')
-      .then(response => response.json())
-      .then(data => setPosts(data))
-      .catch(error => console.error('Error fetching posts:', error));
+    fetch("http://localhost:8082/posts")
+      .then((response) => response.json())
+      .then((data) => setPosts(data))
+      .catch((error) => console.error("Error fetching posts:", error));
   }, []);
 
   const Post = ({ post }) => {
-    const [commentText, setCommentText] = useState('');
+    const [commentText, setCommentText] = useState("");
 
     const handleAddComment = (postId) => {
       const updatedPosts = posts.map((p) => {
         if (p.postId === postId) {
           const updatedPost = { ...p };
-          updatedPost.comments.push({ text: commentText, timestamp: new Date().toString() });
+          updatedPost.comments.push({
+            text: commentText,
+            timestamp: new Date().toString(),
+          });
           return updatedPost;
         }
         return p;
       });
 
       setPosts(updatedPosts);
-      setCommentText('');
+      setCommentText("");
+    };
+
+    const joinPost = (postId) => {
+      const joinData = {
+        driverID: "24190f52-f241-41b9-b623-fdc02c6b7cd2", // TO DO: Need to update to actual userId
+        passengerID: "24190f52-f241-41b9-b623-fdc02c6b7cd2",
+      };
+
+      fetch(`http://localhost:8080/join?postID=${postId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(joinData),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Failed to send join request");
+          }
+        })
+        .catch((error) => console.error("Error sending join request: ", error));
     };
 
     const handleEditPost = (post) => {
@@ -82,19 +108,21 @@ const PostWall = () => {
 
     const handleUpdatePost = () => {
       const updatedPosts = posts.map((p) =>
-        p.postId === editingPost.postId ? { ...newPostData, postId: p.postId } : p
+        p.postId === editingPost.postId
+          ? { ...newPostData, postId: p.postId }
+          : p
       );
       setPosts(updatedPosts);
       setEditMode(false);
       setEditingPost(null);
       setNewPostData({
-        title: '',
-        from: '',
-        to: '',
-        details: '',
-        type: '',
+        title: "",
+        from: "",
+        to: "",
+        details: "",
+        type: "",
         noOfSeats: 0,
-        status: 'Ongoing',
+        status: "Ongoing",
         timestamp: new Date().toString(),
         comments: [],
       });
@@ -109,30 +137,40 @@ const PostWall = () => {
               type="text"
               placeholder="Edit Title"
               value={newPostData.title}
-              onChange={(e) => setNewPostData({ ...newPostData, title: e.target.value })}
+              onChange={(e) =>
+                setNewPostData({ ...newPostData, title: e.target.value })
+              }
             />
             <input
               type="text"
               placeholder="Edit From"
               value={newPostData.from}
-              onChange={(e) => setNewPostData({ ...newPostData, from: e.target.value })}
+              onChange={(e) =>
+                setNewPostData({ ...newPostData, from: e.target.value })
+              }
             />
             <input
               type="text"
               placeholder="Edit Deatils"
               value={newPostData.details}
-              onChange={(e) => setNewPostData({ ...newPostData, details: e.target.value })}
+              onChange={(e) =>
+                setNewPostData({ ...newPostData, details: e.target.value })
+              }
             />
             <p>{post.type}</p>
             <input
               type="number"
               placeholder="Edit Number of Seats"
               value={newPostData.noOfSeats}
-              onChange={(e) => setNewPostData({ ...newPostData, noOfSeats: e.target.value })}
+              onChange={(e) =>
+                setNewPostData({ ...newPostData, noOfSeats: e.target.value })
+              }
             />
             <select
               value={newPostData.status}
-              onChange={(e) => setNewPostData({ ...newPostData, status: e.target.value })}
+              onChange={(e) =>
+                setNewPostData({ ...newPostData, status: e.target.value })
+              }
             >
               <option value="Ongoing">ONGOING</option>
               <option value="Complete">COMPLETE</option>
@@ -162,10 +200,14 @@ const PostWall = () => {
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                 />
-                <button onClick={() => handleAddComment(post.postId)}>Comment</button>
-                <button>Join</button>
+                <button onClick={() => handleAddComment(post.postId)}>
+                  Comment
+                </button>
+                <button onClick={() => joinPost(post.postId)}>Join</button>
                 <button onClick={() => handleEditPost(post)}>Edit Post</button>
-                <button onClick={() => handleDeletePost(post.postId)}>Delete Post</button>
+                <button onClick={() => handleDeletePost(post.postId)}>
+                  Delete Post
+                </button>
               </div>
             </div>
           </div>
@@ -209,37 +251,36 @@ const PostWall = () => {
       status: newPostData.status.toUpperCase(),
     };
 
-    fetch('http://localhost:8082/posts', {
-      method: 'POST',
+    fetch("http://localhost:8082/posts", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(newPostDataForBackend),
     })
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           return response.json();
         } else {
-          throw new Error('Failed to create post');
+          throw new Error("Failed to create post");
         }
       })
-      .then(createdPost => {
+      .then((createdPost) => {
         setPosts([...posts, createdPost]);
         setNewPostData({
-          title: '',
-          from: '',
-          to: '',
-          details: '',
-          type: '',
+          title: "",
+          from: "",
+          to: "",
+          details: "",
+          type: "",
           noOfSeats: 0,
-          status: 'Ongoing',
+          status: "Ongoing",
           timestamp: new Date().toString(),
           comments: [],
         });
       })
-      .catch(error => console.error('Error creating post:', error));
+      .catch((error) => console.error("Error creating post:", error));
   };
-
 
   // const handleDeletePost = (postId) => {
   //   const updatedPosts = posts.filter((p) => p.postId !== postId);
@@ -248,17 +289,17 @@ const PostWall = () => {
 
   const handleDeletePost = (postId) => {
     fetch(`http://localhost:8082/posts/${postId}`, {
-      method: 'DELETE',
+      method: "DELETE",
     })
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           const updatedPosts = posts.filter((p) => p.postId !== postId);
           setPosts(updatedPosts);
         } else {
-          throw new Error('Failed to delete post');
+          throw new Error("Failed to delete post");
         }
       })
-      .catch(error => console.error('Error deleting post:', error));
+      .catch((error) => console.error("Error deleting post:", error));
   };
 
   return (
@@ -270,28 +311,38 @@ const PostWall = () => {
           type="text"
           placeholder="Title"
           value={newPostData.title}
-          onChange={(e) => setNewPostData({ ...newPostData, title: e.target.value })}
+          onChange={(e) =>
+            setNewPostData({ ...newPostData, title: e.target.value })
+          }
         />
         <input
           type="text"
           placeholder="From"
           value={newPostData.from}
-          onChange={(e) => setNewPostData({ ...newPostData, from: e.target.value })}
+          onChange={(e) =>
+            setNewPostData({ ...newPostData, from: e.target.value })
+          }
         />
         <input
           type="text"
           placeholder="To"
           value={newPostData.to}
-          onChange={(e) => setNewPostData({ ...newPostData, to: e.target.value })}
+          onChange={(e) =>
+            setNewPostData({ ...newPostData, to: e.target.value })
+          }
         />
         <textarea
           placeholder="Details"
           value={newPostData.details}
-          onChange={(e) => setNewPostData({ ...newPostData, details: e.target.value })}
+          onChange={(e) =>
+            setNewPostData({ ...newPostData, details: e.target.value })
+          }
         ></textarea>
         <select
           value={newPostData.type}
-          onChange={(e) => setNewPostData({ ...newPostData, type: e.target.value })}
+          onChange={(e) =>
+            setNewPostData({ ...newPostData, type: e.target.value })
+          }
         >
           <option value="">Select Type</option>
           <option value="Ride">RIDE</option>
@@ -303,12 +354,17 @@ const PostWall = () => {
           placeholder="Number of Seats"
           value={newPostData.noOfSeats}
           onChange={(e) =>
-            setNewPostData({ ...newPostData, noOfSeats: parseInt(e.target.value) || 0 })
+            setNewPostData({
+              ...newPostData,
+              noOfSeats: parseInt(e.target.value) || 0,
+            })
           }
         />
         <select
           value={newPostData.status}
-          onChange={(e) => setNewPostData({ ...newPostData, status: e.target.value })}
+          onChange={(e) =>
+            setNewPostData({ ...newPostData, status: e.target.value })
+          }
         >
           <option value="">Select Status</option>
           <option value="Ongoing">ONGOING</option>
