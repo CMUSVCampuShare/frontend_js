@@ -1,5 +1,11 @@
 import React from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  useLoadScript,
+} from "@react-google-maps/api";
+import { useMemo } from "react";
 import "../css/join.css"; // Make sure to create a separate CSS file for styles
 
 const Join = () => {
@@ -17,6 +23,11 @@ const Join = () => {
   const tripTimeIncrease = "5"; // in minutes
   const markerPosition = { lat: 37.7749, lng: -122.4194 };
 
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyALoxyWDM0Ut92xSQyZyVS_wVDMXV9SUPg",
+  });
+  const center = useMemo(() => ({ lat: 37.7749, lng: -122.4194 }), []);
+  console.log(isLoaded);
   return (
     <div className="join-request-container">
       <div className="header">
@@ -26,15 +37,18 @@ const Join = () => {
         <div className="label">Request by:</div>
         <div className="passenger-name">{passengerName}</div>
       </div>
-      <div className="map-placeholder">
-        <LoadScript googleMapsApiKey="AIzaSyALoxyWDM0Ut92xSQyZyVS_wVDMXV9SUPg">
+      <div>
+        {!isLoaded ? (
+          <h1>Loading...</h1>
+        ) : (
           <GoogleMap
-            center={markerPosition}
-            zoom={12} // You can adjust the zoom level
+            mapContainerClassName="map-placeholder"
+            center={center}
+            zoom={15}
           >
-            <Marker position={markerPosition} />
+            <Marker position={{ lat: 37.7749, lng: -122.4194 }} />
           </GoogleMap>
-        </LoadScript>
+        )}
       </div>
       <div className="trip-info">
         Trip Time increased by {tripTimeIncrease} mins
