@@ -24,7 +24,7 @@ const Join = () => {
   const markerPosition = { lat: 37.7749, lng: -122.4194 };
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyALoxyWDM0Ut92xSQyZyVS_wVDMXV9SUPg",
+    googleMapsApiKey: "",
   });
   const center = useMemo(() => ({ lat: 37.7749, lng: -122.4194 }), []);
   console.log(isLoaded);
