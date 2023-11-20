@@ -40,11 +40,39 @@ const PostWall = () => {
   //   setPosts(fetchedPosts);
   // }, []);
 
+  // useEffect(() => {
+  //   fetch("http://localhost:8082/posts/active")
+  //     .then((response) => response.json())
+  //     .then((data) => setPosts(data))
+  //     .catch((error) => console.error("Error fetching posts:", error));
+  // }, []);
+
   useEffect(() => {
-    fetch("http://localhost:8082/posts/active")
-      .then((response) => response.json())
-      .then((data) => setPosts(data))
-      .catch((error) => console.error("Error fetching posts:", error));
+    const fetchPosts = async () => {
+      try {
+        const postsResponse = await fetch('http://localhost:8082/posts/active');
+        const posts = await postsResponse.json();
+
+        const fetchCommentPromises = posts.map(async (post) => {
+          try {
+            const commentResponse = await fetch(`http://localhost:8082/posts/${post.postId}/comments`);
+            const comments = await commentResponse.json();
+            console.log(comments);
+            return { ...post, comments: comments || [] };
+          } catch (error) {
+            console.error(`Error fetching comments for post ${post.postId}:`, error);
+            return { ...post, comments: [] };
+          }
+        });
+
+        const updatedPosts = await Promise.all(fetchCommentPromises);
+        setPosts(updatedPosts);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
+    };
+
+    fetchPosts();
   }, []);
 
   const Post = ({ post }) => {
