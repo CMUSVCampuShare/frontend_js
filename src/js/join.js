@@ -1,11 +1,11 @@
 import React from "react";
 import {
   GoogleMap,
-  Marker,
   useLoadScript,
 } from "@react-google-maps/api";
 import { useMemo } from "react";
 import "../css/join.css"; // Make sure to create a separate CSS file for styles
+import { MarkerF } from "@react-google-maps/api";
 
 const Join = () => {
   // Placeholder function for button click handlers
@@ -44,7 +44,10 @@ const Join = () => {
             center={center}
             zoom={15}
           >
-            <Marker position={{ lat: 37.7749, lng: -122.4194 }} />
+            <MarkerF
+              className="marker"
+              position={center}
+            />
           </GoogleMap>
         )}
       </div>

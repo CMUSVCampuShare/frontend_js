@@ -41,6 +41,17 @@
   margin-bottom: 20px;
 }
 
+/* Marker CSS */
+.marker {
+    background-repeat: no-repeat;
+    background-position: center center;
+    border-radius: 50%;
+    cursor: pointer;
+    display: block;
+    background-color: red;
+}
+
+
 .actions {
   display: flex;
   justify-content: space-around; /* This will add space between the buttons */
