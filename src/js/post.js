@@ -94,6 +94,7 @@ const PostWall = () => {
           if (response.ok) {
             return response.json();
           } else {
+            setErrorMessage("Failed to add comment");
             throw new Error("Failed to add comment");
           }
         })
@@ -169,7 +170,9 @@ const PostWall = () => {
               timestamp: new Date().toString(),
               comments: [],
             });
+            setSuccessMessage("Successfully updated post")
           } else {
+            setErrorMessage("Failed to update post");
             throw new Error("Failed to update post");
           }
         })
@@ -202,8 +205,10 @@ const PostWall = () => {
       })
         .then((response) => {
           if (response.ok) {
+            setSuccessMessage("Successfully sent join request");
             return response.json();
           } else {
+            setErrorMessage("Failed to send join request");
             throw new Error("Failed to send join request");
           }
         })
@@ -331,8 +336,10 @@ const PostWall = () => {
     })
       .then((response) => {
         if (response.ok) {
+          setSuccessMessage("Successfully created post")
           return response.json();
         } else {
+          setErrorMessage("Failed to create post");
           throw new Error("Failed to create post");
         }
       })
@@ -361,7 +368,9 @@ const PostWall = () => {
         if (response.ok) {
           const updatedPosts = posts.filter((p) => p.postId !== postId);
           setPosts(updatedPosts);
+          setSuccessMessage("Successfully deleted post")
         } else {
+          setErrorMessage("Failed to delete post");
           throw new Error("Failed to delete post");
         }
       })
