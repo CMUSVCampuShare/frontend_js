@@ -274,7 +274,7 @@ const PostWall = () => {
             <p>Timestamp: {post.timestamp}</p>
             <div className="comments">
               {post.comments.map((comment, index) => (
-                <p key={index}>{comment.text}</p>
+                <p key={index}>{comment.comment}</p>
               ))}
               <div>
                 <input
