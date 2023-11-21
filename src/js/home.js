@@ -1,5 +1,6 @@
 import logo from "../campushare.png";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function Home() {
     const [showContent, setShowContent] = useState(true);
@@ -10,6 +11,8 @@ function Home() {
         <img src={logo} alt="logo" />
         CampuShare
       </header>
+      <br></br>
+     <Link to="/login"><button>Get Started</button></Link>
     </div>
   );
 }

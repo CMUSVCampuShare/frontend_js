@@ -12,7 +12,7 @@ function Navbar() {
       <Link to="/chat">
         <FaComments className="icon" />
       </Link>
-      <Link to="/ride">
+      <Link to="/post">
         <FaCar className="icon" />
       </Link>
       <Link to="/profile">
