@@ -215,7 +215,6 @@ const PostWall = () => {
         .catch((error) => console.error("Error sending join request: ", error));
     };
 
-    // TO DO : Check why it completes the edit form details to create form too!
     // TO DO : Use autocomplete for from and to
     return (
       <div className="post">
@@ -378,7 +377,6 @@ const PostWall = () => {
   };
 
   // TO DO : Use autocomplete for from and to
-
   return (
     <div className="post-wall">
       <h1>Post Wall</h1>
