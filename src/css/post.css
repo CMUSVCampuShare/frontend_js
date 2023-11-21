@@ -100,6 +100,10 @@
   margin-top: 20px;
 }
 
+.comments p {
+  background-color: #fff;
+}
+
 .comments input[type='text'] {
   width: 70%;
   margin-bottom: 10px;

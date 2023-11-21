@@ -56,7 +56,6 @@ const PostWall = () => {
           try {
             const commentResponse = await fetch(`http://localhost:8082/posts/${post.postId}/comments`);
             const comments = await commentResponse.json();
-            console.log(comments);
             return { ...post, comments: comments || [] };
           } catch (error) {
             console.error(`Error fetching comments for post ${post.postId}:`, error);
@@ -65,7 +64,7 @@ const PostWall = () => {
         });
 
         const updatedPosts = await Promise.all(fetchCommentPromises);
-        setPosts(updatedPosts); // TODO : Why comments not appearing on post?
+        setPosts(updatedPosts);
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
@@ -280,16 +279,16 @@ const PostWall = () => {
         ) : (
           <div>
             <h2>{post.title}</h2>
-            <p>From: {post.from}</p>
-            <p>To: {post.to}</p>
-            <p>Details: {post.details}</p>
-            <p>Type: {post.type}</p>
-            <p>No of Seats: {post.noOfSeats}</p>
-            <p>Status: {post.status}</p>
-            <p>Timestamp: {post.timestamp}</p>
+            <p><b>From:</b> {post.from}</p>
+            <p><b>To:</b> {post.to}</p>
+            <p><b>Details:</b> {post.details}</p>
+            <p><b>Type:</b> {post.type}</p>
+            <p><b>No of Seats:</b> {post.noOfSeats}</p>
+            <p><b>Status:</b> {post.status}</p>
+            <p><b>Timestamp:</b> {post.timestamp}</p>
             <div className="comments">
               {post.comments.map((comment, index) => (
-                <p key={index}>{comment.comment}</p>
+                <p key={index}><b>Comment:</b> {comment.comment}</p>
               ))}
               <div>
                 <input
