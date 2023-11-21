@@ -17,6 +17,8 @@ const PostWall = () => {
     timestamp: new Date().toString(),
     comments: [],
   });
+  const [editMode, setEditMode] = useState(false);
+  const [editingPost, setEditingPost] = useState(null);
   const [editedPostData, setEditedPostData] = useState({
     title: "",
     from: "",
@@ -28,12 +30,21 @@ const PostWall = () => {
     timestamp: new Date().toString(),
     comments: [],
   });
-  const [editMode, setEditMode] = useState(false);
-  const [editingPost, setEditingPost] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     if (newPostData.type === 'FoodPickup' && !editMode) {
       setNewPostData({ ...newPostData, to: initialToPlaceholder, noOfSeats: initialSeatsPlaceholder });
+    }
+
+    if (successMessage) {
+      alert(successMessage);
+      setSuccessMessage(null);
+    }
+    if (errorMessage) {
+      alert(errorMessage);
+      setErrorMessage(null);
     }
 
     const fetchPosts = async () => {
@@ -61,7 +72,7 @@ const PostWall = () => {
     };
 
     fetchPosts();
-  }, [newPostData.type]);
+  }, [newPostData.type, successMessage, errorMessage]);
 
   const Post = ({ post }) => {
     const [commentText, setCommentText] = useState("");
@@ -83,6 +94,7 @@ const PostWall = () => {
           if (response.ok) {
             return response.json();
           } else {
+            setErrorMessage("Failed to add comment");
             throw new Error("Failed to add comment");
           }
         })
@@ -158,7 +170,9 @@ const PostWall = () => {
               timestamp: new Date().toString(),
               comments: [],
             });
+            setSuccessMessage("Successfully updated post")
           } else {
+            setErrorMessage("Failed to update post");
             throw new Error("Failed to update post");
           }
         })
@@ -191,15 +205,16 @@ const PostWall = () => {
       })
         .then((response) => {
           if (response.ok) {
+            setSuccessMessage("Successfully sent join request");
             return response.json();
           } else {
+            setErrorMessage("Failed to send join request");
             throw new Error("Failed to send join request");
           }
         })
         .catch((error) => console.error("Error sending join request: ", error));
     };
 
-    // TO DO : Check why it completes the edit form details to create form too!
     // TO DO : Use autocomplete for from and to
     return (
       <div className="post">
@@ -320,8 +335,10 @@ const PostWall = () => {
     })
       .then((response) => {
         if (response.ok) {
+          setSuccessMessage("Successfully created post")
           return response.json();
         } else {
+          setErrorMessage("Failed to create post");
           throw new Error("Failed to create post");
         }
       })
@@ -350,7 +367,9 @@ const PostWall = () => {
         if (response.ok) {
           const updatedPosts = posts.filter((p) => p.postId !== postId);
           setPosts(updatedPosts);
+          setSuccessMessage("Successfully deleted post")
         } else {
+          setErrorMessage("Failed to delete post");
           throw new Error("Failed to delete post");
         }
       })
@@ -358,7 +377,6 @@ const PostWall = () => {
   };
 
   // TO DO : Use autocomplete for from and to
-
   return (
     <div className="post-wall">
       <h1>Post Wall</h1>
