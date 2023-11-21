@@ -1,0 +1,131 @@
+.post-wall {
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+}
+
+.post-wall h1 {
+  color: #0056b3;
+}
+
+.create-post {
+  margin-bottom: 20px;
+}
+
+.create-post input[type='text'] {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.create-post input[type='number'] {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.create-post textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.create-post select {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.update-post input[type='text'] {
+  width: 80%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.update-post input[type='number'] {
+  width: 80%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.update-post select {
+  width: 80%;
+}
+
+.update-post textarea {
+  width: 80%;
+}
+
+.update-post button {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #0056b3;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.create-post button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #0056b3;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.create-post h2 {
+  color: #0056b3;
+}
+
+.post {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+.post h2 {
+  margin-bottom: 10px;
+  color: #0056b3;
+}
+
+.comments {
+  margin-top: 20px;
+}
+
+.comments p {
+  background-color: #fff;
+}
+
+.comments input[type='text'] {
+  width: 70%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.comments button {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #0056b3;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.no-input {
+  pointer-events: none;
+  user-select: none;
+}

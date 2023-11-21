@@ -8,6 +8,8 @@ import Ride from "./js/ride";
 import Profile from "./js/profile";
 import Login from "./js/login";
 import Register from "./js/register";
+import Post from "./js/post";
+import Join from "./js/join";
 import Popup from "./js/popup";
 import "./App.css";
 
@@ -29,6 +31,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+
         <header className={`App-header ${showContent ? "" : "hide-content"}`}>
           <img src={logo} alt="logo" />
           CampuShare
@@ -43,6 +46,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/post" element={<Post />} />
+          <Route path="/join" element={<Join />} />
         </Routes>
       </div>
     </Router>
