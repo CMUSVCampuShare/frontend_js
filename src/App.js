@@ -10,6 +10,7 @@ import Login from "./js/login";
 import Register from "./js/register";
 import Post from "./js/post";
 import Join from "./js/join";
+import Popup from "./js/popup";
 import "./App.css";
 
 function App() {
@@ -30,12 +31,18 @@ function App() {
   return (
     <Router>
       <div className="App">
+
+        <header className={`App-header ${showContent ? "" : "hide-content"}`}>
+          <img src={logo} alt="logo" />
+          CampuShare
+        </header>
         {/*         <Navbar />
-         */}{" "}
+
+ */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/ride" element={<Ride />} />
+          <Route path="/ride" element={<Popup />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
