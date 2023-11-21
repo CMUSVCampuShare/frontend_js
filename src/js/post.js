@@ -102,7 +102,7 @@ const PostWall = () => {
           const updatedPosts = posts.map((p) => {
             if (p.postId === postId) {
               const updatedPost = { ...p };
-              updatedPost.comments.push({ text: commentText });
+              updatedPost.comments.push({ comment: commentText });
               return updatedPost;
             }
             return p;
