@@ -17,11 +17,22 @@ const PostWall = () => {
     timestamp: new Date().toString(),
     comments: [],
   });
+  const [editedPostData, setEditedPostData] = useState({
+    title: "",
+    from: "",
+    to: "",
+    details: "",
+    type: "RIDE",
+    noOfSeats: 0,
+    status: "ONGOING",
+    timestamp: new Date().toString(),
+    comments: [],
+  });
   const [editMode, setEditMode] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
 
   useEffect(() => {
-    if (newPostData.type === 'FoodPickup') {
+    if (newPostData.type === 'FoodPickup' && !editMode) {
       setNewPostData({ ...newPostData, to: initialToPlaceholder, noOfSeats: initialSeatsPlaceholder });
     }
 
@@ -94,7 +105,7 @@ const PostWall = () => {
     const handleEditPost = (post) => {
       setEditMode(true);
       setEditingPost(post);
-      setNewPostData({
+      setEditedPostData({
         title: post.title,
         from: post.from,
         to: post.to,
@@ -110,13 +121,13 @@ const PostWall = () => {
     const handleUpdatePost = () => {
       const postDataForBackend = {
         userId: "15", // TO DO: Need to update to logged-in userId
-        title: newPostData.title,
-        from: newPostData.from,
-        to: newPostData.to,
-        details: newPostData.details,
-        type: newPostData.type.toUpperCase(),
-        noOfSeats: newPostData.noOfSeats || 0,
-        status: newPostData.status.toUpperCase(),
+        title: editedPostData.title,
+        from: editedPostData.from,
+        to: editedPostData.to,
+        details: editedPostData.details,
+        type: editedPostData.type.toUpperCase(),
+        noOfSeats: editedPostData.noOfSeats || 0,
+        status: editedPostData.status.toUpperCase(),
       };
 
       fetch(`http://localhost:8082/posts/${editingPost.postId}`, {
@@ -130,13 +141,13 @@ const PostWall = () => {
           if (response.ok) {
             const updatedPosts = posts.map((p) =>
               p.postId === editingPost.postId
-                ? { ...newPostData, postId: p.postId }
+                ? { ...editedPostData, postId: p.postId }
                 : p
             );
             setPosts(updatedPosts);
             setEditMode(false);
             setEditingPost(null);
-            setNewPostData({
+            setEditedPostData({
               title: "",
               from: "",
               to: "",
@@ -198,50 +209,50 @@ const PostWall = () => {
             <input
               type="text"
               placeholder="Edit Title"
-              value={newPostData.title}
+              value={editedPostData.title}
               onChange={(e) =>
-                setNewPostData({ ...newPostData, title: e.target.value })
+                setEditedPostData({ ...editedPostData, title: e.target.value })
               }
             />
             <input
               type="text"
               placeholder="Edit From"
-              value={newPostData.from}
+              value={editedPostData.from}
               onChange={(e) =>
-                setNewPostData({ ...newPostData, from: e.target.value })
+                setEditedPostData({ ...editedPostData, from: e.target.value })
               }
             />
             <input
               type="text"
               placeholder="Edit to"
-              value={newPostData.to}
+              value={editedPostData.to}
               onChange={(e) =>
-                setNewPostData({ ...newPostData, to: e.target.value })
+                setEditedPostData({ ...editedPostData, to: e.target.value })
               }
               disabled={post.type === 'FOODPICKUP'}
             />
             <textarea
               type="text"
               placeholder="Edit Deatils"
-              value={newPostData.details}
+              value={editedPostData.details}
               onChange={(e) =>
-                setNewPostData({ ...newPostData, details: e.target.value })
+                setEditedPostData({ ...editedPostData, details: e.target.value })
               }
             />
             <p>{post.type}</p>
             <input
               type="number"
               placeholder="Edit Number of Seats"
-              value={newPostData.noOfSeats}
+              value={editedPostData.noOfSeats}
               onChange={(e) =>
-                setNewPostData({ ...newPostData, noOfSeats: e.target.value })
+                setEditedPostData({ ...editedPostData, noOfSeats: e.target.value })
               }
               disabled={post.type === 'FOODPICKUP'}
             />
             <select
-              value={newPostData.status}
+              value={editedPostData.status}
               onChange={(e) =>
-                setNewPostData({ ...newPostData, status: e.target.value })
+                setEditedPostData({ ...editedPostData, status: e.target.value })
               }
             >
               <option value="Ongoing">ONGOING</option>
