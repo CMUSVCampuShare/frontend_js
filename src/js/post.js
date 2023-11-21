@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "../css/post.css";
 
+const initialToPlaceholder = 'To';
+const initialSeatsPlaceholder = 0;
+
 const PostWall = () => {
   const [posts, setPosts] = useState([]);
   const [newPostData, setNewPostData] = useState({
@@ -18,6 +21,10 @@ const PostWall = () => {
   const [editingPost, setEditingPost] = useState(null);
 
   useEffect(() => {
+    if (newPostData.type === 'FoodPickup') {
+      setNewPostData({ ...newPostData, to: initialToPlaceholder, noOfSeats: initialSeatsPlaceholder });
+    }
+
     const fetchPosts = async () => {
       try {
         const postsResponse = await fetch('http://localhost:8082/posts/active');
@@ -43,7 +50,7 @@ const PostWall = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [newPostData.type]);
 
   const Post = ({ post }) => {
     const [commentText, setCommentText] = useState("");
@@ -211,6 +218,7 @@ const PostWall = () => {
               onChange={(e) =>
                 setNewPostData({ ...newPostData, to: e.target.value })
               }
+              disabled={newPostData.type === 'FoodPickup'}
             />
             <input
               type="text"
@@ -228,6 +236,7 @@ const PostWall = () => {
               onChange={(e) =>
                 setNewPostData({ ...newPostData, noOfSeats: e.target.value })
               }
+              disabled={newPostData.type === 'FoodPickup'}
             />
             <select
               value={newPostData.status}
@@ -367,6 +376,7 @@ const PostWall = () => {
           onChange={(e) =>
             setNewPostData({ ...newPostData, to: e.target.value })
           }
+          disabled={newPostData.type === 'FoodPickup'}
         />
         <textarea
           placeholder="Details"
@@ -396,6 +406,7 @@ const PostWall = () => {
               noOfSeats: parseInt(e.target.value) || 0,
             })
           }
+          disabled={newPostData.type === 'FoodPickup'}
         />
         <select
           value={newPostData.status}
