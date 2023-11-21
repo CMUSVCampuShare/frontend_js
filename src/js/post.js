@@ -220,7 +220,7 @@ const PostWall = () => {
               }
               disabled={post.type === 'FOODPICKUP'}
             />
-            <input
+            <textarea
               type="text"
               placeholder="Edit Deatils"
               value={newPostData.details}
