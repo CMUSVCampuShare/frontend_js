@@ -1,7 +1,6 @@
 import React from "react";
 import {
   GoogleMap,
-  LoadScript,
   Marker,
   useLoadScript,
 } from "@react-google-maps/api";
@@ -21,10 +20,9 @@ const Join = () => {
   // Variables for passenger name, trip time and coordinates
   const passengerName = "Passenger Name Placeholder";
   const tripTimeIncrease = "5"; // in minutes
-  const markerPosition = { lat: 37.7749, lng: -122.4194 };
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "",
+    googleMapsApiKey: "AIzaSyALoxyWDM0Ut92xSQyZyVS_wVDMXV9SUPg",
   });
   const center = useMemo(() => ({ lat: 37.7749, lng: -122.4194 }), []);
   console.log(isLoaded);
