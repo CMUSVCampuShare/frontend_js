@@ -218,7 +218,7 @@ const PostWall = () => {
               onChange={(e) =>
                 setNewPostData({ ...newPostData, to: e.target.value })
               }
-              disabled={newPostData.type === 'FoodPickup'}
+              disabled={post.type === 'FOODPICKUP'}
             />
             <input
               type="text"
@@ -236,7 +236,7 @@ const PostWall = () => {
               onChange={(e) =>
                 setNewPostData({ ...newPostData, noOfSeats: e.target.value })
               }
-              disabled={newPostData.type === 'FoodPickup'}
+              disabled={post.type === 'FOODPICKUP'}
             />
             <select
               value={newPostData.status}
