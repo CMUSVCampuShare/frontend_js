@@ -17,36 +17,6 @@ const PostWall = () => {
   const [editMode, setEditMode] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
 
-  // // TO DO: Fetch posts from Springboot API
-  // useEffect(() => {
-  //   // REMOVE: Placeholder post to see how the post looks
-  //   const fetchedPosts = [
-  //     {
-  //       postId: '1',
-  //       userId: 'user123',
-  //       title: 'Sample Title',
-  //       from: 'Location A',
-  //       to: 'Location B',
-  //       details: 'Sample details',
-  //       type: 'Ride',
-  //       noOfSeats: 3,
-  //       status: 'Ongoing',
-  //       timestamp: new Date().toString(),
-  //       comments: [],
-  //     },
-  //   ];
-
-  //   // TO DO: Update state with fetched posts
-  //   setPosts(fetchedPosts);
-  // }, []);
-
-  // useEffect(() => {
-  //   fetch("http://localhost:8082/posts/active")
-  //     .then((response) => response.json())
-  //     .then((data) => setPosts(data))
-  //     .catch((error) => console.error("Error fetching posts:", error));
-  // }, []);
-
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -66,7 +36,7 @@ const PostWall = () => {
         });
 
         const updatedPosts = await Promise.all(fetchCommentPromises);
-        setPosts(updatedPosts);
+        setPosts(updatedPosts); // TODO : Why comments not appearing on post?
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
@@ -77,20 +47,6 @@ const PostWall = () => {
 
   const Post = ({ post }) => {
     const [commentText, setCommentText] = useState("");
-
-    // const handleAddComment = (postId) => {
-    //   const updatedPosts = posts.map((p) => {
-    //     if (p.postId === postId) {
-    //       const updatedPost = { ...p };
-    //       updatedPost.comments.push({ text: commentText, timestamp: new Date().toString() });
-    //       return updatedPost;
-    //     }
-    //     return p;
-    //   });
-
-    //   setPosts(updatedPosts);
-    //   setCommentText('');
-    // };
 
     const handleAddComment = (postId) => {
       const commentData = {
@@ -144,29 +100,9 @@ const PostWall = () => {
       });
     };
 
-    // const handleUpdatePost = () => {
-    //   const updatedPosts = posts.map((p) =>
-    //     p.postId === editingPost.postId ? { ...newPostData, postId: p.postId } : p
-    //   );
-    //   setPosts(updatedPosts);
-    //   setEditMode(false);
-    //   setEditingPost(null);
-    //   setNewPostData({
-    //     title: '',
-    //     from: '',
-    //     to: '',
-    //     details: '',
-    //     type: '',
-    //     noOfSeats: 0,
-    //     status: 'ONGOING',
-    //     timestamp: new Date().toString(),
-    //     comments: [],
-    //   });
-    // };
-
     const handleUpdatePost = () => {
       const postDataForBackend = {
-        userId: "15",
+        userId: "15", // TO DO: Need to update to logged-in userId
         title: newPostData.title,
         from: newPostData.from,
         to: newPostData.to,
@@ -245,6 +181,8 @@ const PostWall = () => {
         .catch((error) => console.error("Error sending join request: ", error));
     };
 
+    // TO DO : Check why it completes the edit form details to create form too!
+    // TO DO : Use autocomplete for from and to
     return (
       <div className="post">
         {editMode && editingPost.postId === post.postId ? (
@@ -264,6 +202,14 @@ const PostWall = () => {
               value={newPostData.from}
               onChange={(e) =>
                 setNewPostData({ ...newPostData, from: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Edit to"
+              value={newPostData.to}
+              onChange={(e) =>
+                setNewPostData({ ...newPostData, to: e.target.value })
               }
             />
             <input
@@ -333,32 +279,9 @@ const PostWall = () => {
     );
   };
 
-  // const handleCreatePost = () => {
-  //   const updatedPosts = [
-  //     ...posts,
-  //     {
-  //       ...newPostData,
-  //       postId: (posts.length + 1).toString(),
-  //       comments: [],
-  //     },
-  //   ];
-  //   setPosts(updatedPosts);
-  //   setNewPostData({
-  //     title: '',
-  //     from: '',
-  //     to: '',
-  //     details: '',
-  //     type: '',
-  //     noOfSeats: 0,
-  //     status: 'Ongoing',
-  //     timestamp: new Date().toString(),
-  //     comments: [],
-  //   });
-  // };
-
   const handleCreatePost = () => {
     const newPostDataForBackend = {
-      userId: "15", // TO DO: Need to update to actual userId
+      userId: "15", // TO DO: Need to update to logged-in userId
       title: newPostData.title,
       from: newPostData.from,
       to: newPostData.to,
@@ -399,11 +322,6 @@ const PostWall = () => {
       .catch((error) => console.error("Error creating post:", error));
   };
 
-  // const handleDeletePost = (postId) => {
-  //   const updatedPosts = posts.filter((p) => p.postId !== postId);
-  //   setPosts(updatedPosts);
-  // };
-
   const handleDeletePost = (postId) => {
     fetch(`http://localhost:8082/posts/${postId}`, {
       method: "DELETE",
@@ -418,6 +336,8 @@ const PostWall = () => {
       })
       .catch((error) => console.error("Error deleting post:", error));
   };
+
+  // TO DO : Use autocomplete for from and to
 
   return (
     <div className="post-wall">
