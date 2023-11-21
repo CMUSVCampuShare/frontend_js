@@ -17,6 +17,8 @@ const PostWall = () => {
     timestamp: new Date().toString(),
     comments: [],
   });
+  const [editMode, setEditMode] = useState(false);
+  const [editingPost, setEditingPost] = useState(null);
   const [editedPostData, setEditedPostData] = useState({
     title: "",
     from: "",
@@ -28,12 +30,21 @@ const PostWall = () => {
     timestamp: new Date().toString(),
     comments: [],
   });
-  const [editMode, setEditMode] = useState(false);
-  const [editingPost, setEditingPost] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     if (newPostData.type === 'FoodPickup' && !editMode) {
       setNewPostData({ ...newPostData, to: initialToPlaceholder, noOfSeats: initialSeatsPlaceholder });
+    }
+
+    if (successMessage) {
+      alert(successMessage);
+      setSuccessMessage(null);
+    }
+    if (errorMessage) {
+      alert(errorMessage);
+      setErrorMessage(null);
     }
 
     const fetchPosts = async () => {
@@ -61,7 +72,7 @@ const PostWall = () => {
     };
 
     fetchPosts();
-  }, [newPostData.type]);
+  }, [newPostData.type, successMessage, errorMessage]);
 
   const Post = ({ post }) => {
     const [commentText, setCommentText] = useState("");
