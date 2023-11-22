@@ -269,7 +269,9 @@ const PostWall = () => {
                 setEditedPostData({ ...editedPostData, status: e.target.value })
               }
             >
+              <option value="Created">CREATED</option>
               <option value="Ongoing">ONGOING</option>
+              <option value="Full">FULL</option>
               <option value="Complete">COMPLETE</option>
               <option value="Canceled">CANCELED</option>
             </select>
@@ -442,10 +444,7 @@ const PostWall = () => {
             setNewPostData({ ...newPostData, status: e.target.value })
           }
         >
-          <option value="">Select Status</option>
-          <option value="Ongoing">ONGOING</option>
-          <option value="Complete">COMPLETE</option>
-          <option value="Canceled">CANCELED</option>
+          <option value="Created">CREATED</option>
         </select>
         <button onClick={handleCreatePost}>Create Post</button>
       </div>
