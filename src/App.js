@@ -11,6 +11,7 @@ import Register from "./js/register";
 import Post from "./js/post";
 import Join from "./js/join";
 import Popup from "./js/popup";
+import NotificationList from "./js/notification";
 import "./App.css";
 
 function App() {
@@ -31,7 +32,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-
         <header className={`App-header ${showContent ? "" : "hide-content"}`}>
           <img src={logo} alt="logo" />
           CampuShare
@@ -48,6 +48,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/post" element={<Post />} />
           <Route path="/join" element={<Join />} />
+          <Route path="/notification" element={<NotificationList />} />
         </Routes>
       </div>
     </Router>
