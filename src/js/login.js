@@ -27,6 +27,7 @@ function Login() {
 
       if (response.ok) {
         const token = await response.text();
+        localStorage.setItem('userId', token);
         console.log(token);
       } else {
       }
