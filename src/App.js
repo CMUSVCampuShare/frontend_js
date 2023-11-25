@@ -32,11 +32,11 @@ function App() {
     <Router>
       <div className="App">
 
-       {/*  <header className={`App-header ${showContent ? "" : "hide-content"}`}>
+        {/*  <header className={`App-header ${showContent ? "" : "hide-content"}`}>
           <img src={logo} alt="logo" />
           CampuShare
         </header> */}
-               <Navbar />
+        <Navbar />
 
 
         <Routes>
