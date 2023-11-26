@@ -309,15 +309,15 @@ const PostWall = () => {
                   Delete Post
                 </button>  */}
                 {userIdStored !== post.userId && (
-                  <button onClick={() => joinPost(post.postId)}>Join</button>
+                  <button className="join-button" onClick={() => joinPost(post.postId)}>Join</button>
                 )}
                 {userIdStored === post.userId && (
-                  <div className="post-actions">
-                    <button onClick={() => handleEditPost(post)}>Edit Post</button>
-                    <button onClick={() => handleDeletePost(post.postId)}>
-                      Delete Post
-                    </button>
-                  </div>
+                  <button onClick={() => handleEditPost(post)}>Edit Post</button>
+                )}
+                {userIdStored === post.userId && (
+                  <button className="delete-button" onClick={() => handleDeletePost(post.postId)}>
+                    Delete Post
+                  </button>
                 )}
               </div>
             </div>
