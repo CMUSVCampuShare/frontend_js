@@ -72,7 +72,7 @@ const PostWall = () => {
     };
 
     fetchPosts();
-  }, [newPostData.type, successMessage, errorMessage]);
+  }, [newPostData.type, successMessage, errorMessage, newPostData, editMode]);
 
   const Post = ({ post }) => {
     const [commentText, setCommentText] = useState("");
