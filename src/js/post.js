@@ -3,6 +3,7 @@ import "../css/post.css";
 
 const initialToPlaceholder = 'To';
 const initialSeatsPlaceholder = 0;
+const userIdStored = localStorage.getItem('userId');
 
 const PostWall = () => {
   const [posts, setPosts] = useState([]);
@@ -131,7 +132,7 @@ const PostWall = () => {
 
     const handleUpdatePost = () => {
       const postDataForBackend = {
-        userId: "15", // TO DO: Need to update to logged-in userId
+        userId: userIdStored, // TO DO: Need to update to logged-in userId
         title: editedPostData.title,
         from: editedPostData.from,
         to: editedPostData.to,
@@ -192,7 +193,7 @@ const PostWall = () => {
       }
       const joinData = {
         driverID: selectedPost.userId,
-        passengerID: "24190f52-f241-41b9-b623-fdc02c6b7cd2", // TO DO: Need to update to logged-in userId
+        passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
       };
 
       fetch(url, {
@@ -302,11 +303,22 @@ const PostWall = () => {
                 <button onClick={() => handleAddComment(post.postId)}>
                   Comment
                 </button>
-                <button onClick={() => joinPost(post.postId)}>Join</button>
-                <button onClick={() => handleEditPost(post)}>Edit Post</button>
+                {/* <button onClick={() => joinPost(post.postId)}>Join</button>
+                 <button onClick={() => handleEditPost(post)}>Edit Post</button>
                 <button onClick={() => handleDeletePost(post.postId)}>
                   Delete Post
-                </button>
+                </button>  */}
+                {userIdStored !== post.userId && (
+                  <button onClick={() => joinPost(post.postId)}>Join</button>
+                )}
+                {userIdStored === post.userId && (
+                  <div className="post-actions">
+                    <button onClick={() => handleEditPost(post)}>Edit Post</button>
+                    <button onClick={() => handleDeletePost(post.postId)}>
+                      Delete Post
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -317,7 +329,7 @@ const PostWall = () => {
 
   const handleCreatePost = () => {
     const newPostDataForBackend = {
-      userId: "15", // TO DO: Need to update to logged-in userId
+      userId: userIdStored, // TO DO: Need to update to logged-in userId
       title: newPostData.title,
       from: newPostData.from,
       to: newPostData.to,
