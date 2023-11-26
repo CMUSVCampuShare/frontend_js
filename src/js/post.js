@@ -78,6 +78,11 @@ const PostWall = () => {
     const [commentText, setCommentText] = useState("");
 
     const handleAddComment = (postId) => {
+      if (commentText.trim() === "") {
+        setErrorMessage("Failed to add comment. Cannot add an empty comment!");
+        return;
+      }
+
       const commentData = {
         postId: postId,
         comment: commentText,
