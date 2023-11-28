@@ -18,16 +18,26 @@ const Join = () => {
   // Placeholder function for button click handlers
   const handleApprove = () => {
     console.log("Trip approved");
+    handleDeleteNotification(passedMessage.notificationId);
   };
 
   const handleReject = () => {
     console.log("Trip rejected");
+    handleDeleteNotification(passedMessage.notificationId);
   };
 
-
+  const handleDeleteNotification = (notificationId) => {
+    fetch(`http://localhost:8088/notifications/${notificationId}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Sucessfully deleted Notification!");
+        }
+      })
+      .catch((error) => console.error("Error deleting notification:", error));
+  };
   const tripTimeIncrease = "5"; // in minutes
-
-  
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "",
