@@ -13,6 +13,7 @@ import Join from "./js/join";
 import Popup from "./js/popup";
 import NotificationList from "./js/notification";
 import "./App.css";
+import Recommendation from "./js/recommednation";
 
 function App() {
   const [showContent, setShowContent] = useState(true);
@@ -48,6 +49,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/post" element={<Post />} />
           <Route path="/join" element={<Join />} />
+          <Route path="/recommendation" element={<Recommendation />} />
           <Route path="/notification" element={<NotificationList />} />
         </Routes>
       </div>
