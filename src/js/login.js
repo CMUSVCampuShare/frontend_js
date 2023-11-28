@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import login_img from "../icons/login.svg";
 import { Link } from "react-router-dom";
+import { over } from "stompjs";
+import SockJS from "sockjs-client";
 import "../css/login.css";
 
 
+var stompClient = null;
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -29,12 +32,35 @@ function Login() {
         const token = await response.text();
         localStorage.setItem('userId', token);
         console.log(token);
+        connect(token)
       } else {
       }
     } catch (error) {
       console.error('Login failed:', error);
     }
   };
+
+  const connect = (userID) => {
+    //let Sock = new SockJS("http://localhost:8088/ws");
+    //stompClient = over(Sock);
+    //stompClient.connect({}, onConnected(userID), onError);
+  };
+
+  const onConnected = (userId) => {
+    stompClient.subscribe(
+      "/user/" + userId + "/notification",
+      onPrivateMessage
+    );
+  };
+
+   const onError = (err) => {
+     console.log(err);
+   };
+
+   const onPrivateMessage = (payload) => {
+     console.log(payload);
+   };
+
 
   return (
     <div className="login-container">

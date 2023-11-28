@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { over } from "stompjs";
+import SockJS from "sockjs-client";
 import "../css/profile.css";
 
+const userIdStored = localStorage.getItem("userId");
+var stompClient = null;
 function EditProfileModal({ isOpen, onClose, profile, onSave }) {
   const [updatedProfile, setUpdatedProfile] = useState(profile);
 
@@ -50,6 +54,29 @@ function Profile() {
   const handleEdit = (updatedProfile) => {
     setProfile(updatedProfile);
   };
+
+  const connect = () => {
+    //let Sock = new SockJS("http://localhost:8088/ws");
+    //stompClient = over(Sock);
+    //stompClient.connect({}, onConnected(), onError);
+  };
+
+  const onConnected = () => {
+    stompClient.subscribe(
+      "/user/" + userIdStored + "/notification",
+      onPrivateMessage
+    );
+  };
+
+  const onError = (err) => {
+    console.log(err);
+  };
+
+  const onPrivateMessage = (payload) => {
+    console.log(payload);
+  };
+
+  connect();
 
   return (
     <div className="profile-container">
