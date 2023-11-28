@@ -188,18 +188,26 @@ const PostWall = () => {
       const selectedPost = posts.find((post) => post.postId === postId);
 
       var url = "";
+      var joinData = {};
       switch (selectedPost.type) {
         case "RIDE":
-          url = `http://localhost:8086/join?postID=${postId}`;
+          url = `http://localhost:8086/join?post=${selectedPost.title}`;
+          joinData = {
+            driverID: selectedPost.userId,
+            passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
+            from: selectedPost.from,
+            to: selectedPost.to,
+          };
           break;
         default:
-          url = `http://localhost:8086/request-food?postID=${postId}`;
+          url = `http://localhost:8086/request-food?post=${selectedPost.title}`;
+          joinData = {
+            driverID: selectedPost.userId,
+            passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
+          };
           break;
       }
-      const joinData = {
-        driverID: selectedPost.userId,
-        passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
-      };
+      
 
       fetch(url, {
         method: "POST",
