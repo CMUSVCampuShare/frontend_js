@@ -190,10 +190,10 @@ const PostWall = () => {
       var url = "";
       switch (selectedPost.type) {
         case "RIDE":
-          url = `http://localhost:8080/join?postID=${postId}`;
+          url = `http://localhost:8086/join?postID=${postId}`;
           break;
         default:
-          url = `http://localhost:8080/request-food?postID=${postId}`;
+          url = `http://localhost:8086/request-food?postID=${postId}`;
           break;
       }
       const joinData = {

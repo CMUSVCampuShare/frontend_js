@@ -12,6 +12,7 @@ import Post from "./js/post";
 import Join from "./js/join";
 import Popup from "./js/popup";
 import "./App.css";
+import NotificationList from "./js/notification";
 
 function App() {
   const [showContent, setShowContent] = useState(true);
@@ -31,13 +32,11 @@ function App() {
   return (
     <Router>
       <div className="App">
-
         {/*  <header className={`App-header ${showContent ? "" : "hide-content"}`}>
           <img src={logo} alt="logo" />
           CampuShare
         </header> */}
         <Navbar />
-
 
         <Routes>
           <Route path="/" element={<Home />} />
@@ -48,6 +47,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/post" element={<Post />} />
           <Route path="/join" element={<Join />} />
+          <Route path="/notifications" element={<NotificationList />} />
         </Routes>
       </div>
     </Router>

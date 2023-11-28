@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaHome, FaComments, FaCar, FaUser } from "react-icons/fa";
+import { FaHome, FaRegBell, FaCar, FaUser } from "react-icons/fa";
 import "../css/navbar.css";
 
 function Navbar() {
@@ -9,14 +9,14 @@ function Navbar() {
       <Link to="/">
         <FaHome className="icon" />
       </Link>
-      <Link to="/chat">
-        <FaComments className="icon" />
-      </Link>
       <Link to="/post">
         <FaCar className="icon" />
       </Link>
       <Link to="/profile">
         <FaUser className="icon" />
+      </Link>
+      <Link to="/notifications">
+        <FaRegBell className="icon" />
       </Link>
     </div>
   );
