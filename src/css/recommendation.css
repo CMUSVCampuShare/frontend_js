@@ -1,0 +1,7 @@
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  padding: 10px;
+  z-index: 1000; /* Ensure it stays on top of other content */
+}

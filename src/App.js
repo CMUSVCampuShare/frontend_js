@@ -11,6 +11,7 @@ import Register from "./js/register";
 import Post from "./js/post";
 import Join from "./js/join";
 import Popup from "./js/popup";
+import Recommendation from "./js/recommendation";
 import "./App.css";
 
 function App() {
@@ -31,13 +32,11 @@ function App() {
   return (
     <Router>
       <div className="App">
-
         {/*  <header className={`App-header ${showContent ? "" : "hide-content"}`}>
           <img src={logo} alt="logo" />
           CampuShare
         </header> */}
         <Navbar />
-
 
         <Routes>
           <Route path="/" element={<Home />} />
@@ -48,6 +47,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/post" element={<Post />} />
           <Route path="/join" element={<Join />} />
+          <Route path="/recommendation" element={<Recommendation />} />
         </Routes>
       </div>
     </Router>
