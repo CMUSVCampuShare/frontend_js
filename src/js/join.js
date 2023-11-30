@@ -1,65 +1,114 @@
-import React from "react";
-import {
-  GoogleMap,
-  LoadScript,
-  Marker,
-  useLoadScript,
-} from "@react-google-maps/api";
+import React, { useEffect, useState } from "react";
+import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
+import { MarkerF } from "@react-google-maps/api";
 import "../css/join.css"; // Make sure to create a separate CSS file for styles
 
 const Join = () => {
-  // Placeholder function for button click handlers
+  const location = useLocation();
+  const passedMessage = location.state;
+  const showMap = passedMessage.showMap;
+  const showForPassenger = passedMessage.forPassenger;
+
+  const [message, setMessage] = useState(passedMessage.message);
+  const [tripTime, setTripTime] = useState(0);
+  const [longitude, setLongitude] = useState(0.0);
+  const [latitude, setLatitude] = useState(0.0);
+
+  console.log("passed message");
+  console.log(passedMessage);
+
+  useEffect(() => {
+    if (
+      passedMessage.message.includes("lat") &&
+      passedMessage.message.includes("lng")
+    ) {
+      const messageBody = JSON.parse(passedMessage.message);
+      setMessage(messageBody.message);
+      setTripTime(messageBody.geoLocationData.addedTime);
+      setLongitude(messageBody.geoLocationData.pin.lng);
+      setLatitude(messageBody.geoLocationData.pin.lat);
+    }
+  }, [message, tripTime, longitude, latitude]);
+
   const handleApprove = () => {
     console.log("Trip approved");
+    handleDeleteNotification(passedMessage.notificationId);
   };
 
   const handleReject = () => {
     console.log("Trip rejected");
+    handleDeleteNotification(passedMessage.notificationId);
   };
 
-  // Variables for passenger name, trip time and coordinates
-  const passengerName = "Passenger Name Placeholder";
-  const tripTimeIncrease = "5"; // in minutes
-  const markerPosition = { lat: 37.7749, lng: -122.4194 };
+  const handleDeleteNotification = (notificationId) => {
+    fetch(`http://localhost:8088/notifications/${notificationId}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Sucessfully deleted Notification!");
+        }
+      })
+      .catch((error) => console.error("Error deleting notification:", error));
+  };
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "",
   });
-  const center = useMemo(() => ({ lat: 37.7749, lng: -122.4194 }), []);
-  console.log(isLoaded);
+  const center = useMemo(
+    () => ({ lat: latitude, lng: longitude }),
+    [longitude, latitude]
+  );
+
   return (
     <div className="join-request-container">
       <div className="header">
-        <h1>Join Request</h1>
+        <h1>{message}</h1>
       </div>
-      <div className="request-info">
-        <div className="label">Request by:</div>
-        <div className="passenger-name">{passengerName}</div>
-      </div>
+      {showMap ? (
+        <div>
+          <div>
+            {!isLoaded ? (
+              <h1>Loading...</h1>
+            ) : (
+              <GoogleMap
+                mapContainerClassName="map-placeholder"
+                center={center}
+                zoom={15}
+              >
+                <MarkerF className="marker" position={center} />
+              </GoogleMap>
+            )}
+          </div>
+          <div className="trip-info">
+            Trip Time increased by {tripTime} mins
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
       <div>
-        {!isLoaded ? (
-          <h1>Loading...</h1>
+        {showForPassenger ? (
+          <div className="actions">
+            <button
+              className="button approve"
+              onClick={handleDeleteNotification(passedMessage.notificationId)}
+            >
+              OK
+            </button>
+          </div>
         ) : (
-          <GoogleMap
-            mapContainerClassName="map-placeholder"
-            center={center}
-            zoom={15}
-          >
-            <Marker position={{ lat: 37.7749, lng: -122.4194 }} />
-          </GoogleMap>
+          <div className="actions">
+            <button className="button approve" onClick={handleApprove}>
+              Approve
+            </button>
+            <button className="button reject" onClick={handleReject}>
+              Reject
+            </button>
+          </div>
         )}
-      </div>
-      <div className="trip-info">
-        Trip Time increased by {tripTimeIncrease} mins
-      </div>
-      <div className="actions">
-        <button className="button approve" onClick={handleApprove}>
-          Approve
-        </button>
-        <button className="button reject" onClick={handleReject}>
-          Reject
-        </button>
       </div>
     </div>
   );

@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { over } from "stompjs";
+import SockJS from "sockjs-client";
 import "../css/profile.css";
 
+var stompClient = null;
 function EditProfileModal({ isOpen, onClose, profile, onSave }) {
   const [updatedProfile, setUpdatedProfile] = useState(profile);
 
@@ -49,6 +53,64 @@ function Profile() {
 
   const handleEdit = (updatedProfile) => {
     setProfile(updatedProfile);
+  };
+
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState({
+    userId: localStorage.getItem("userId"),
+    connected: false,
+  });
+
+  useEffect(() => {
+    const userIdStored = localStorage.getItem("userId");
+    console.log("connecting");
+    if (userIdStored) {
+      connect();
+    }
+  }, []);
+
+  const connect = () => {
+    let Sock = new SockJS("http://localhost:8088/ws");
+    stompClient = over(Sock);
+    Sock.onopen = () => {
+      stompClient.connect({}, onConnected, onError);
+    };
+  };
+
+  const onConnected = () => {
+    setUserData({ ...userData, connected: true });
+    stompClient.subscribe(
+      "/user/" + userData.userId + "/notification",
+      onNotification
+    );
+  };
+
+  const onNotification = (payload) => {
+    console.log(payload);
+    var payloadData = JSON.parse(payload.body);
+
+    var showMap = false;
+    var forPassenger = false;
+    if (
+      payloadData.notification.includes("lat") &&
+      payloadData.notification.includes("lng")
+    ) {
+      showMap = true;
+    }
+    if (payloadData.notification.includes("rejected")) {
+      forPassenger = true;
+    }
+    const propsToPass = {
+      message: payloadData.notification,
+      showMap: showMap,
+      forPassenger: forPassenger,
+      notificationId: payloadData.notificationId,
+    };
+    navigate("/join", { state: propsToPass });
+  };
+
+  const onError = (err) => {
+    console.log("Error", err);
   };
 
   return (

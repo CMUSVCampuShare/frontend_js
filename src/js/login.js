@@ -3,36 +3,36 @@ import login_img from "../icons/login.svg";
 import { Link } from "react-router-dom";
 import "../css/login.css";
 
-
+var stompClient = null;
 function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const loginUser = async () => {
     const loginData = {
       username: username,
-      password: password
+      password: password,
     };
 
     try {
       console.log(loginData);
-      const response = await fetch('http://localhost:8081/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:8080/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(loginData),
-        credentials: 'include'
+        credentials: "include",
       });
 
       if (response.ok) {
         const token = await response.text();
-        localStorage.setItem('userId', token);
+        localStorage.setItem("userId", token);
         console.log(token);
       } else {
       }
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error("Login failed:", error);
     }
   };
 
