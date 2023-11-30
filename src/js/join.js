@@ -9,6 +9,7 @@ const Join = () => {
   const location = useLocation();
   const passedMessage = location.state;
   const showMap = passedMessage.showMap;
+  const showForPassenger = passedMessage.forPassenger;
 
   const [message, setMessage] = useState(passedMessage.message);
   const [tripTime, setTripTime] = useState(0);
@@ -28,12 +29,9 @@ const Join = () => {
       setTripTime(messageBody.geoLocationData.addedTime);
       setLongitude(messageBody.geoLocationData.pin.lng);
       setLatitude(messageBody.geoLocationData.pin.lat);
-      console.log("lng", longitude);
-      console.log("lat", latitude);
     }
   }, [message, tripTime, longitude, latitude]);
 
-  // Placeholder function for button click handlers
   const handleApprove = () => {
     console.log("Trip approved");
     handleDeleteNotification(passedMessage.notificationId);
@@ -91,13 +89,26 @@ const Join = () => {
       ) : (
         <div></div>
       )}
-      <div className="actions">
-        <button className="button approve" onClick={handleApprove}>
-          Approve
-        </button>
-        <button className="button reject" onClick={handleReject}>
-          Reject
-        </button>
+      <div>
+        {showForPassenger ? (
+          <div className="actions">
+            <button
+              className="button approve"
+              onClick={handleDeleteNotification(passedMessage.notificationId)}
+            >
+              OK
+            </button>
+          </div>
+        ) : (
+          <div className="actions">
+            <button className="button approve" onClick={handleApprove}>
+              Approve
+            </button>
+            <button className="button reject" onClick={handleReject}>
+              Reject
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

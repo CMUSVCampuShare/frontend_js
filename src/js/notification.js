@@ -46,15 +46,20 @@ function NotificationList() {
     );
     if (answer) {
       var showMap = false;
+      var forPassenger = false;
       if (
         payloadData.notification.includes("lat") &&
         payloadData.notification.includes("lng")
       ) {
         showMap = true;
       }
+      if (payloadData.notification.includes("rejected")) {
+        forPassenger = true;
+      }
       const propsToPass = {
         message: payloadData.notification,
         showMap: showMap,
+        forPassenger: forPassenger,
         notificationId: payloadData.notificationId,
       };
       navigate("/join", { state: propsToPass });
@@ -89,15 +94,20 @@ function NotificationList() {
       console.log(notification);
       console.log(notification.notification);
       var showMap = false;
+      var forPassenger = false;
       if (
         notification.notification.includes("lat") &&
         notification.notification.includes("lng")
       ) {
         showMap = true;
       }
+      if (notification.notification.includes("rejected")) {
+        forPassenger = true;
+      }
       const propsToPass = {
         message: notification.notification,
         showMap: showMap,
+        forPassenger: forPassenger,
         notificationId: notification.notificationId,
       };
       navigate("/join", { state: propsToPass });
