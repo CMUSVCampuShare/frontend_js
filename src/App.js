@@ -11,6 +11,7 @@ import Register from "./js/register";
 import Post from "./js/post";
 import Join from "./js/join";
 import Popup from "./js/popup";
+import Recommendation from "./js/recommendation";
 import "./App.css";
 import NotificationList from "./js/notification";
 
@@ -48,6 +49,7 @@ function App() {
           <Route path="/post" element={<Post />} />
           <Route path="/join" element={<Join />} />
           <Route path="/notifications" element={<NotificationList />} />
+          <Route path="/recommendation" element={<Recommendation />} />
         </Routes>
       </div>
     </Router>

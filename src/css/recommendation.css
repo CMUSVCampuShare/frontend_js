@@ -1,0 +1,11 @@
+.recommendation-page {
+  min-height: 100vh; /* This ensures the div takes at least the full height of the viewport */
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: white; /* Or any background color you prefer */
+  z-index: 1000; /* Ensure the header stays above other content */
+  padding: 10px; /* Optional, for better appearance */
+}
