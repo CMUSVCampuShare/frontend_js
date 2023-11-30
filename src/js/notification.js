@@ -9,6 +9,7 @@ var stompClient = null;
 function NotificationList() {
   const navigate = useNavigate();
   const [notifications, setnotifications] = useState([]);
+  const [notificationMessages, setNotificationMessages] = useState([]);
 
   const [userData, setUserData] = useState({
     username: localStorage.getItem("userId"),
@@ -26,7 +27,9 @@ function NotificationList() {
   const connect = () => {
     let Sock = new SockJS("http://localhost:8088/ws");
     stompClient = over(Sock);
-    stompClient.connect({}, onConnected, onError);
+    Sock.onopen = () => {
+      stompClient.connect({}, onConnected, onError);
+    };
   };
 
   const onConnected = () => {
@@ -41,46 +44,52 @@ function NotificationList() {
     console.log(payload);
     var payloadData = JSON.parse(payload.body);
 
-    var answer = window.confirm(
-      "You have a new notification. Press ok to view!"
-    );
-    if (answer) {
-      var showMap = false;
-      var forPassenger = false;
-      if (
-        payloadData.notification.includes("lat") &&
-        payloadData.notification.includes("lng")
-      ) {
-        showMap = true;
-      }
-      if (payloadData.notification.includes("rejected")) {
-        forPassenger = true;
-      }
-      const propsToPass = {
-        message: payloadData.notification,
-        showMap: showMap,
-        forPassenger: forPassenger,
-        notificationId: payloadData.notificationId,
-      };
-      navigate("/join", { state: propsToPass });
-    } else {
-      console.log("notification to be viewed later");
+    var showMap = false;
+    var forPassenger = false;
+    if (
+      payloadData.notification.includes("lat") &&
+      payloadData.notification.includes("lng")
+    ) {
+      showMap = true;
     }
+    if (payloadData.notification.includes("rejected")) {
+      forPassenger = true;
+    }
+    const propsToPass = {
+      message: payloadData.notification,
+      showMap: showMap,
+      forPassenger: forPassenger,
+      notificationId: payloadData.notificationId,
+    };
+    navigate("/join", { state: propsToPass });
   };
 
   const onError = (err) => {
-    console.log(err);
+    console.log("Error", err);
   };
 
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const notificationResponse = await fetch(
-          "http://localhost:8088/notifications?userID=9f0de433-2a3e-4f9f-a03b-53fa6d795363" // TODO change to loggedIn userID
+          `http://localhost:8088/notifications?userID=${localStorage.getItem(
+            "userId"
+          )}`
         );
         const notifications = await notificationResponse.json();
         console.log(notifications);
         setnotifications(notifications);
+        // const arr = [];
+        // for(let i =0; i<notifications.length; i++) {
+        //     if (notifications[i].notification.includes("lat") && notifications[i].notification.includes("lng")){
+        //         const body = JSON.parse(notifications[i].notification);
+        //         arr.push(body.message);
+        //     }
+        //     else{
+        //       arr.push(notifications[i].notification);
+        //     }
+        // }
+        // set
       } catch (error) {
         console.error("Error fetching notifications:", error);
       }
