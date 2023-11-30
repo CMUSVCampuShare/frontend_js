@@ -9,10 +9,9 @@ var stompClient = null;
 function NotificationList() {
   const navigate = useNavigate();
   const [notifications, setnotifications] = useState([]);
-  const [notificationMessages, setNotificationMessages] = useState([]);
 
   const [userData, setUserData] = useState({
-    username: localStorage.getItem("userId"),
+    userId: localStorage.getItem("userId"),
     connected: false,
   });
 
@@ -35,7 +34,7 @@ function NotificationList() {
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
     stompClient.subscribe(
-      "/user/" + userData.username + "/notification",
+      "/user/" + userData.userId + "/notification",
       onNotification
     );
   };
@@ -79,17 +78,6 @@ function NotificationList() {
         const notifications = await notificationResponse.json();
         console.log(notifications);
         setnotifications(notifications);
-        // const arr = [];
-        // for(let i =0; i<notifications.length; i++) {
-        //     if (notifications[i].notification.includes("lat") && notifications[i].notification.includes("lng")){
-        //         const body = JSON.parse(notifications[i].notification);
-        //         arr.push(body.message);
-        //     }
-        //     else{
-        //       arr.push(notifications[i].notification);
-        //     }
-        // }
-        // set
       } catch (error) {
         console.error("Error fetching notifications:", error);
       }
@@ -99,6 +87,20 @@ function NotificationList() {
   }, []);
 
   const Notification = ({ notification }) => {
+    const [notificationText, setNotificationText] = useState(
+      notification.notification
+    );
+
+    useEffect(() => {
+      if (
+        notification.notification.includes("lat") &&
+        notification.notification.includes("lng")
+      ) {
+        const notificationBody = JSON.parse(notification.notification);
+        setNotificationText(notificationBody.message);
+      }
+    }, [notificationText]);
+
     const viewNotification = (notification) => {
       console.log(notification);
       console.log(notification.notification);
@@ -124,7 +126,7 @@ function NotificationList() {
 
     return (
       <div className="post">
-        <p>{JSON.stringify(notification.notification)}</p>
+        <p>{JSON.stringify(notificationText)}</p>
         <button onClick={() => viewNotification(notification)}>View</button>
       </div>
     );

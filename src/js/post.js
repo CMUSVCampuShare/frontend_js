@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { over } from "stompjs";
+import SockJS from "sockjs-client";
 import "../css/post.css";
 
-const initialToPlaceholder = 'To';
+const initialToPlaceholder = "To";
 const initialSeatsPlaceholder = 0;
-const userIdStored = localStorage.getItem('userId');
+const userIdStored = localStorage.getItem("userId");
+var stompClient = null;
 
 const PostWall = () => {
   const [posts, setPosts] = useState([]);
@@ -35,8 +39,12 @@ const PostWall = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    if (newPostData.type === 'FoodPickup' && !editMode) {
-      setNewPostData({ ...newPostData, to: initialToPlaceholder, noOfSeats: initialSeatsPlaceholder });
+    if (newPostData.type === "FoodPickup" && !editMode) {
+      setNewPostData({
+        ...newPostData,
+        to: initialToPlaceholder,
+        noOfSeats: initialSeatsPlaceholder,
+      });
     }
 
     if (successMessage) {
@@ -50,16 +58,21 @@ const PostWall = () => {
 
     const fetchPosts = async () => {
       try {
-        const postsResponse = await fetch('http://localhost:8082/posts/active');
+        const postsResponse = await fetch("http://localhost:8082/posts/active");
         const posts = await postsResponse.json();
 
         const fetchCommentPromises = posts.map(async (post) => {
           try {
-            const commentResponse = await fetch(`http://localhost:8082/posts/${post.postId}/comments`);
+            const commentResponse = await fetch(
+              `http://localhost:8082/posts/${post.postId}/comments`
+            );
             const comments = await commentResponse.json();
             return { ...post, comments: comments || [] };
           } catch (error) {
-            console.error(`Error fetching comments for post ${post.postId}:`, error);
+            console.error(
+              `Error fetching comments for post ${post.postId}:`,
+              error
+            );
             return { ...post, comments: [] };
           }
         });
@@ -67,7 +80,7 @@ const PostWall = () => {
         const updatedPosts = await Promise.all(fetchCommentPromises);
         setPosts(updatedPosts);
       } catch (error) {
-        console.error('Error fetching posts:', error);
+        console.error("Error fetching posts:", error);
       }
     };
 
@@ -175,7 +188,7 @@ const PostWall = () => {
               timestamp: new Date().toString(),
               comments: [],
             });
-            setSuccessMessage("Successfully updated post")
+            setSuccessMessage("Successfully updated post");
           } else {
             setErrorMessage("Failed to update post");
             throw new Error("Failed to update post");
@@ -207,7 +220,6 @@ const PostWall = () => {
           };
           break;
       }
-      
 
       fetch(url, {
         method: "POST",
@@ -257,14 +269,17 @@ const PostWall = () => {
               onChange={(e) =>
                 setEditedPostData({ ...editedPostData, to: e.target.value })
               }
-              disabled={post.type === 'FOODPICKUP'}
+              disabled={post.type === "FOODPICKUP"}
             />
             <textarea
               type="text"
               placeholder="Edit Deatils"
               value={editedPostData.details}
               onChange={(e) =>
-                setEditedPostData({ ...editedPostData, details: e.target.value })
+                setEditedPostData({
+                  ...editedPostData,
+                  details: e.target.value,
+                })
               }
             />
             <p>{post.type}</p>
@@ -273,9 +288,12 @@ const PostWall = () => {
               placeholder="Edit Number of Seats"
               value={editedPostData.noOfSeats}
               onChange={(e) =>
-                setEditedPostData({ ...editedPostData, noOfSeats: e.target.value })
+                setEditedPostData({
+                  ...editedPostData,
+                  noOfSeats: e.target.value,
+                })
               }
-              disabled={post.type === 'FOODPICKUP'}
+              disabled={post.type === "FOODPICKUP"}
             />
             <select
               value={editedPostData.status}
@@ -295,16 +313,32 @@ const PostWall = () => {
         ) : (
           <div>
             <h2>{post.title}</h2>
-            <p><b>From:</b> {post.from}</p>
-            <p><b>To:</b> {post.to}</p>
-            <p><b>Details:</b> {post.details}</p>
-            <p><b>Type:</b> {post.type}</p>
-            <p><b>No of Seats:</b> {post.noOfSeats}</p>
-            <p><b>Status:</b> {post.status}</p>
-            <p><b>Timestamp:</b> {post.timestamp}</p>
+            <p>
+              <b>From:</b> {post.from}
+            </p>
+            <p>
+              <b>To:</b> {post.to}
+            </p>
+            <p>
+              <b>Details:</b> {post.details}
+            </p>
+            <p>
+              <b>Type:</b> {post.type}
+            </p>
+            <p>
+              <b>No of Seats:</b> {post.noOfSeats}
+            </p>
+            <p>
+              <b>Status:</b> {post.status}
+            </p>
+            <p>
+              <b>Timestamp:</b> {post.timestamp}
+            </p>
             <div className="comments">
               {post.comments.map((comment, index) => (
-                <p key={index}><b>Comment:</b> {comment.comment}</p>
+                <p key={index}>
+                  <b>Comment:</b> {comment.comment}
+                </p>
               ))}
               <div>
                 <input
@@ -322,13 +356,23 @@ const PostWall = () => {
                   Delete Post
                 </button>  */}
                 {userIdStored !== post.userId && (
-                  <button className="join-button" onClick={() => joinPost(post.postId)}>Join</button>
+                  <button
+                    className="join-button"
+                    onClick={() => joinPost(post.postId)}
+                  >
+                    Join
+                  </button>
                 )}
                 {userIdStored === post.userId && (
-                  <button onClick={() => handleEditPost(post)}>Edit Post</button>
+                  <button onClick={() => handleEditPost(post)}>
+                    Edit Post
+                  </button>
                 )}
                 {userIdStored === post.userId && (
-                  <button className="delete-button" onClick={() => handleDeletePost(post.postId)}>
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeletePost(post.postId)}
+                  >
                     Delete Post
                   </button>
                 )}
@@ -361,7 +405,7 @@ const PostWall = () => {
     })
       .then((response) => {
         if (response.ok) {
-          setSuccessMessage("Successfully created post")
+          setSuccessMessage("Successfully created post");
           return response.json();
         } else {
           setErrorMessage("Failed to create post");
@@ -393,7 +437,7 @@ const PostWall = () => {
         if (response.ok) {
           const updatedPosts = posts.filter((p) => p.postId !== postId);
           setPosts(updatedPosts);
-          setSuccessMessage("Successfully deleted post")
+          setSuccessMessage("Successfully deleted post");
         } else {
           setErrorMessage("Failed to delete post");
           throw new Error("Failed to delete post");
@@ -402,6 +446,63 @@ const PostWall = () => {
       .catch((error) => console.error("Error deleting post:", error));
   };
 
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState({
+    userId: localStorage.getItem("userId"),
+    connected: false,
+  });
+
+  useEffect(() => {
+    const userIdStored = localStorage.getItem("userId");
+    console.log("connecting");
+    if (userIdStored) {
+      connect();
+    }
+  }, []);
+
+  const connect = () => {
+    let Sock = new SockJS("http://localhost:8088/ws");
+    stompClient = over(Sock);
+    Sock.onopen = () => {
+      stompClient.connect({}, onConnected, onError);
+    };
+  };
+
+  const onConnected = () => {
+    setUserData({ ...userData, connected: true });
+    stompClient.subscribe(
+      "/user/" + userData.userId + "/notification",
+      onNotification
+    );
+  };
+
+  const onNotification = (payload) => {
+    console.log(payload);
+    var payloadData = JSON.parse(payload.body);
+
+    var showMap = false;
+    var forPassenger = false;
+    if (
+      payloadData.notification.includes("lat") &&
+      payloadData.notification.includes("lng")
+    ) {
+      showMap = true;
+    }
+    if (payloadData.notification.includes("rejected")) {
+      forPassenger = true;
+    }
+    const propsToPass = {
+      message: payloadData.notification,
+      showMap: showMap,
+      forPassenger: forPassenger,
+      notificationId: payloadData.notificationId,
+    };
+    navigate("/join", { state: propsToPass });
+  };
+
+  const onError = (err) => {
+    console.log("Error", err);
+  };
   // TO DO : Use autocomplete for from and to
   return (
     <div className="post-wall">
@@ -431,7 +532,7 @@ const PostWall = () => {
           onChange={(e) =>
             setNewPostData({ ...newPostData, to: e.target.value })
           }
-          disabled={newPostData.type === 'FoodPickup'}
+          disabled={newPostData.type === "FoodPickup"}
         />
         <textarea
           placeholder="Details"
@@ -461,7 +562,7 @@ const PostWall = () => {
               noOfSeats: parseInt(e.target.value) || 0,
             })
           }
-          disabled={newPostData.type === 'FoodPickup'}
+          disabled={newPostData.type === "FoodPickup"}
         />
         <select
           value={newPostData.status}
