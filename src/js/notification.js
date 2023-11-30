@@ -9,12 +9,10 @@ var stompClient = null;
 function NotificationList() {
   const navigate = useNavigate();
   const [notifications, setnotifications] = useState([]);
-  const [privateChats, setPrivateChats] = useState(new Map());
+
   const [userData, setUserData] = useState({
     username: localStorage.getItem("userId"),
-    receivername: "",
     connected: false,
-    message: "",
   });
 
   useEffect(() => {

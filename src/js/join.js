@@ -1,20 +1,38 @@
-import React from "react";
-import {
-  GoogleMap,
-  LoadScript,
-  Marker,
-  useLoadScript,
-} from "@react-google-maps/api";
+import React, { useEffect, useState } from "react";
+import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
+import { MarkerF } from "@react-google-maps/api";
 import "../css/join.css"; // Make sure to create a separate CSS file for styles
 
 const Join = () => {
   const location = useLocation();
   const passedMessage = location.state;
   const showMap = passedMessage.showMap;
+
+  const [message, setMessage] = useState(passedMessage.message);
+  const [tripTime, setTripTime] = useState(0);
+  const [longitude, setLongitude] = useState(0.0);
+  const [latitude, setLatitude] = useState(0.0);
+
   console.log("passed message");
   console.log(passedMessage);
+
+  useEffect(() => {
+    if (
+      passedMessage.message.includes("lat") &&
+      passedMessage.message.includes("lng")
+    ) {
+      const messageBody = JSON.parse(passedMessage.message);
+      setMessage(messageBody.message);
+      setTripTime(messageBody.geoLocationData.addedTime);
+      setLongitude(messageBody.geoLocationData.pin.lng);
+      setLatitude(messageBody.geoLocationData.pin.lat);
+      console.log("lng", longitude);
+      console.log("lat", latitude);
+    }
+  }, [message, tripTime, longitude, latitude]);
+
   // Placeholder function for button click handlers
   const handleApprove = () => {
     console.log("Trip approved");
@@ -37,20 +55,19 @@ const Join = () => {
       })
       .catch((error) => console.error("Error deleting notification:", error));
   };
-  const tripTimeIncrease = "5"; // in minutes
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "",
   });
-  const center = useMemo(() => ({ lat: 37.7749, lng: -122.4194 }), []);
-  console.log(isLoaded);
+  const center = useMemo(
+    () => ({ lat: latitude, lng: longitude }),
+    [longitude, latitude]
+  );
+
   return (
     <div className="join-request-container">
       <div className="header">
-        <h1>Join Request</h1>
-      </div>
-      <div className="request-info">
-        <div className="label">{passedMessage.message}</div>
+        <h1>{message}</h1>
       </div>
       {showMap ? (
         <div>
@@ -63,12 +80,12 @@ const Join = () => {
                 center={center}
                 zoom={15}
               >
-                <Marker position={{ lat: 37.7749, lng: -122.4194 }} />
+                <MarkerF className="marker" position={center} />
               </GoogleMap>
             )}
           </div>
           <div className="trip-info">
-            Trip Time increased by {tripTimeIncrease} mins
+            Trip Time increased by {tripTime} mins
           </div>
         </div>
       ) : (
