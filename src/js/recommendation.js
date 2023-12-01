@@ -1,60 +1,52 @@
 import React, { useState, useEffect } from "react";
-import { Box, Heading, UnorderedList, ListItem, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Heading,
+  UnorderedList,
+  ListItem,
+  Text,
+} from "@chakra-ui/react";
 import "../css/recommendation.css";
 
 const Recommendation = ({ userId }) => {
-  const topPosts = [
-    {
-      postId: "1",
-      title: "Sample Post 1",
-      from: "Location A",
-      to: "Location B",
-      details: "Details of Sample Post 1",
-      type: "Type 1",
-      noOfSeats: 3,
-      status: "ONGOING",
-      timestamp: new Date().toString(),
-    },
-  ];
-  //const [topPosts, setTopPosts] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [error, setError] = useState(null);
+  const [topPosts, setTopPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchTopPostsForUser = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       const response = await fetch(
-  //         `http://localhost:8083/recommendations/user10/top-posts`
-  //       );
-  //       if (!response.ok) {
-  //         throw new Error("Could not fetch top posts");
-  //       }
-  //       const data = await response.json();
-  //       setTopPosts(data);
-  //     } catch (error) {
-  //       setError(error.message);
-  //     }
-  //     setIsLoading(false);
-  //   };
+  useEffect(() => {
+    const fetchTopPostsForUser = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `http://localhost:8083/recommendations/${userId}/top-posts`
+        );
+        if (!response.ok) {
+          throw new Error("Could not fetch top posts");
+        }
+        const data = await response.json();
+        setTopPosts(data);
+      } catch (error) {
+        setError(error.message);
+      }
+      setIsLoading(false);
+    };
 
-  //   fetchTopPostsForUser();
-  // }, [userId]);
-
-  // if (isLoading) {
-  //   return <div>Loading top posts...</div>;
-  // }
-
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
+    fetchTopPostsForUser();
+  }, [userId]);
 
   return (
-    <Box className="recommendation-page" p={5} textAlign="left">
-      <Heading as="h1" size="xl" className="sticky-header" mb={4}>
-        Recommendations
-      </Heading>
-      {topPosts.length > 0 ? (
+    <Box p={5}>
+      <Flex justifyContent="center">
+        <Heading as="h1" size="xl" mb={4}>
+          Recommendations
+        </Heading>
+      </Flex>
+      {isLoading ? (
+        <Text>Loading top posts...</Text>
+      ) : error ? (
+        <Text>Error: {error}</Text>
+      ) : topPosts.length > 0 ? (
         <UnorderedList styleType="none" spacing={3}>
           {topPosts.map((post) => (
             <ListItem

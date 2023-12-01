@@ -1,13 +1,7 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Flex, Link, Icon, createIcon } from "@chakra-ui/react";
-import {
-  HamburgerIcon, // As an alternative to FaCar
-  BellIcon, // As an alternative to FaRegBell
-  StarIcon, // As an alternative to FaStar
-  AtSignIcon, // As an alternative to FaUser
-  ViewIcon, // As an alternative to FaHome
-} from "@chakra-ui/icons";
+import { Flex, Link, Icon } from "@chakra-ui/react";
+import { FaHome, FaUser, FaStar, FaBell, FaAlignJustify } from "react-icons/fa";
 
 function Navbar() {
   return (
@@ -26,19 +20,19 @@ function Navbar() {
       zIndex="10"
     >
       <Link as={RouterLink} to="/" _hover={{ textDecor: "none" }}>
-        <Icon as={ViewIcon} boxSize="6" />
+        <Icon as={FaHome} boxSize="6" />
       </Link>
       <Link as={RouterLink} to="/post" _hover={{ textDecor: "none" }}>
-        <Icon as={HamburgerIcon} boxSize="6" />
+        <Icon as={FaAlignJustify} boxSize="6" />
       </Link>
       <Link as={RouterLink} to="/recommendation" _hover={{ textDecor: "none" }}>
-        <Icon as={StarIcon} boxSize="6" />
+        <Icon as={FaStar} boxSize="6" />
       </Link>
       <Link as={RouterLink} to="/profile" _hover={{ textDecor: "none" }}>
-        <Icon as={AtSignIcon} boxSize="6" />
+        <Icon as={FaUser} boxSize="6" />
       </Link>
       <Link as={RouterLink} to="/notifications" _hover={{ textDecor: "none" }}>
-        <Icon as={BellIcon} boxSize="6" />
+        <Icon as={FaBell} boxSize="6" />
       </Link>
     </Flex>
   );

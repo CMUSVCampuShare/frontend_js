@@ -3,6 +3,7 @@ import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import { useNavigate } from "react-router-dom";
 import "../css/post.css";
+import { Box, Heading, UnorderedList, ListItem, Text } from "@chakra-ui/react";
 
 var stompClient = null;
 
@@ -134,7 +135,9 @@ function NotificationList() {
 
   return (
     <div className="post-wall">
-      <h1>Notifications</h1>
+      <Heading as="h1" size="xl" className="sticky-header" mb={4}>
+        Notification
+      </Heading>
       {notifications.map((notification) => (
         <Notification
           key={notification.notificationId}

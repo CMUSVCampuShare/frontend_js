@@ -1,48 +1,72 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
+import {
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  Select,
+  VStack,
+  Text,
+  Link as ChakraLink,
+} from "@chakra-ui/react";
 import logo from "../icons/login.svg";
-import { Link } from "react-router-dom";
-import "../css/register.css";
 
 function Register() {
   return (
-    <div className="login-container">
-      {/*       <img src={logo} alt="Login Icon" />
-       */}{" "}
-      <h2>Sign Up</h2>
-      <div className="form-group">
-        <label htmlFor="username">Username</label>
-        <input type="text" id="username" />
-      </div>
-      <div className="form-group">
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" />
-      </div>
-      <div className="form-group">
-        <label htmlFor="email">Email</label>
-        <input type="text" id="email" />
-      </div>
-      <div className="form-group">
-        <label htmlFor="address" autoComplete="off">
-          Address
-        </label>
-        <input type="text" id="address" />
-      </div>
-      <div className="form-group">
-        <label htmlFor="role">Role</label>
-        <select id="role">
-          <option value="driver">Driver</option>
-          <option value="rider">Rider</option>
-        </select>
-      </div>
-      <div className="form-group">
-        <label htmlFor="schedule">Upload Schedule (.pdf or .ics)</label>
-        <input type="file" id="schedule" accept=".pdf, .ics" />
-      </div>
-      <button>Sign Up</button>
-      <p>
-        Already a user? <Link to="/login">Sign In</Link>
-      </p>
-    </div>
+    <Flex direction="column" align="center" p={6}>
+      <img src={logo} alt="Login Icon" />
+      <Text fontSize="2xl" fontWeight="bold" mb={6}>
+        Sign Up
+      </Text>
+
+      <VStack spacing={4} align="stretch" maxWidth="md" width="full">
+        <FormControl id="username">
+          <FormLabel>Username</FormLabel>
+          <Input type="text" />
+        </FormControl>
+        <FormControl id="password">
+          <FormLabel>Password</FormLabel>
+          <Input type="password" />
+        </FormControl>
+        <FormControl id="email">
+          <FormLabel>Email</FormLabel>
+          <Input type="text" />
+        </FormControl>
+        <FormControl id="address">
+          <FormLabel>Address</FormLabel>
+          <Input type="text" />
+        </FormControl>
+        <FormControl id="role">
+          <FormLabel>Role</FormLabel>
+          <Select>
+            <option value="driver">Driver</option>
+            <option value="rider">Rider</option>
+          </Select>
+        </FormControl>
+        <FormControl id="schedule">
+          <FormLabel>Upload Schedule (.pdf or .ics)</FormLabel>
+          <Input type="file" accept=".pdf, .ics" />
+        </FormControl>
+        <Button
+          colorScheme="red"
+          bg="#bb0000"
+          color="white"
+          size="lg"
+          _hover={{ bg: "#a00000" }}
+        >
+          Sign Up
+        </Button>
+      </VStack>
+
+      <Text mt={6}>
+        Already a user?{" "}
+        <ChakraLink as={RouterLink} to="/login" color="teal.500">
+          Sign In
+        </ChakraLink>
+      </Text>
+    </Flex>
   );
 }
 
