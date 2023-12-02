@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 import { MarkerF } from "@react-google-maps/api";
 import "../css/join.css"; // Make sure to create a separate CSS file for styles
@@ -10,6 +10,8 @@ const Join = () => {
   const passedMessage = location.state;
   const showMap = passedMessage.showMap;
   const showForPassenger = passedMessage.forPassenger;
+
+  const navigate = useNavigate();
 
   const [message, setMessage] = useState(passedMessage.message);
   const [tripTime, setTripTime] = useState(0);
@@ -49,6 +51,7 @@ const Join = () => {
       .then((response) => {
         if (response.ok) {
           console.log("Sucessfully deleted Notification!");
+          navigate("/notifications");
         }
       })
       .catch((error) => console.error("Error deleting notification:", error));
@@ -63,7 +66,7 @@ const Join = () => {
   );
 
   return (
-  <div className="join-request-container">
+    <div className="join-request-container">
       <div className="header">
         <h1>{message}</h1>
       </div>
