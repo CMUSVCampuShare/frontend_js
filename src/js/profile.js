@@ -21,6 +21,7 @@ import {
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import "../css/profile.css";
+import Navbar from "./navbar";
 
 var stompClient = null;
 
@@ -68,6 +69,35 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
         </ModalFooter>
       </ModalContent>
     </Modal>
+//     <>
+//       <Navbar />
+
+//       <div className={`modal ${isOpen ? "modal-open" : ""}`}>
+//         <div className="modal-content">
+//           <button className="modal-close" onClick={onClose}>
+//             X
+//           </button>
+//           <h2>Edit Profile</h2>
+
+//           <label>Username</label>
+//           <input
+//             type="text"
+//             value={updatedProfile.username}
+//             onChange={(e) =>
+//               setUpdatedProfile((prev) => ({
+//                 ...prev,
+//                 username: e.target.value,
+//               }))
+//             }
+//           />
+//           {/* Add other fields similarly... */}
+
+//           <button className="modal-confirm" onClick={handleSave}>
+//             Save Changes
+//           </button>
+//         </div>
+//       </div>
+//     </>
   );
 }
 

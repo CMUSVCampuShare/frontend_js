@@ -63,7 +63,7 @@ const Join = () => {
   );
 
   return (
-    <div className="join-request-container">
+  <div className="join-request-container">
       <div className="header">
         <h1>{message}</h1>
       </div>
