@@ -13,11 +13,13 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import login_img from "../icons/login.svg";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const loginUser = async () => {
     const loginData = {
@@ -40,6 +42,7 @@ function Login() {
         const token = await response.text();
         localStorage.setItem("userId", token);
         console.log(token);
+        navigate("/post");
       } else {
       }
     } catch (error) {
