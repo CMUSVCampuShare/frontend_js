@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Flex,
@@ -11,7 +11,7 @@ import {
   Text,
   Link as ChakraLink,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+
 import logo from "../icons/login.svg";
 
 function Register() {
@@ -26,8 +26,8 @@ function Register() {
 
   const handleSignUp = () => {
     // Email format validation
-  const emailRegex = /^[^\s@]+@andrew\.cmu\.edu$/;
-  const isValidEmail = emailRegex.test(email);
+    const emailRegex = /^[^\s@]+@andrew\.cmu\.edu$/;
+    const isValidEmail = emailRegex.test(email);
 
     // Number of seats validation
     const isValidSeats = seats > 0;
@@ -101,88 +101,88 @@ function Register() {
       </Text>
     </Flex>
 
-//     <div className="login-container">
-//       <h2>Sign Up</h2>
-//       <div className="form-group">
-//         <label htmlFor="username">Username</label>
-//         <input
-//           type="text"
-//           id="username"
-//           value={username}
-//           onChange={(e) => setUsername(e.target.value)}
-//         />
-//       </div>
-//       <div className="form-group">
-//         <label htmlFor="password">Password</label>
-//         <input
-//           type="password"
-//           id="password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//         />
-//       </div>
-//       <div className="form-group">
-//         <label htmlFor="email">Email</label>
-//         <input
-//           type="text"
-//           id="email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//         />
-//       </div>
-//       <div className="form-group">
-//         <label htmlFor="address">Address</label>
-//         <input
-//           type="text"
-//           id="address"
-//           value={address}
-//           onChange={(e) => setAddress(e.target.value)}
-//         />
-//       </div>
-//       <div className="form-group">
-//         <label htmlFor="role">Role</label>
-//         <select
-//           id="role"
-//           value={role}
-//           onChange={(e) => setRole(e.target.value)}
-//         >
-//           <option value="driver">Driver</option>
-//           <option value="rider">Rider</option>
-//         </select>
-//       </div>
-//       <div className="form-group">
-//         <label htmlFor="entry">Entry Time</label>
-//         <input
-//           type="text"
-//           id="entry"
-//           value={entry}
-//           onChange={(e) => setEntry(e.target.value)}
-//         />
-//       </div>
-//       <div className="form-group">
-//         <label htmlFor="exit">Exit Time</label>
-//         <input
-//           type="text"
-//           id="exit"
-//           value={exit}
-//           onChange={(e) => setExit(e.target.value)}
-//         />
-//       </div>
-//       <div className="form-group">
-//         <label htmlFor="seats">Number of Seats</label>
-//         <input
-//           type="number"
-//           id="seats"
-//           value={seats}
-//           onChange={(e) => setSeats(Number(e.target.value))}
-//         />
-//       </div>
-//       <button onClick={handleSignUp}>Sign Up</button>
-//       <p>
-//         Already a user? <Link to="/login">Sign In</Link>
-//       </p>
-//     </div>
-// >>>>>>> main
+    //     <div className="login-container">
+    //       <h2>Sign Up</h2>
+    //       <div className="form-group">
+    //         <label htmlFor="username">Username</label>
+    //         <input
+    //           type="text"
+    //           id="username"
+    //           value={username}
+    //           onChange={(e) => setUsername(e.target.value)}
+    //         />
+    //       </div>
+    //       <div className="form-group">
+    //         <label htmlFor="password">Password</label>
+    //         <input
+    //           type="password"
+    //           id="password"
+    //           value={password}
+    //           onChange={(e) => setPassword(e.target.value)}
+    //         />
+    //       </div>
+    //       <div className="form-group">
+    //         <label htmlFor="email">Email</label>
+    //         <input
+    //           type="text"
+    //           id="email"
+    //           value={email}
+    //           onChange={(e) => setEmail(e.target.value)}
+    //         />
+    //       </div>
+    //       <div className="form-group">
+    //         <label htmlFor="address">Address</label>
+    //         <input
+    //           type="text"
+    //           id="address"
+    //           value={address}
+    //           onChange={(e) => setAddress(e.target.value)}
+    //         />
+    //       </div>
+    //       <div className="form-group">
+    //         <label htmlFor="role">Role</label>
+    //         <select
+    //           id="role"
+    //           value={role}
+    //           onChange={(e) => setRole(e.target.value)}
+    //         >
+    //           <option value="driver">Driver</option>
+    //           <option value="rider">Rider</option>
+    //         </select>
+    //       </div>
+    //       <div className="form-group">
+    //         <label htmlFor="entry">Entry Time</label>
+    //         <input
+    //           type="text"
+    //           id="entry"
+    //           value={entry}
+    //           onChange={(e) => setEntry(e.target.value)}
+    //         />
+    //       </div>
+    //       <div className="form-group">
+    //         <label htmlFor="exit">Exit Time</label>
+    //         <input
+    //           type="text"
+    //           id="exit"
+    //           value={exit}
+    //           onChange={(e) => setExit(e.target.value)}
+    //         />
+    //       </div>
+    //       <div className="form-group">
+    //         <label htmlFor="seats">Number of Seats</label>
+    //         <input
+    //           type="number"
+    //           id="seats"
+    //           value={seats}
+    //           onChange={(e) => setSeats(Number(e.target.value))}
+    //         />
+    //       </div>
+    //       <button onClick={handleSignUp}>Sign Up</button>
+    //       <p>
+    //         Already a user? <Link to="/login">Sign In</Link>
+    //       </p>
+    //     </div>
+    // >>>>>>> main
   );
 }
 

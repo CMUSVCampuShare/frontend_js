@@ -6,7 +6,6 @@ import "../css/post.css";
 import { Box, Heading, UnorderedList, ListItem, Text } from "@chakra-ui/react";
 import Navbar from "./navbar";
 
-
 const initialToPlaceholder = "To";
 const initialSeatsPlaceholder = 0;
 const userIdStored = localStorage.getItem("userId");
@@ -519,12 +518,18 @@ const PostWall = () => {
           type="text"
           placeholder="Title"
           value={newPostData.title}
-          onChange={(e) => setNewPostData({ ...newPostData, title: e.target.value })} />
+          onChange={(e) =>
+            setNewPostData({ ...newPostData, title: e.target.value })
+          }
+        />
         <input
           type="text"
           placeholder="From"
           value={newPostData.from}
-          onChange={(e) => setNewPostData({ ...newPostData, from: e.target.value })} />
+          onChange={(e) =>
+            setNewPostData({ ...newPostData, from: e.target.value })
+          }
+        />
         <input
           type="text"
           placeholder="To"
@@ -537,11 +542,15 @@ const PostWall = () => {
         <textarea
           placeholder="Details"
           value={newPostData.details}
-          onChange={(e) => setNewPostData({ ...newPostData, details: e.target.value })}
+          onChange={(e) =>
+            setNewPostData({ ...newPostData, details: e.target.value })
+          }
         ></textarea>
         <select
           value={newPostData.type}
-          onChange={(e) => setNewPostData({ ...newPostData, type: e.target.value })}
+          onChange={(e) =>
+            setNewPostData({ ...newPostData, type: e.target.value })
+          }
         >
           <option value="">Select Type</option>
           <option value="Ride">RIDE</option>
@@ -562,7 +571,9 @@ const PostWall = () => {
         />
         <select
           value={newPostData.status}
-          onChange={(e) => setNewPostData({ ...newPostData, status: e.target.value })}
+          onChange={(e) =>
+            setNewPostData({ ...newPostData, status: e.target.value })
+          }
         >
           <option value="Created">CREATED</option>
         </select>
@@ -571,7 +582,7 @@ const PostWall = () => {
       {posts.map((post) => (
         <Post key={post.postId} post={post} />
       ))}
-    </div></>
+    </div>
   );
 };
 
