@@ -9,6 +9,34 @@ import {
 } from "@chakra-ui/react";
 import "../css/recommendation.css";
 
+const createMockRecommendations = () => {
+  return [
+    {
+      postId: "1",
+      title: "Ride to the Beach",
+      from: "City Center",
+      to: "Sunny Beach",
+      details: "Looking for a fun ride to the beach this weekend.",
+      type: "Leisure",
+      noOfSeats: "4",
+      status: "Open",
+      timestamp: "2023-04-01 10:00",
+    },
+    {
+      postId: "2",
+      title: "Daily Commute to Office",
+      from: "Suburbia",
+      to: "Downtown",
+      details: "Join me for a daily carpool to the office.",
+      type: "Carpool",
+      noOfSeats: "3",
+      status: "Full",
+      timestamp: "2023-04-02 08:00",
+    },
+    // Add more mock posts as needed
+  ];
+};
+
 const Recommendation = ({ userId }) => {
   const [topPosts, setTopPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
