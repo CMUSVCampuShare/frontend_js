@@ -35,9 +35,21 @@ function Register() {
         </select>
       </div>
       <div className="form-group">
+        <label htmlFor="entry" autoComplete="off">
+          Entry Time
+        </label>
+        <input type="text" id="entry" />
+      </div>
+      <div className="form-group">
+        <label htmlFor="exit" autoComplete="off">
+          Exit Time
+        </label>
+        <input type="text" id="exit" />
+      </div>
+      {/* <div className="form-group">
         <label htmlFor="schedule">Upload Schedule (.pdf or .ics)</label>
         <input type="file" id="schedule" accept=".pdf, .ics" />
-      </div>
+      </div> */}
       <button>Sign Up</button>
       <p>
         Already a user? <Link to="/login">Sign In</Link>

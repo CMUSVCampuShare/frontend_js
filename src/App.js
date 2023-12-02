@@ -33,12 +33,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {/*  <header className={`App-header ${showContent ? "" : "hide-content"}`}>
-          <img src={logo} alt="logo" />
-          CampuShare
-        </header> */}
-        <Navbar />
-
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/chat" element={<Chat />} />
