@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import "../css/post.css";
+import { Box, Heading, UnorderedList, ListItem, Text } from "@chakra-ui/react";
 import Navbar from "./navbar";
+
 
 const initialToPlaceholder = "To";
 const initialSeatsPlaceholder = 0;
@@ -506,8 +508,11 @@ const PostWall = () => {
   };
   // TO DO : Use autocomplete for from and to
   return (
-     <><Navbar /><div className="post-wall">
-      <h1>Post Wall</h1>
+    <div className="post-wall">
+      <Heading as="h1" size="xl" className="sticky-header" mb={4}>
+        Post Wall
+      </Heading>
+
       <div className="create-post">
         <h2>Create New Post</h2>
         <input

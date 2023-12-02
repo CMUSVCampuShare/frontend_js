@@ -1,9 +1,20 @@
 import React, { useState } from "react";
+import {
+  Box,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  Image,
+  Text,
+  VStack,
+  Link as ChakraLink,
+  Heading,
+} from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
 import login_img from "../icons/login.svg";
-import { Link } from "react-router-dom";
-import "../css/login.css";
 
-var stompClient = null;
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -37,32 +48,49 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
-      <img src={login_img} alt="Login Icon" />
-      <h2>Login</h2>
-      <div className="form-group">
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <button onClick={loginUser}>Login</button>
-      <p>
-        Don't have an account? <Link to="/register">Sign Up</Link>
-      </p>
-    </div>
+    <Flex minHeight="100vh" align="center" justify="center" p={6}>
+      <VStack spacing={6} align="center" width="full" maxWidth="md">
+        <Image src={login_img} alt="Login" boxSize="250px" />
+        <Heading as="h2" size="xl" mb={6}>
+          Login
+        </Heading>
+        <FormControl id="username" isRequired>
+          <FormLabel>Username</FormLabel>
+          <Input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </FormControl>
+        <FormControl id="password" isRequired>
+          <FormLabel>Password</FormLabel>
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </FormControl>
+        <Button
+          colorScheme="red"
+          bg="#bb0000"
+          color="white"
+          size="lg"
+          width="full"
+          _hover={{ bg: "#a00000" }}
+          onClick={loginUser}
+        >
+          Login
+        </Button>
+        <Box>
+          <Text>
+            Don't have an account?{" "}
+            <ChakraLink as={RouterLink} to="/register" color="red.500">
+              Sign Up
+            </ChakraLink>
+          </Text>
+        </Box>
+      </VStack>
+    </Flex>
   );
 }
 

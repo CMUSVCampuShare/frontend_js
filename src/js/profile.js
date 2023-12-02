@@ -1,11 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Flex,
+  VStack,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  FormControl,
+  FormLabel,
+  Input,
+  ModalFooter,
+  Image,
+  Text,
+} from "@chakra-ui/react";
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import "../css/profile.css";
 import Navbar from "./navbar";
 
 var stompClient = null;
+
 function EditProfileModal({ isOpen, onClose, profile, onSave }) {
   const [updatedProfile, setUpdatedProfile] = useState(profile);
 
@@ -15,35 +34,70 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
   };
 
   return (
-    <>
-      <Navbar />
-
-      <div className={`modal ${isOpen ? "modal-open" : ""}`}>
-        <div className="modal-content">
-          <button className="modal-close" onClick={onClose}>
-            X
-          </button>
-          <h2>Edit Profile</h2>
-
-          <label>Username</label>
-          <input
-            type="text"
-            value={updatedProfile.username}
-            onChange={(e) =>
-              setUpdatedProfile((prev) => ({
-                ...prev,
-                username: e.target.value,
-              }))
-            }
-          />
-          {/* Add other fields similarly... */}
-
-          <button className="modal-confirm" onClick={handleSave}>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Edit Profile</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <FormControl>
+            <FormLabel>Username</FormLabel>
+            <Input
+              type="text"
+              value={updatedProfile.username}
+              onChange={(e) =>
+                setUpdatedProfile((prev) => ({
+                  ...prev,
+                  username: e.target.value,
+                }))
+              }
+            />
+            {/* Add other fields similarly... */}
+          </FormControl>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            colorScheme="red"
+            bg="#bb0000"
+            color="white"
+            mr={3}
+            _hover={{ bg: "#a00000" }}
+            onClick={handleSave}
+          >
             Save Changes
-          </button>
-        </div>
-      </div>
-    </>
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+//     <>
+//       <Navbar />
+
+//       <div className={`modal ${isOpen ? "modal-open" : ""}`}>
+//         <div className="modal-content">
+//           <button className="modal-close" onClick={onClose}>
+//             X
+//           </button>
+//           <h2>Edit Profile</h2>
+
+//           <label>Username</label>
+//           <input
+//             type="text"
+//             value={updatedProfile.username}
+//             onChange={(e) =>
+//               setUpdatedProfile((prev) => ({
+//                 ...prev,
+//                 username: e.target.value,
+//               }))
+//             }
+//           />
+//           {/* Add other fields similarly... */}
+
+//           <button className="modal-confirm" onClick={handleSave}>
+//             Save Changes
+//           </button>
+//         </div>
+//       </div>
+//     </>
   );
 }
 
@@ -164,9 +218,16 @@ function Profile() {
         </div>
       </div>
 
-      <button className="edit-button" onClick={() => setIsModalOpen(true)}>
+      <Button
+        colorScheme="red"
+        bg="#bb0000"
+        color="white"
+        size="lg"
+        _hover={{ bg: "#a00000" }}
+        onClick={() => setIsModalOpen(true)}
+      >
         Edit
-      </button>
+      </Button>
 
       <EditProfileModal
         isOpen={isModalOpen}
