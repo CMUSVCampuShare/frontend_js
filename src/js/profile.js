@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../css/profile.css";
+import Navbar from "./navbar";
 
 function EditProfileModal({ isOpen, onClose, profile, onSave }) {
   const [updatedProfile, setUpdatedProfile] = useState(profile);
@@ -10,28 +11,35 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
   };
 
   return (
-    <div className={`modal ${isOpen ? "modal-open" : ""}`}>
-      <div className="modal-content">
-        <button className="modal-close" onClick={onClose}>
-          X
-        </button>
-        <h2>Edit Profile</h2>
+    <>
+      <Navbar />
 
-        <label>Username</label>
-        <input
-          type="text"
-          value={updatedProfile.username}
-          onChange={(e) =>
-            setUpdatedProfile((prev) => ({ ...prev, username: e.target.value }))
-          }
-        />
-        {/* Add other fields similarly... */}
+      <div className={`modal ${isOpen ? "modal-open" : ""}`}>
+        <div className="modal-content">
+          <button className="modal-close" onClick={onClose}>
+            X
+          </button>
+          <h2>Edit Profile</h2>
 
-        <button className="modal-confirm" onClick={handleSave}>
-          Save Changes
-        </button>
+          <label>Username</label>
+          <input
+            type="text"
+            value={updatedProfile.username}
+            onChange={(e) =>
+              setUpdatedProfile((prev) => ({
+                ...prev,
+                username: e.target.value,
+              }))
+            }
+          />
+          {/* Add other fields similarly... */}
+
+          <button className="modal-confirm" onClick={handleSave}>
+            Save Changes
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

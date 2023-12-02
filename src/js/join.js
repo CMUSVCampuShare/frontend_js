@@ -7,6 +7,7 @@ import {
 } from "@react-google-maps/api";
 import { useMemo } from "react";
 import "../css/join.css"; // Make sure to create a separate CSS file for styles
+import Navbar from "./navbar";
 
 const Join = () => {
   // Placeholder function for button click handlers
@@ -29,7 +30,7 @@ const Join = () => {
   const center = useMemo(() => ({ lat: 37.7749, lng: -122.4194 }), []);
   console.log(isLoaded);
   return (
-    <div className="join-request-container">
+    <><Navbar /><div className="join-request-container">
       <div className="header">
         <h1>Join Request</h1>
       </div>
@@ -61,7 +62,7 @@ const Join = () => {
           Reject
         </button>
       </div>
-    </div>
+    </div></>
   );
 };
 

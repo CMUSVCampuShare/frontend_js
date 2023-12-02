@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../css/post.css";
+import Navbar from "./navbar";
 
 const initialToPlaceholder = 'To';
 const initialSeatsPlaceholder = 0;
@@ -377,7 +378,7 @@ const PostWall = () => {
 
   // TO DO : Use autocomplete for from and to
   return (
-    <div className="post-wall">
+     <><Navbar /><div className="post-wall">
       <h1>Post Wall</h1>
       <div className="create-post">
         <h2>Create New Post</h2>
@@ -385,39 +386,26 @@ const PostWall = () => {
           type="text"
           placeholder="Title"
           value={newPostData.title}
-          onChange={(e) =>
-            setNewPostData({ ...newPostData, title: e.target.value })
-          }
-        />
+          onChange={(e) => setNewPostData({ ...newPostData, title: e.target.value })} />
         <input
           type="text"
           placeholder="From"
           value={newPostData.from}
-          onChange={(e) =>
-            setNewPostData({ ...newPostData, from: e.target.value })
-          }
-        />
+          onChange={(e) => setNewPostData({ ...newPostData, from: e.target.value })} />
         <input
           type="text"
           placeholder="To"
           value={newPostData.to}
-          onChange={(e) =>
-            setNewPostData({ ...newPostData, to: e.target.value })
-          }
-          disabled={newPostData.type === 'FoodPickup'}
-        />
+          onChange={(e) => setNewPostData({ ...newPostData, to: e.target.value })}
+          disabled={newPostData.type === "FoodPickup"} />
         <textarea
           placeholder="Details"
           value={newPostData.details}
-          onChange={(e) =>
-            setNewPostData({ ...newPostData, details: e.target.value })
-          }
+          onChange={(e) => setNewPostData({ ...newPostData, details: e.target.value })}
         ></textarea>
         <select
           value={newPostData.type}
-          onChange={(e) =>
-            setNewPostData({ ...newPostData, type: e.target.value })
-          }
+          onChange={(e) => setNewPostData({ ...newPostData, type: e.target.value })}
         >
           <option value="">Select Type</option>
           <option value="Ride">RIDE</option>
@@ -428,19 +416,14 @@ const PostWall = () => {
           type="number"
           placeholder="Number of Seats"
           value={newPostData.noOfSeats}
-          onChange={(e) =>
-            setNewPostData({
-              ...newPostData,
-              noOfSeats: parseInt(e.target.value) || 0,
-            })
-          }
-          disabled={newPostData.type === 'FoodPickup'}
-        />
+          onChange={(e) => setNewPostData({
+            ...newPostData,
+            noOfSeats: parseInt(e.target.value) || 0,
+          })}
+          disabled={newPostData.type === "FoodPickup"} />
         <select
           value={newPostData.status}
-          onChange={(e) =>
-            setNewPostData({ ...newPostData, status: e.target.value })
-          }
+          onChange={(e) => setNewPostData({ ...newPostData, status: e.target.value })}
         >
           <option value="">Select Status</option>
           <option value="Ongoing">ONGOING</option>
@@ -452,7 +435,7 @@ const PostWall = () => {
       {posts.map((post) => (
         <Post key={post.postId} post={post} />
       ))}
-    </div>
+    </div></>
   );
 };
 
