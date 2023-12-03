@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Flex,
   Box,
@@ -8,6 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import "../css/recommendation.css";
+import { over } from "stompjs";
+import SockJS from "sockjs-client";
+
+var stompClient = null;
 
 const Recommendation = ({ userId }) => {
   const [topPosts, setTopPosts] = useState([]);
@@ -34,6 +39,68 @@ const Recommendation = ({ userId }) => {
 
     fetchTopPostsForUser();
   }, [userId]);
+
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState({
+    userId: localStorage.getItem("userId"),
+    connected: false,
+  });
+
+  useEffect(() => {
+    const userIdStored = localStorage.getItem("userId");
+    console.log("connecting");
+    if (userIdStored) {
+      connect();
+    }
+  }, []);
+
+  const connect = () => {
+    let Sock = new SockJS("http://localhost:8088/ws");
+    stompClient = over(Sock);
+    Sock.onopen = () => {
+      stompClient.connect({}, onConnected, onError);
+    };
+  };
+
+  const onConnected = () => {
+    setUserData({ ...userData, connected: true });
+    stompClient.subscribe(
+      "/user/" + userData.userId + "/notification",
+      onNotification
+    );
+  };
+
+  const onNotification = (payload) => {
+    console.log(payload);
+    var payloadData = JSON.parse(payload.body);
+    const actualNotification = payloadData.notification;
+
+    var showMap = false;
+    var forPassenger = false;
+    if (
+      actualNotification.notificationBody.includes("lat") &&
+      actualNotification.notificationBody.includes("lng")
+    ) {
+      showMap = true;
+    }
+    if (actualNotification.notificationBody.includes("rejected")) {
+      forPassenger = true;
+    }
+    const propsToPass = {
+      message: actualNotification.notificationBody,
+      showMap: showMap,
+      forPassenger: forPassenger,
+      notificationId: payloadData.notificationId,
+      postId: actualNotification.postId,
+      postTitle: actualNotification.postTitle,
+      passengerId: actualNotification.passengerID,
+    };
+    navigate("/join", { state: propsToPass });
+  };
+
+  const onError = (err) => {
+    console.log("Error", err);
+  };
 
   return (
     <Box p={5}>

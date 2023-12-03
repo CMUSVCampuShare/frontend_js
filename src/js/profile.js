@@ -69,35 +69,35 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
         </ModalFooter>
       </ModalContent>
     </Modal>
-//     <>
-//       <Navbar />
+    //     <>
+    //       <Navbar />
 
-//       <div className={`modal ${isOpen ? "modal-open" : ""}`}>
-//         <div className="modal-content">
-//           <button className="modal-close" onClick={onClose}>
-//             X
-//           </button>
-//           <h2>Edit Profile</h2>
+    //       <div className={`modal ${isOpen ? "modal-open" : ""}`}>
+    //         <div className="modal-content">
+    //           <button className="modal-close" onClick={onClose}>
+    //             X
+    //           </button>
+    //           <h2>Edit Profile</h2>
 
-//           <label>Username</label>
-//           <input
-//             type="text"
-//             value={updatedProfile.username}
-//             onChange={(e) =>
-//               setUpdatedProfile((prev) => ({
-//                 ...prev,
-//                 username: e.target.value,
-//               }))
-//             }
-//           />
-//           {/* Add other fields similarly... */}
+    //           <label>Username</label>
+    //           <input
+    //             type="text"
+    //             value={updatedProfile.username}
+    //             onChange={(e) =>
+    //               setUpdatedProfile((prev) => ({
+    //                 ...prev,
+    //                 username: e.target.value,
+    //               }))
+    //             }
+    //           />
+    //           {/* Add other fields similarly... */}
 
-//           <button className="modal-confirm" onClick={handleSave}>
-//             Save Changes
-//           </button>
-//         </div>
-//       </div>
-//     </>
+    //           <button className="modal-confirm" onClick={handleSave}>
+    //             Save Changes
+    //           </button>
+    //         </div>
+    //       </div>
+    //     </>
   );
 }
 
@@ -150,23 +150,27 @@ function Profile() {
   const onNotification = (payload) => {
     console.log(payload);
     var payloadData = JSON.parse(payload.body);
+    const actualNotification = payloadData.notification;
 
     var showMap = false;
     var forPassenger = false;
     if (
-      payloadData.notification.includes("lat") &&
-      payloadData.notification.includes("lng")
+      actualNotification.notificationBody.includes("lat") &&
+      actualNotification.notificationBody.includes("lng")
     ) {
       showMap = true;
     }
-    if (payloadData.notification.includes("rejected")) {
+    if (actualNotification.notificationBody.includes("rejected")) {
       forPassenger = true;
     }
     const propsToPass = {
-      message: payloadData.notification,
+      message: actualNotification.notificationBody,
       showMap: showMap,
       forPassenger: forPassenger,
       notificationId: payloadData.notificationId,
+      postId: actualNotification.postId,
+      postTitle: actualNotification.postTitle,
+      passengerId: actualNotification.passengerID,
     };
     navigate("/join", { state: propsToPass });
   };
