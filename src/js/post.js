@@ -212,6 +212,7 @@ const PostWall = () => {
             passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
             from: selectedPost.from,
             to: selectedPost.to,
+            postId: selectedPost.postId,
           };
           break;
         default:
@@ -219,6 +220,7 @@ const PostWall = () => {
           joinData = {
             driverID: selectedPost.userId,
             passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
+            postId: selectedPost.postId,
           };
           break;
       }
@@ -481,23 +483,27 @@ const PostWall = () => {
   const onNotification = (payload) => {
     console.log(payload);
     var payloadData = JSON.parse(payload.body);
+    const actualNotification = payloadData.notification;
 
     var showMap = false;
     var forPassenger = false;
     if (
-      payloadData.notification.includes("lat") &&
-      payloadData.notification.includes("lng")
+      actualNotification.notificationBody.includes("lat") &&
+      actualNotification.notificationBody.includes("lng")
     ) {
       showMap = true;
     }
-    if (payloadData.notification.includes("rejected")) {
+    if (actualNotification.notificationBody.includes("rejected")) {
       forPassenger = true;
     }
     const propsToPass = {
-      message: payloadData.notification,
+      message: actualNotification.notificationBody,
       showMap: showMap,
       forPassenger: forPassenger,
       notificationId: payloadData.notificationId,
+      postId: actualNotification.postId,
+      postTitle: actualNotification.postTitle,
+      passengerId: actualNotification.passengerID,
     };
     navigate("/join", { state: propsToPass });
   };

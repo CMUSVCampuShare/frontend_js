@@ -43,23 +43,27 @@ function NotificationList() {
   const onNotification = (payload) => {
     console.log(payload);
     var payloadData = JSON.parse(payload.body);
+    const actualNotification = payloadData.notification;
 
     var showMap = false;
     var forPassenger = false;
     if (
-      payloadData.notification.includes("lat") &&
-      payloadData.notification.includes("lng")
+      actualNotification.notificationBody.includes("lat") &&
+      actualNotification.notificationBody.includes("lng")
     ) {
       showMap = true;
     }
-    if (payloadData.notification.includes("rejected")) {
+    if (actualNotification.notificationBody.includes("rejected")) {
       forPassenger = true;
     }
     const propsToPass = {
-      message: payloadData.notification,
+      message: actualNotification.notificationBody,
       showMap: showMap,
       forPassenger: forPassenger,
       notificationId: payloadData.notificationId,
+      postId: actualNotification.postId,
+      postTitle: actualNotification.postTitle,
+      passengerId: actualNotification.passengerID,
     };
     navigate("/join", { state: propsToPass });
   };
@@ -88,39 +92,48 @@ function NotificationList() {
   }, []);
 
   const Notification = ({ notification }) => {
-    const [notificationText, setNotificationText] = useState(
-      notification.notification
-    );
+    const [notificationText, setNotificationText] = useState(" ");
 
     useEffect(() => {
+      const actualNotification = notification.notification;
+      console.log(actualNotification);
+      console.log(actualNotification.notificationBody);
+      const notificationBody = actualNotification.notificationBody;
       if (
-        notification.notification.includes("lat") &&
-        notification.notification.includes("lng")
+        notificationBody.includes("lat") &&
+        notificationBody.includes("lng")
       ) {
-        const notificationBody = JSON.parse(notification.notification);
-        setNotificationText(notificationBody.message);
+        const innerNotificationBody = JSON.parse(notificationBody);
+        setNotificationText(innerNotificationBody.message);
+      } else {
+        setNotificationText(notificationBody);
       }
     }, [notificationText]);
 
     const viewNotification = (notification) => {
-      console.log(notification);
-      console.log(notification.notification);
+      const actualNotification = notification.notification;
+      console.log(actualNotification);
+      console.log(actualNotification.notificationBody);
+      const notificationBody = actualNotification.notificationBody;
       var showMap = false;
       var forPassenger = false;
       if (
-        notification.notification.includes("lat") &&
-        notification.notification.includes("lng")
+        notificationBody.includes("lat") &&
+        notificationBody.includes("lng")
       ) {
         showMap = true;
       }
-      if (notification.notification.includes("rejected")) {
+      if (notificationBody.includes("rejected")) {
         forPassenger = true;
       }
       const propsToPass = {
-        message: notification.notification,
+        message: notificationBody,
         showMap: showMap,
         forPassenger: forPassenger,
         notificationId: notification.notificationId,
+        postId: actualNotification.postId,
+        postTitle: actualNotification.postTitle,
+        passengerId: actualNotification.passengerID,
       };
       navigate("/join", { state: propsToPass });
     };

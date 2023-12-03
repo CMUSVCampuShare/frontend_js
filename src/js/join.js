@@ -10,6 +10,9 @@ const Join = () => {
   const passedMessage = location.state;
   const showMap = passedMessage.showMap;
   const showForPassenger = passedMessage.forPassenger;
+  const postTitle = passedMessage.postTitle;
+  const postId = passedMessage.postId;
+  const passengerId = passedMessage.passengerId;
 
   const navigate = useNavigate();
 
@@ -36,18 +39,27 @@ const Join = () => {
 
   const handleApprove = () => {
     console.log("Trip approved");
-    handleDeleteNotification(passedMessage.notificationId);
+    console.log("post title: " + postTitle);
+    console.log("post id: " + postId);
+    console.log("passenger id: " + passengerId);
+    handleDeleteNotification();
   };
 
   const handleReject = () => {
     console.log("Trip rejected");
-    handleDeleteNotification(passedMessage.notificationId);
+    console.log("post title: " + postTitle);
+    console.log("post id: " + postId);
+    console.log("passenger id: " + passengerId);
+    handleDeleteNotification();
   };
 
-  const handleDeleteNotification = (notificationId) => {
-    fetch(`http://localhost:8088/notifications/${notificationId}`, {
-      method: "DELETE",
-    })
+  const handleDeleteNotification = () => {
+    fetch(
+      `http://localhost:8088/notifications/${passedMessage.notificationId}`,
+      {
+        method: "DELETE",
+      }
+    )
       .then((response) => {
         if (response.ok) {
           console.log("Sucessfully deleted Notification!");
@@ -58,7 +70,7 @@ const Join = () => {
   };
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "",
+    googleMapsApiKey: "AIzaSyALoxyWDM0Ut92xSQyZyVS_wVDMXV9SUPg",
   });
   const center = useMemo(
     () => ({ lat: latitude, lng: longitude }),
@@ -97,7 +109,7 @@ const Join = () => {
           <div className="actions">
             <button
               className="button approve"
-              onClick={handleDeleteNotification(passedMessage.notificationId)}
+              onClick={handleDeleteNotification}
             >
               OK
             </button>
