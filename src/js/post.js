@@ -481,23 +481,27 @@ const PostWall = () => {
   const onNotification = (payload) => {
     console.log(payload);
     var payloadData = JSON.parse(payload.body);
+    const actualNotification = payloadData.notification;
 
     var showMap = false;
     var forPassenger = false;
     if (
-      payloadData.notification.includes("lat") &&
-      payloadData.notification.includes("lng")
+      actualNotification.notificationBody.includes("lat") &&
+      actualNotification.notificationBody.includes("lng")
     ) {
       showMap = true;
     }
-    if (payloadData.notification.includes("rejected")) {
+    if (actualNotification.notificationBody.includes("rejected")) {
       forPassenger = true;
     }
     const propsToPass = {
-      message: payloadData.notification,
+      message: actualNotification.notificationBody,
       showMap: showMap,
       forPassenger: forPassenger,
       notificationId: payloadData.notificationId,
+      postId: actualNotification.postId,
+      postTitle: actualNotification.postTitle,
+      passengerId: actualNotification.passengerID,
     };
     navigate("/join", { state: propsToPass });
   };
