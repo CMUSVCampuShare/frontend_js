@@ -212,6 +212,7 @@ const PostWall = () => {
             passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
             from: selectedPost.from,
             to: selectedPost.to,
+            postId: selectedPost.postId,
           };
           break;
         default:
@@ -219,6 +220,7 @@ const PostWall = () => {
           joinData = {
             driverID: selectedPost.userId,
             passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
+            postId: selectedPost.postId,
           };
           break;
       }
