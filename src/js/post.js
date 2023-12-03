@@ -306,7 +306,7 @@ const PostWall = () => {
               <option value="Created">CREATED</option>
               <option value="Ongoing">ONGOING</option>
               <option value="Full">FULL</option>
-              <option value="Complete">COMPLETE</option>
+              <option value="Completed">COMPLETED</option>
               <option value="Canceled">CANCELED</option>
             </select>
             <p>{post.timestamp}</p>
