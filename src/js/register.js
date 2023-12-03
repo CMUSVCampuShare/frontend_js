@@ -78,10 +78,24 @@ function Register() {
             <option value="rider">Rider</option>
           </Select>
         </FormControl>
-        <FormControl id="schedule">
-          <FormLabel>Upload Schedule (.pdf or .ics)</FormLabel>
-          <Input type="file" accept=".pdf, .ics" />
-        </FormControl>
+        <div className="form-group">
+          <FormLabel>Entry Time</FormLabel>
+          <input
+            type="time"
+            id="entry"
+            value={entry}
+            onChange={(e) => setEntry(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <FormLabel>Exit Time</FormLabel>
+          <input 
+            type="time"
+            id="exit"
+            value={exit}
+            onChange={(e) => setExit(e.target.value)}
+          />
+        </div>
         <Button
           colorScheme="red"
           bg="#bb0000"

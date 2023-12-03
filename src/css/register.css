@@ -45,6 +45,8 @@ input {
   border: 1px solid #ccc;
   border-radius: 7px;
   margin-bottom: 10px;
+    background-color: #f0f0f0; /* Set your desired background color */
+
 }
 
 button {
@@ -111,4 +113,14 @@ option:hover {
   background-color: #007bff; /* Change background color on hover */
   color: #fff;
  /* Change text color on hover */
+}
+
+.styled-input {
+  background: #f0f0f0; /* Set your desired background color */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 200px; /* Set your desired width */
+  text-align: center;
 }
