@@ -52,36 +52,34 @@ function Register() {
     console.log("Form submitted successfully!");
   };
 
-    const registerUser = async () => {
-      const registerData = {
-        username: username,
-        password: password,
-      };
-
-      try {
-        console.log(registerData);
-        const response = await fetch("http://localhost:8080/users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(registerData),
-          credentials: "include",
-        });
-
-        if (response.ok) {
-          const token = await response.text();
-          localStorage.setItem("userId", token);
-          console.log(token);
-          navigate("/login");
-        } else {
-        }
-      } catch (error) {
-        console.error("Registration failed:", error);
-      }
-
+  const registerUser = async () => {
+    const registerData = {
+      username: username,
+      password: password,
     };
 
+    try {
+      console.log(registerData);
+      const response = await fetch("http://localhost:8080/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(registerData),
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        const token = await response.text();
+        localStorage.setItem("userId", token);
+        console.log(token);
+        navigate("/login");
+      } else {
+      }
+    } catch (error) {
+      console.error("Registration failed:", error);
+    }
+  };
 
   return (
     <Flex direction="column" align="center" p={6}>
@@ -145,11 +143,33 @@ function Register() {
         </FormControl>
         <FormControl id="role">
           <FormLabel>Role</FormLabel>
-          <Select>
+          <Select value={role} onChange={(e) => setRole(e.target.value)}>
             <option value="driver">Driver</option>
             <option value="rider">Rider</option>
           </Select>
         </FormControl>
+        {role === "driver" && (
+          <>
+            <FormControl id="licensoNo">
+              <FormLabel>License Number</FormLabel>
+              <Input
+                type="text"
+                id="licenseNo"
+                value={licenseNo}
+                onChange={(e) => setLicenseNo(e.target.value)}
+              />
+            </FormControl>
+            <FormControl id="seats">
+              <FormLabel>Number of Seats</FormLabel>
+              <Input
+                type="number"
+                id="seats"
+                value={seats}
+                onChange={(e) => setSeats(e.target.value)}
+              />
+            </FormControl>
+          </>
+        )}
         <div className="form-group">
           <FormLabel>Entry Time</FormLabel>
           <input
@@ -187,89 +207,6 @@ function Register() {
         </ChakraLink>
       </Text>
     </Flex>
-
-    //     <div className="login-container">
-    //       <h2>Sign Up</h2>
-    //       <div className="form-group">
-    //         <label htmlFor="username">Username</label>
-    //         <input
-    //           type="text"
-    //           id="username"
-    //           value={username}
-    //           onChange={(e) => setUsername(e.target.value)}
-    //         />
-    //       </div>
-    //       <div className="form-group">
-    //         <label htmlFor="password">Password</label>
-    //         <input
-    //           type="password"
-    //           id="password"
-    //           value={password}
-    //           onChange={(e) => setPassword(e.target.value)}
-    //         />
-    //       </div>
-    //       <div className="form-group">
-    //         <label htmlFor="email">Email</label>
-    //         <input
-    //           type="text"
-    //           id="email"
-    //           value={email}
-    //           onChange={(e) => setEmail(e.target.value)}
-    //         />
-    //       </div>
-    //       <div className="form-group">
-    //         <label htmlFor="address">Address</label>
-    //         <input
-    //           type="text"
-    //           id="address"
-    //           value={address}
-    //           onChange={(e) => setAddress(e.target.value)}
-    //         />
-    //       </div>
-    //       <div className="form-group">
-    //         <label htmlFor="role">Role</label>
-    //         <select
-    //           id="role"
-    //           value={role}
-    //           onChange={(e) => setRole(e.target.value)}
-    //         >
-    //           <option value="driver">Driver</option>
-    //           <option value="rider">Rider</option>
-    //         </select>
-    //       </div>
-    //       <div className="form-group">
-    //         <label htmlFor="entry">Entry Time</label>
-    //         <input
-    //           type="text"
-    //           id="entry"
-    //           value={entry}
-    //           onChange={(e) => setEntry(e.target.value)}
-    //         />
-    //       </div>
-    //       <div className="form-group">
-    //         <label htmlFor="exit">Exit Time</label>
-    //         <input
-    //           type="text"
-    //           id="exit"
-    //           value={exit}
-    //           onChange={(e) => setExit(e.target.value)}
-    //         />
-    //       </div>
-    //       <div className="form-group">
-    //         <label htmlFor="seats">Number of Seats</label>
-    //         <input
-    //           type="number"
-    //           id="seats"
-    //           value={seats}
-    //           onChange={(e) => setSeats(Number(e.target.value))}
-    //         />
-    //       </div>
-    //       <button onClick={handleSignUp}>Sign Up</button>
-    //       <p>
-    //         Already a user? <Link to="/login">Sign In</Link>
-    //       </p>
-    //     </div>
-    // >>>>>>> main
   );
 }
 
