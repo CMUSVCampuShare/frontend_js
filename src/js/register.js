@@ -119,7 +119,14 @@ function Register() {
           />
         </FormControl>
         <FormControl id="address">
-          <FormLabel>Address</FormLabel>
+          <FormLabel>
+            Address (
+            <span style={{ fontWeight: "normal", fontStyle: "italic" }}>
+              For eg. 585 Franklin St, Mountain View, CA 94041
+            </span>
+            )
+          </FormLabel>
+
           <Input
             type="text"
             id="address"
