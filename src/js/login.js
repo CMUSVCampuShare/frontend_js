@@ -47,7 +47,27 @@ function Login() {
       }
     } catch (error) {
       console.error("Login failed:", error);
-    }
+    } 
+      /* if (response.ok) {
+        const responseData = await response.json();
+
+        if (responseData.jwt) {
+          // Store JWT in local storage
+          localStorage.setItem("jwt", responseData.jwt);
+          localStorage.setItem("userId", responseData.userId);
+
+          console.log("Login successful!");
+          navigate("/post");
+        } else {
+          console.error("JWT not found in the response");
+        }
+      } else {
+        console.error("Login failed:", response.status);
+        // Handle other error cases if needed
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+    } */
   };
 
   return (

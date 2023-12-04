@@ -11,6 +11,7 @@ import {
   Text,
   Link as ChakraLink,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 import logo from "../icons/login.svg";
 
@@ -19,10 +20,14 @@ function Register() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [account, setAccount] = useState("");
   const [role, setRole] = useState("driver");
   const [entry, setEntry] = useState("");
   const [exit, setExit] = useState("");
   const [seats, setSeats] = useState();
+  const [licenseNo, setLicenseNo] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSignUp = () => {
     // Email format validation
@@ -47,6 +52,37 @@ function Register() {
     console.log("Form submitted successfully!");
   };
 
+    const registerUser = async () => {
+      const registerData = {
+        username: username,
+        password: password,
+      };
+
+      try {
+        console.log(registerData);
+        const response = await fetch("http://localhost:8080/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(registerData),
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          const token = await response.text();
+          localStorage.setItem("userId", token);
+          console.log(token);
+          navigate("/login");
+        } else {
+        }
+      } catch (error) {
+        console.error("Registration failed:", error);
+      }
+
+    };
+
+
   return (
     <Flex direction="column" align="center" p={6}>
       <img src={logo} alt="Login Icon" />
@@ -57,19 +93,48 @@ function Register() {
       <VStack spacing={4} align="stretch" maxWidth="md" width="full">
         <FormControl id="username">
           <FormLabel>Username</FormLabel>
-          <Input type="text" />
+          <Input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
         </FormControl>
         <FormControl id="password">
           <FormLabel>Password</FormLabel>
-          <Input type="password" />
+          <Input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </FormControl>
         <FormControl id="email">
           <FormLabel>Email</FormLabel>
-          <Input type="text" />
+          <Input
+            type="text"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </FormControl>
         <FormControl id="address">
           <FormLabel>Address</FormLabel>
-          <Input type="text" />
+          <Input
+            type="text"
+            id="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </FormControl>
+        <FormControl id="account">
+          <FormLabel>PayPal Account</FormLabel>
+          <Input
+            type="text"
+            id="account"
+            value={account}
+            onChange={(e) => setAccount(e.target.value)}
+          />
         </FormControl>
         <FormControl id="role">
           <FormLabel>Role</FormLabel>
@@ -89,7 +154,7 @@ function Register() {
         </div>
         <div className="form-group">
           <FormLabel>Exit Time</FormLabel>
-          <input 
+          <input
             type="time"
             id="exit"
             value={exit}
@@ -102,6 +167,7 @@ function Register() {
           color="white"
           size="lg"
           _hover={{ bg: "#a00000" }}
+          onClick={registerUser}
         >
           Sign Up
         </Button>
