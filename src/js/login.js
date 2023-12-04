@@ -15,11 +15,23 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import login_img from "../icons/login.svg";
+import { delay } from "framer-motion";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  function setLocalStorageItem(key, value) {
+    return new Promise((resolve, reject) => {
+      try {
+        localStorage.setItem(key, value);
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 
   const loginUser = async () => {
     const loginData = {
@@ -38,26 +50,39 @@ function Login() {
         credentials: "include",
       });
 
-    /*   if (response.ok) {
-        const token = await response.text();
-        localStorage.setItem("userId", token);
-        console.log(token);
-        navigate("/post");
-      } else {
-      }
-    } catch (error) {
-      console.error("Login failed:", error);
-    }  */
+      /*   if (response.ok) {
+          const token = await response.text();
+          localStorage.setItem("userId", token);
+          console.log(token);
+          navigate("/post");
+        } else {
+        }
+      } catch (error) {
+        console.error("Login failed:", error);
+      }  */
       if (response.ok) {
         const responseData = await response.json();
 
         if (responseData.jwt) {
           // Store JWT in local storage
-          localStorage.setItem("jwt", responseData.jwt);
-          localStorage.setItem("userId", responseData.userId);
 
-          console.log("Login successful!");
-          navigate("/post");
+          // localStorage.setItem("jwt", responseData.jwt);
+          // localStorage.setItem("userId", responseData.userId);
+
+          // console.log("Login successful!");
+          // await navigate("/post");
+          try {
+            await Promise.all([
+              setLocalStorageItem("jwt", responseData.jwt),
+              setLocalStorageItem("userId", responseData.userId)
+            ]);
+
+            console.log("Login successful!");
+            await navigate("/post");
+          } catch (error) {
+            console.error("Error during login:", error);
+            // Handle error, perhaps show an error message to the user
+          }
         } else {
           console.error("JWT not found in the response");
         }
@@ -67,7 +92,7 @@ function Login() {
       }
     } catch (error) {
       console.error("Login failed:", error);
-    } 
+    }
   };
 
   return (
