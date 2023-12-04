@@ -6,6 +6,7 @@ import "../css/post.css";
 import { Box, Heading, UnorderedList, ListItem, Text } from "@chakra-ui/react";
 
 var stompClient = null;
+const tokenStored = localStorage.getItem("jwt");
 
 function NotificationList() {
   const navigate = useNavigate();
@@ -76,9 +77,16 @@ function NotificationList() {
     const fetchNotifications = async () => {
       try {
         const notificationResponse = await fetch(
-          `http://localhost:8088/notifications?userID=${localStorage.getItem(
+          `http://localhost:8080/notifications?userID=${localStorage.getItem(
             "userId"
-          )}`
+          )}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: tokenStored,
+            },
+          }
         );
         const notifications = await notificationResponse.json();
         console.log(notifications);

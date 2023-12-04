@@ -216,7 +216,7 @@ const PostWall = () => {
       var joinData = {};
       switch (selectedPost.type) {
         case "RIDE":
-          url = `http://localhost:8086/join?post=${selectedPost.title}`;
+          url = `http://localhost:8080/join?post=${selectedPost.title}`;
           joinData = {
             driverID: selectedPost.userId,
             passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
@@ -226,7 +226,7 @@ const PostWall = () => {
           };
           break;
         default:
-          url = `http://localhost:8086/request-food?post=${selectedPost.title}`;
+          url = `http://localhost:8080/request-food?post=${selectedPost.title}`;
           joinData = {
             driverID: selectedPost.userId,
             passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
@@ -239,6 +239,7 @@ const PostWall = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: tokenStored,
         },
         body: JSON.stringify(joinData),
       })
