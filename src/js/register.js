@@ -47,17 +47,44 @@ function Register() {
       return;
     }
 
-    // Additional logic for submitting the form
-    // You can send the data to your server or perform other actions here
+    if (exit < entry) {
+      alert("Exit time must be greater than Entry time.");
+    }
+
     console.log("Form submitted successfully!");
   };
 
   const registerUser = async () => {
-    const registerData = {
-      username: username,
-      password: password,
-    };
+    let registerData;
 
+    if (role === 'driver') {
+      const registerData = {
+        username: username,
+        password: password,
+        email: email,
+        address: address,
+        account: account,
+        role: role,
+        entryTime: entry,
+        exitTime: exit,
+        noOfSeats: seats,
+        licenseNo: licenseNo
+      }
+    }
+    //for role==rider
+      else {
+      const registerData = {
+        username: username,
+        password: password,
+        email: email,
+        address: address,
+        account: account,
+        role: role,
+        entryTime: entry,
+        exitTime: exit,
+      }
+      }
+    
     try {
       console.log(registerData);
       const response = await fetch("http://localhost:8080/users", {
@@ -194,7 +221,7 @@ function Register() {
           color="white"
           size="lg"
           _hover={{ bg: "#a00000" }}
-          onClick={registerUser}
+          onClick={() => { handleSignUp(); registerUser(); }}
         >
           Sign Up
         </Button>
