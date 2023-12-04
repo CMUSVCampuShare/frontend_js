@@ -9,6 +9,7 @@ import Navbar from "./navbar";
 const initialToPlaceholder = "To";
 const initialSeatsPlaceholder = 0;
 const userIdStored = localStorage.getItem("userId");
+const tokenStored = localStorage.getItem("jwt");
 var stompClient = null;
 
 const PostWall = () => {
@@ -60,7 +61,11 @@ const PostWall = () => {
 
     const fetchPosts = async () => {
       try {
-        const postsResponse = await fetch("http://localhost:8082/posts/active");
+        const postsResponse = await fetch("http://localhost:8080/posts/active", {
+          headers: {
+            'Authorization': tokenStored
+          }
+        });
         const posts = await postsResponse.json();
 
         const fetchCommentPromises = posts.map(async (post) => {
