@@ -58,13 +58,13 @@ function Register() {
     let registerData;
 
     if (role === 'driver') {
-      const registerData = {
+       registerData = {
         username: username,
         password: password,
         email: email,
         address: address,
         account: account,
-        role: role,
+        role: "DRIVER",
         entryTime: entry,
         exitTime: exit,
         noOfSeats: seats,
@@ -73,16 +73,18 @@ function Register() {
     }
     //for role==rider
       else {
-      const registerData = {
+       registerData = {
         username: username,
         password: password,
         email: email,
+        role: "RIDER",
         address: address,
         account: account,
-        role: role,
         entryTime: entry,
         exitTime: exit,
-      }
+        noOfSeats: 1,
+        licenseNo: "none",
+      };
       }
     
     try {
@@ -147,7 +149,7 @@ function Register() {
           <FormLabel>
             Address (
             <span style={{ fontWeight: "normal", fontStyle: "italic" }}>
-              For eg. 585 Franklin St, Mountain View, CA 94041
+              For eg. 585 Franklin St, Mountain View, CA, 94041
             </span>
             )
           </FormLabel>
@@ -192,7 +194,8 @@ function Register() {
                 type="number"
                 id="seats"
                 value={seats}
-                onChange={(e) => setSeats(e.target.value)}
+                onChange={(e) => setSeats(parseInt(e.target.value, 10))}
+                step="1"
               />
             </FormControl>
           </>
@@ -221,7 +224,10 @@ function Register() {
           color="white"
           size="lg"
           _hover={{ bg: "#a00000" }}
-          onClick={() => { handleSignUp(); registerUser(); }}
+          onClick={() => {
+            handleSignUp();
+            registerUser();
+          }}
         >
           Sign Up
         </Button>
