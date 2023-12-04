@@ -5,6 +5,8 @@ import { useMemo } from "react";
 import { MarkerF } from "@react-google-maps/api";
 import "../css/join.css"; // Make sure to create a separate CSS file for styles
 
+const tokenStored = localStorage.getItem("jwt"); 
+
 const Join = () => {
   const location = useLocation();
   const passedMessage = location.state;
@@ -58,6 +60,10 @@ const Join = () => {
       `http://localhost:8088/notifications/${passedMessage.notificationId}`,
       {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: tokenStored,
+        },
       }
     )
       .then((response) => {
