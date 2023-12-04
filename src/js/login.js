@@ -38,7 +38,7 @@ function Login() {
         credentials: "include",
       });
 
-      if (response.ok) {
+    /*   if (response.ok) {
         const token = await response.text();
         localStorage.setItem("userId", token);
         console.log(token);
@@ -47,8 +47,8 @@ function Login() {
       }
     } catch (error) {
       console.error("Login failed:", error);
-    } 
-      /* if (response.ok) {
+    }  */
+      if (response.ok) {
         const responseData = await response.json();
 
         if (responseData.jwt) {
@@ -67,7 +67,7 @@ function Login() {
       }
     } catch (error) {
       console.error("Login failed:", error);
-    } */
+    } 
   };
 
   return (
