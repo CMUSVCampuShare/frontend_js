@@ -71,8 +71,11 @@ const PostWall = () => {
         const fetchCommentPromises = posts.map(async (post) => {
           try {
             const commentResponse = await fetch(
-              `http://localhost:8082/posts/${post.postId}/comments`
-            );
+              `http://localhost:8080/posts/${post.postId}/comments`, {
+              headers: {
+                'Authorization': tokenStored
+              }
+            });
             const comments = await commentResponse.json();
             return { ...post, comments: comments || [] };
           } catch (error) {
@@ -108,10 +111,11 @@ const PostWall = () => {
         comment: commentText,
       };
 
-      fetch(`http://localhost:8082/posts/${postId}/comments`, {
+      fetch(`http://localhost:8080/posts/${postId}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': tokenStored,
         },
         body: JSON.stringify(commentData),
       })
@@ -167,10 +171,11 @@ const PostWall = () => {
         status: editedPostData.status.toUpperCase(),
       };
 
-      fetch(`http://localhost:8082/posts/${editingPost.postId}`, {
+      fetch(`http://localhost:8080/posts/${editingPost.postId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': tokenStored,
         },
         body: JSON.stringify(postDataForBackend),
       })
@@ -405,10 +410,11 @@ const PostWall = () => {
       status: newPostData.status.toUpperCase(),
     };
 
-    fetch("http://localhost:8082/posts", {
+    fetch("http://localhost:8080/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': tokenStored,
       },
       body: JSON.stringify(newPostDataForBackend),
     })
@@ -439,8 +445,11 @@ const PostWall = () => {
   };
 
   const handleDeletePost = (postId) => {
-    fetch(`http://localhost:8082/posts/${postId}`, {
+    fetch(`http://localhost:8080/posts/${postId}`, {
       method: "DELETE",
+      headers: {
+        'Authorization': tokenStored,
+      }
     })
       .then((response) => {
         if (response.ok) {
