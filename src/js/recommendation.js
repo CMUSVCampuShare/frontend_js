@@ -112,7 +112,7 @@ const Recommendation = ({}) => {
   };
 
   return (
-    <Box p={5}>
+    <Box p={5} width="100%" maxW="1200px" m="auto">
       <Flex justifyContent="center">
         <Heading as="h1" size="xl" mb={4}>
           Recommendations
@@ -129,18 +129,21 @@ const Recommendation = ({}) => {
               key={post.postId}
               p={3}
               borderWidth="1px"
-              borderRadius="lg"
+              borderRadius="2xl" // Increased border radius for more rounded corners
+              width="100%" // Adjust width as needed, you can also use maxWidth
+              m="auto" // Centers the card in the list
+              boxShadow="lg" // Optional: adds a shadow to your cards for better aesthetics
             >
               <Heading as="h2" size="md">
                 {post.title}
               </Heading>
-              <Text>From: {post.from}</Text>
-              <Text>To: {post.to}</Text>
-              <Text>{post.details}</Text>
-              <Text>Type: {post.type}</Text>
-              <Text>Seats: {post.noOfSeats}</Text>
-              <Text>Status: {post.status}</Text>
-              <Text>Posted: {post.timestamp}</Text>
+              <Text textAlign="left">From: {post.from}</Text>
+              <Text textAlign="left">To: {post.to}</Text>
+              <Text textAlign="left">{post.details}</Text>
+              <Text textAlign="left">Type: {post.type}</Text>
+              <Text textAlign="left">Seats: {post.noOfSeats}</Text>
+              <Text textAlign="left">Status: {post.status}</Text>
+              <Text textAlign="left">Posted: {post.timestamp}</Text>
             </ListItem>
           ))}
         </UnorderedList>
