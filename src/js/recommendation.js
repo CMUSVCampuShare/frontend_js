@@ -13,23 +13,26 @@ import { over } from "stompjs";
 import SockJS from "sockjs-client";
 
 var stompClient = null;
+let userIdStored = localStorage.getItem("userId");
 let tokenStored = localStorage.getItem("jwt");
 
-const Recommendation = ({ userId }) => {
+const Recommendation = ({}) => {
   const [topPosts, setTopPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    userIdStored = localStorage.getItem("userId");
     tokenStored = localStorage.getItem("jwt");
+
     const fetchTopPostsForUser = async () => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:8083/recommendations/${userId}/top-posts`,
+          `http://localhost:8080/recommendations/${userIdStored}/top-posts`,
           {
             headers: {
-              Authorization: tokenStored,
+              Authorization: `Bearer ${tokenStored}`,
             },
           }
         );
@@ -45,7 +48,7 @@ const Recommendation = ({ userId }) => {
     };
 
     fetchTopPostsForUser();
-  }, [userId]);
+  }, [userIdStored]);
 
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
