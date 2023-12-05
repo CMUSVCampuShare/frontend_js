@@ -13,6 +13,7 @@ import { over } from "stompjs";
 import SockJS from "sockjs-client";
 
 var stompClient = null;
+let tokenStored = localStorage.getItem("jwt");
 
 const Recommendation = ({ userId }) => {
   const [topPosts, setTopPosts] = useState([]);
@@ -20,11 +21,17 @@ const Recommendation = ({ userId }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    tokenStored = localStorage.getItem("jwt");
     const fetchTopPostsForUser = async () => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:8083/recommendations/${userId}/top-posts`
+          `http://localhost:8083/recommendations/${userId}/top-posts`,
+          {
+            headers: {
+              Authorization: tokenStored,
+            },
+          }
         );
         if (!response.ok) {
           throw new Error("Could not fetch top posts");
