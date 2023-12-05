@@ -262,13 +262,7 @@ const PostWall = () => {
         body: JSON.stringify(joinData),
       })
         .then((response) => {
-          if (response.ok) {
-            setSuccessMessage("Successfully sent join request");
-            return response.json();
-          } else {
-            setErrorMessage("Failed to send join request");
-            throw new Error("Failed to send join request");
-          }
+          console.log(response);
         })
         .catch((error) => console.error("Error sending join request: ", error));
     };
