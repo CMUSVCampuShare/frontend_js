@@ -8,8 +8,8 @@ import Navbar from "./navbar";
 
 const initialToPlaceholder = "To";
 const initialSeatsPlaceholder = 0;
-const userIdStored = localStorage.getItem("userId");
-const tokenStored = localStorage.getItem("jwt");
+let userIdStored = localStorage.getItem("userId");
+let tokenStored = localStorage.getItem("jwt");
 var stompClient = null;
 
 const PostWall = () => {
@@ -42,6 +42,10 @@ const PostWall = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
+
+    userIdStored = localStorage.getItem("userId");
+    tokenStored = localStorage.getItem("jwt");
+
     if (newPostData.type === "FoodPickup" && !editMode) {
       setNewPostData({
         ...newPostData,
@@ -54,6 +58,7 @@ const PostWall = () => {
       alert(successMessage);
       setSuccessMessage(null);
     }
+
     if (errorMessage) {
       alert(errorMessage);
       setErrorMessage(null);
@@ -214,26 +219,26 @@ const PostWall = () => {
 
       var url = "";
       var joinData = {};
-      switch (selectedPost.type) {
-        case "RIDE":
-          url = `http://localhost:8080/join?post=${selectedPost.title}`;
-          joinData = {
-            driverID: selectedPost.userId,
-            passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
-            from: selectedPost.from,
-            to: selectedPost.to,
-            postId: selectedPost.postId,
-          };
-          break;
-        default:
-          url = `http://localhost:8080/request-food?post=${selectedPost.title}`;
-          joinData = {
-            driverID: selectedPost.userId,
-            passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
-            postId: selectedPost.postId,
-          };
-          break;
-      }
+      // switch (selectedPost.type) {
+      //   case "RIDE":
+      //     url = `http://localhost:8080/join?post=${selectedPost.title}`;
+      //     joinData = {
+      //       driverID: selectedPost.userId,
+      //       passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
+      //       from: selectedPost.from,
+      //       to: selectedPost.to,
+      //       postId: selectedPost.postId,
+      //     };
+      //     break;
+      //   default:
+      //     url = `http://localhost:8080/request-food?post=${selectedPost.title}`;
+      //     joinData = {
+      //       driverID: selectedPost.userId,
+      //       passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
+      //       postId: selectedPost.postId,
+      //     };
+      //     break;
+      // }
 
       fetch(url, {
         method: "POST",
