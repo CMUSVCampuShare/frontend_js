@@ -3,7 +3,14 @@ import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import { useNavigate } from "react-router-dom";
 import "../css/post.css";
-import { Box, Heading, UnorderedList, ListItem, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Heading,
+  UnorderedList,
+  ListItem,
+  Text,
+} from "@chakra-ui/react";
 
 var stompClient = null;
 const tokenStored = localStorage.getItem("jwt");
@@ -149,7 +156,18 @@ function NotificationList() {
     return (
       <div className="post">
         <p>{JSON.stringify(notificationText)}</p>
-        <button onClick={() => viewNotification(notification)}>View</button>
+        <Button
+          colorScheme="red"
+          bg="#bb0010"
+          color="white"
+          size="lg"
+          mt={4}
+          ml={4}
+          _hover={{ bg: "#a00000" }}
+          onClick={() => viewNotification(notification)}
+        >
+          View
+        </Button>
       </div>
     );
   };
