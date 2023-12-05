@@ -12,6 +12,7 @@ import Register from "./js/register";
 import Post from "./js/post";
 import Join from "./js/join";
 import Popup from "./js/popup";
+import Payment from "./js/payment";
 import Recommendation from "./js/recommendation";
 import "./App.css";
 import NotificationList from "./js/notification";
@@ -54,11 +55,11 @@ function App() {
             <Route path="/join" element={<Join />} />
             <Route path="/notifications" element={<NotificationList />} />
             <Route path="/recommendation" element={<Recommendation />} />
+            <Route path="/payment" element={<Payment />} />
           </Routes>
         </div>
       </Router>
     </ChakraProvider>
-
   );
 }
 
