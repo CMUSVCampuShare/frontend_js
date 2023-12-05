@@ -30,6 +30,7 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
   const [updatedProfile, setUpdatedProfile] = useState(profile);
 
   const handleSave = () => {
+    updateUser();
     onSave(updatedProfile);
     onClose();
   };
@@ -42,9 +43,35 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
   //send put request
   //update the screen with new profile details
 
-  //get user id from local storage
-  const userIdStored = localStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("jwt"); // Get JWT token from localStorage
+  const navigate = useNavigate();
 
+  //PUT request
+  const updateUser = async () => {
+    try {
+      console.log(updateUser);
+      const response = await fetch(`http://localhost:8080/users/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updateUser),
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        setUpdatedProfile(response);
+        navigate("/profile");
+      } else {
+      }
+    } catch (error) {
+      console.error("Profile update failed:", error);
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -142,16 +169,6 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
 function Profile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [profile, setProfile] = useState(null); // Start with no profile data
-
-  // const [profile, setProfile] = useState({
-  //   username: "Jane Doe",
-  //   phoneNumber: "+1650776899",
-  //   email: "jane****@andrew.cmu.edu",
-  //   address: "NASA Research park",
-  //   role: "Driver",
-  //   payment: "PayPal xx24xx33xx45",
-  //   rewards: "100 Points",
-  // });
 
   const handleEdit = (updatedProfile) => {
     setProfile(updatedProfile);
