@@ -22,6 +22,7 @@ import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import "../css/profile.css";
 import Navbar from "./navbar";
+import Icon from "../icons/User.png";
 
 var stompClient = null;
 
@@ -33,6 +34,70 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
     onClose();
   };
 
+  //get user id from local storage
+  //fetch current user details to display
+  //display current user details on profile screen
+  //add those details to modal
+  //edit modal fields 
+  //send put request
+  //update the screen with new profile details
+
+  const userIdStored = localStorage.getItem("userId");
+
+  //update user details via PUT
+  const [status, setStatus] = useState(false); //to check if put was successful
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [entry, setEntry] = useState("");
+  const [exit, setExit] = useState("");
+  const [seats, setSeats] = useState(null);
+  const [licenseNo, setLicenseNo] = useState("");
+
+  const navigate = useNavigate();
+
+  const updateUser = async () => {
+    let updateData;
+
+    updateData = {
+      password: password,
+      email: email,
+      address: address,
+      entryTime: entry,
+      exitTime: exit,
+      noOfSeats: seats,
+      licenseNo: licenseNo,
+    };
+  
+
+    try {
+      console.log(updateData);
+      const response = await fetch(
+        `http://localhost:8080/users/${userIdStored}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateData),
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        const token = await response.text();
+        localStorage.setItem("userId", token);
+        console.log(token);
+        navigate("/profile");
+      } else {
+      }
+    } catch (error) {
+      console.error("Update Profile failed:", error);
+    }
+
+  };
+
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -41,10 +106,10 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
         <ModalCloseButton />
         <ModalBody>
           <FormControl>
-            <FormLabel>Username</FormLabel>
+            <FormLabel>Password</FormLabel>
             <Input
-              type="text"
-              value={updatedProfile.username}
+              type="password"
+              value={updatedProfile.password}
               onChange={(e) =>
                 setUpdatedProfile((prev) => ({
                   ...prev,
@@ -52,7 +117,61 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
                 }))
               }
             />
-            {/* Add other fields similarly... */}
+            <FormLabel>Address</FormLabel>
+            <Input
+              type="text"
+              value={updatedProfile.address}
+              onChange={(e) =>
+                setUpdatedProfile((prev) => ({
+                  ...prev,
+                  username: e.target.value,
+                }))
+              }
+            />
+            <FormLabel>Entry Time</FormLabel>
+            <Input
+              type="text"
+              value={updatedProfile.entryTime}
+              onChange={(e) =>
+                setUpdatedProfile((prev) => ({
+                  ...prev,
+                  username: e.target.value,
+                }))
+              }
+            />
+            <FormLabel>Exit Time</FormLabel>
+            <Input
+              type="text"
+              value={updatedProfile.exitTime}
+              onChange={(e) =>
+                setUpdatedProfile((prev) => ({
+                  ...prev,
+                  username: e.target.value,
+                }))
+              }
+            />
+            <FormLabel>Number of Seats</FormLabel>
+            <Input
+              type="number"
+              value={updatedProfile.noOfSeats}
+              onChange={(e) =>
+                setUpdatedProfile((prev) => ({
+                  ...prev,
+                  username: e.target.value,
+                }))
+              }
+            />
+            <FormLabel>License Number</FormLabel>
+            <Input
+              type="text"
+              value={updatedProfile.licenseNo}
+              onChange={(e) =>
+                setUpdatedProfile((prev) => ({
+                  ...prev,
+                  username: e.target.value,
+                }))
+              }
+            />
           </FormControl>
         </ModalBody>
         <ModalFooter>
@@ -69,35 +188,7 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
         </ModalFooter>
       </ModalContent>
     </Modal>
-    //     <>
-    //       <Navbar />
-
-    //       <div className={`modal ${isOpen ? "modal-open" : ""}`}>
-    //         <div className="modal-content">
-    //           <button className="modal-close" onClick={onClose}>
-    //             X
-    //           </button>
-    //           <h2>Edit Profile</h2>
-
-    //           <label>Username</label>
-    //           <input
-    //             type="text"
-    //             value={updatedProfile.username}
-    //             onChange={(e) =>
-    //               setUpdatedProfile((prev) => ({
-    //                 ...prev,
-    //                 username: e.target.value,
-    //               }))
-    //             }
-    //           />
-    //           {/* Add other fields similarly... */}
-
-    //           <button className="modal-confirm" onClick={handleSave}>
-    //             Save Changes
-    //           </button>
-    //         </div>
-    //       </div>
-    //     </>
+ 
   );
 }
 
@@ -106,11 +197,14 @@ function Profile() {
   const [profile, setProfile] = useState({
     username: "Jane Doe",
     phoneNumber: "+1650776899",
-    email: "jane****@andrew.cmu.edu",
+    email: "jane@......",
     address: "NASA Research park",
     role: "Driver",
-    payment: "PayPal xx24xx33xx45",
-    rewards: "100 Points",
+    payment: "xx24xx33xx45",
+    entryTime: "8:56AM",
+    exitTime: "8:56PM",
+    licenseNo: "1234",
+    noOfSeats:2
   });
 
   const handleEdit = (updatedProfile) => {
@@ -183,12 +277,13 @@ function Profile() {
     <div className="profile-container">
       <div className="profile-header">
         <img
-          src="../campushare.png"
+          src={Icon}
+          width="80px"
+          height="80px"
           alt="User profile"
-          className="profile-pic"
-        />
-        <h2>{profile.username}</h2>
-        <p>{profile.email}</p>
+          className=""
+        /> 
+        <h1>{profile.username}</h1>
       </div>
 
       <div className="profile-details">
@@ -215,10 +310,6 @@ function Profile() {
         <div className="detail-item">
           <span>Payment</span>
           <span>{profile.payment}</span>
-        </div>
-        <div className="detail-item">
-          <span>Rewards</span>
-          <span>{profile.rewards}</span>
         </div>
       </div>
 
