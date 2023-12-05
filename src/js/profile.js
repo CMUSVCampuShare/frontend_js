@@ -38,64 +38,12 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
   //fetch current user details to display
   //display current user details on profile screen
   //add those details to modal
-  //edit modal fields 
+  //edit modal fields
   //send put request
   //update the screen with new profile details
 
+  //get user id from local storage
   const userIdStored = localStorage.getItem("userId");
-
-  //update user details via PUT
-  const [status, setStatus] = useState(false); //to check if put was successful
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [entry, setEntry] = useState("");
-  const [exit, setExit] = useState("");
-  const [seats, setSeats] = useState(null);
-  const [licenseNo, setLicenseNo] = useState("");
-
-  const navigate = useNavigate();
-
-  const updateUser = async () => {
-    let updateData;
-
-    updateData = {
-      password: password,
-      email: email,
-      address: address,
-      entryTime: entry,
-      exitTime: exit,
-      noOfSeats: seats,
-      licenseNo: licenseNo,
-    };
-  
-
-    try {
-      console.log(updateData);
-      const response = await fetch(
-        `http://localhost:8080/users/${userIdStored}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updateData),
-          credentials: "include",
-        }
-      );
-
-      if (response.ok) {
-        const token = await response.text();
-        localStorage.setItem("userId", token);
-        console.log(token);
-        navigate("/profile");
-      } else {
-      }
-    } catch (error) {
-      console.error("Update Profile failed:", error);
-    }
-
-  };
 
 
   return (
@@ -188,7 +136,6 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
         </ModalFooter>
       </ModalContent>
     </Modal>
- 
   );
 }
 
@@ -327,7 +274,6 @@ function Profile() {
               height="50px"
             />
             <h2>{profile.username}</h2>
-            <p>{profile.email}</p>
           </div>
 
           <div className="profile-details">
@@ -336,12 +282,12 @@ function Profile() {
               <span>{profile.username}</span>
             </div>
             <div className="detail-item">
-              <span>Phone Number</span>
-              <span>{profile.phoneNumber}</span>
-            </div>
-            <div className="detail-item">
               <span>Email</span>
-              <span>{profile.email}</span>
+              <span>
+                {profile.email && profile.email.length > 10
+                  ? `${profile.email.slice(0, 10)}...`
+                  : profile.email}
+              </span>
             </div>
             <div className="detail-item">
               <span>Address</span>
@@ -349,12 +295,32 @@ function Profile() {
             </div>
             <div className="detail-item">
               <span>Role</span>
-              <span>{profile.role}</span>
+              <span>
+                {profile.role.charAt(0).toUpperCase() +
+                  profile.role.slice(1).toLowerCase()}
+              </span>
             </div>
             <div className="detail-item">
               <span>Payment</span>
-              <span>{profile.payment}</span>
+              <span>{profile.account}</span>
             </div>
+            <div className="detail-item">
+              <span>Entry Time</span>
+              <span>{profile.entryTime}</span>
+            </div>
+            <div className="detail-item">
+              <span>Exit Time</span>
+              <span>{profile.exitTime}</span>
+            </div>
+            {profile.role === 'DRIVER' && (
+              <><div className="detail-item">
+                <span>Seats </span>
+                <span>{profile.noOfSeats}</span>
+              </div><div className="detail-item">
+                  <span>License No. </span>
+                  <span>{profile.licenseNo}</span>
+                </div></>
+            )}
           </div>
 
           <Button
@@ -362,7 +328,7 @@ function Profile() {
             bg="#bb0000"
             color="white"
             size="lg"
-            mt={4}
+            mt={2}
             _hover={{ bg: "#a00000" }}
             onClick={() => setIsModalOpen(true)}
           >
@@ -374,7 +340,7 @@ function Profile() {
             bg="#bb0010"
             color="white"
             size="lg"
-            mt={4}
+            mt={2}
             ml={4}
             _hover={{ bg: "#a00000" }}
             onClick={handleLogout}
