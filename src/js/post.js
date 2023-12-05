@@ -219,26 +219,39 @@ const PostWall = () => {
 
       var url = "";
       var joinData = {};
-      // switch (selectedPost.type) {
-      //   case "RIDE":
-      //     url = `http://localhost:8080/join?post=${selectedPost.title}`;
-      //     joinData = {
-      //       driverID: selectedPost.userId,
-      //       passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
-      //       from: selectedPost.from,
-      //       to: selectedPost.to,
-      //       postId: selectedPost.postId,
-      //     };
-      //     break;
-      //   default:
-      //     url = `http://localhost:8080/request-food?post=${selectedPost.title}`;
-      //     joinData = {
-      //       driverID: selectedPost.userId,
-      //       passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
-      //       postId: selectedPost.postId,
-      //     };
-      //     break;
-      // }
+
+      if (selectedPost.postId === "INSERT POST ID HERE") {
+        fetch(`http://localhost:8085/api/payments/authorizeOrder?rideId=${selectedPost.postId}&passengerId=${userIdStored}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).then((response) => {
+          console.log(response);
+          console.log(response.body);
+        }).catch((error) => console.error("Error sending payment request: ", error));
+      }
+
+      switch (selectedPost.type) {
+        case "RIDE":
+          url = `http://localhost:8080/join?post=${selectedPost.title}`;
+          joinData = {
+            driverID: selectedPost.userId,
+            passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
+            from: selectedPost.from,
+            to: selectedPost.to,
+            postId: selectedPost.postId,
+          };
+          break;
+        default:
+          url = `http://localhost:8080/request-food?post=${selectedPost.title}`;
+          joinData = {
+            driverID: selectedPost.userId,
+            passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
+            postId: selectedPost.postId,
+          };
+          break;
+      }
 
       fetch(url, {
         method: "POST",
