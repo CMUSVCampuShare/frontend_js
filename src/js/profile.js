@@ -125,28 +125,33 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
                 }))
               }
             />
-            <FormLabel>Number of Seats</FormLabel>
-            <Input
-              type="number"
-              value={updatedProfile.noOfSeats}
-              onChange={(e) =>
-                setUpdatedProfile((prev) => ({
-                  ...prev,
-                  username: e.target.value,
-                }))
-              }
-            />
-            <FormLabel>License Number</FormLabel>
-            <Input
-              type="text"
-              value={updatedProfile.licenseNo}
-              onChange={(e) =>
-                setUpdatedProfile((prev) => ({
-                  ...prev,
-                  username: e.target.value,
-                }))
-              }
-            />
+            {profile.role === "DRIVER" && (
+              <>
+                <FormLabel>Number of Seats</FormLabel>
+                <Input
+                  type="number"
+                  value={updatedProfile.noOfSeats}
+                  onChange={(e) =>
+                    setUpdatedProfile((prev) => ({
+                      ...prev,
+                      username: e.target.value,
+                    }))
+                  }
+                />
+                <FormLabel>License Number</FormLabel>
+                <Input
+                  type="text"
+                  value={updatedProfile.licenseNo}
+                  onChange={(e) =>
+                    setUpdatedProfile((prev) => ({
+                      ...prev,
+                      username: e.target.value,
+                    }))
+                  }
+                />
+              </>
+            )}
+            ;
           </FormControl>
         </ModalBody>
         <ModalFooter>
@@ -319,7 +324,11 @@ function Profile() {
             </div>
             <div className="detail-item">
               <span>Payment</span>
-              <span>{profile.account}</span>
+              <span>
+                {profile.account && profile.account.length > 10
+                  ? `${profile.account.slice(0, 10)}...`
+                  : profile.account}
+              </span>
             </div>
             <div className="detail-item">
               <span>Entry Time</span>
@@ -329,14 +338,17 @@ function Profile() {
               <span>Exit Time</span>
               <span>{profile.exitTime}</span>
             </div>
-            {profile.role === 'DRIVER' && (
-              <><div className="detail-item">
-                <span>Seats </span>
-                <span>{profile.noOfSeats}</span>
-              </div><div className="detail-item">
+            {profile.role === "DRIVER" && (
+              <>
+                <div className="detail-item">
+                  <span>Seats </span>
+                  <span>{profile.noOfSeats}</span>
+                </div>
+                <div className="detail-item">
                   <span>License No. </span>
                   <span>{profile.licenseNo}</span>
-                </div></>
+                </div>
+              </>
             )}
           </div>
 
