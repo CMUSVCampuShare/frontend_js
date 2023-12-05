@@ -19,9 +19,9 @@ const PostWall = () => {
     from: "",
     to: "",
     details: "",
-    type: "RIDE",
+    type: "",
     noOfSeats: 0,
-    status: "ONGOING",
+    status: "",
     timestamp: new Date().toString(),
     comments: [],
   });
@@ -32,9 +32,9 @@ const PostWall = () => {
     from: "",
     to: "",
     details: "",
-    type: "RIDE",
+    type: "",
     noOfSeats: 0,
-    status: "ONGOING",
+    status: "",
     timestamp: new Date().toString(),
     comments: [],
   });
@@ -201,7 +201,7 @@ const PostWall = () => {
               details: "",
               type: "",
               noOfSeats: 0,
-              status: "ONGOING",
+              status: "",
               timestamp: new Date().toString(),
               comments: [],
             });
@@ -603,7 +603,7 @@ const PostWall = () => {
           onChange={(e) =>
             setNewPostData({
               ...newPostData,
-              noOfSeats: parseInt(e.target.value) || 0,
+              noOfSeats: parseInt(e.target.value),
             })
           }
           disabled={newPostData.type === "FoodPickup"}
