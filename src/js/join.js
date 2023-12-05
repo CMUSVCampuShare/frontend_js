@@ -44,13 +44,7 @@ const Join = () => {
     console.log("post title: " + postTitle);
     console.log("post id: " + postId);
     console.log("passenger id: " + passengerId);
-
-    const url = "http://localhost:8080/api/rides/approveJoinRequest";
-
-    const requestBody = {
-      rideId: postId,
-      passengerId: passengerId,
-    };
+    const url = `http://localhost:8080/api/rides/approveJoinRequest?rideId=${postId}&passengerId=${passengerId}`;
 
     fetch(url, {
       method: "POST",
@@ -58,7 +52,6 @@ const Join = () => {
         "Content-Type": "application/json",
         Authorization: tokenStored,
       },
-      body: JSON.stringify(requestBody),
     })
       .then((response) => {
         if (response.ok) {
@@ -80,13 +73,7 @@ const Join = () => {
     console.log("post title: " + postTitle);
     console.log("post id: " + postId);
     console.log("passenger id: " + passengerId);
-    const url = "http://localhost:8080/api/rides/rejectJoinRequest";
-
-    const requestBody = {
-      rideId: postId,
-      rideTitle: postTitle,
-      passengerId: passengerId,
-    };
+    const url = `http://localhost:8080/api/rides/rejectJoinRequest?rideId=${postId}&rideTitle=${postTitle}&passengerId=${passengerId}`;
 
     fetch(url, {
       method: "POST",
@@ -94,7 +81,6 @@ const Join = () => {
         "Content-Type": "application/json",
         Authorization: tokenStored,
       },
-      body: JSON.stringify(requestBody),
     })
       .then((response) => {
         if (response.ok) {
