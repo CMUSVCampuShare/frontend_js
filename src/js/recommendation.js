@@ -13,18 +13,28 @@ import { over } from "stompjs";
 import SockJS from "sockjs-client";
 
 var stompClient = null;
+let userIdStored = localStorage.getItem("userId");
+let tokenStored = localStorage.getItem("jwt");
 
-const Recommendation = ({ userId }) => {
+const Recommendation = ({}) => {
   const [topPosts, setTopPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    userIdStored = localStorage.getItem("userId");
+    tokenStored = localStorage.getItem("jwt");
+
     const fetchTopPostsForUser = async () => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:8083/recommendations/${userId}/top-posts`
+          `http://localhost:8080/recommendations/${userIdStored}/top-posts`,
+          {
+            headers: {
+              Authorization: `Bearer ${tokenStored}`,
+            },
+          }
         );
         if (!response.ok) {
           throw new Error("Could not fetch top posts");
@@ -38,7 +48,7 @@ const Recommendation = ({ userId }) => {
     };
 
     fetchTopPostsForUser();
-  }, [userId]);
+  }, [userIdStored]);
 
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
@@ -103,7 +113,7 @@ const Recommendation = ({ userId }) => {
   };
 
   return (
-    <Box p={5}>
+    <Box p={5} width="100%" maxW="1200px" m="auto">
       <Flex justifyContent="center">
         <Heading as="h1" size="xl" mb={4}>
           Recommendations
@@ -120,18 +130,21 @@ const Recommendation = ({ userId }) => {
               key={post.postId}
               p={3}
               borderWidth="1px"
-              borderRadius="lg"
+              borderRadius="2xl" // Increased border radius for more rounded corners
+              width="100%" // Adjust width as needed, you can also use maxWidth
+              m="auto" // Centers the card in the list
+              boxShadow="lg" // Optional: adds a shadow to your cards for better aesthetics
             >
               <Heading as="h2" size="md">
                 {post.title}
               </Heading>
-              <Text>From: {post.from}</Text>
-              <Text>To: {post.to}</Text>
-              <Text>{post.details}</Text>
-              <Text>Type: {post.type}</Text>
-              <Text>Seats: {post.noOfSeats}</Text>
-              <Text>Status: {post.status}</Text>
-              <Text>Posted: {post.timestamp}</Text>
+              <Text textAlign="left">From: {post.from}</Text>
+              <Text textAlign="left">To: {post.to}</Text>
+              <Text textAlign="left">{post.details}</Text>
+              <Text textAlign="left">Type: {post.type}</Text>
+              <Text textAlign="left">Seats: {post.noOfSeats}</Text>
+              <Text textAlign="left">Status: {post.status}</Text>
+              <Text textAlign="left">Posted: {post.timestamp}</Text>
             </ListItem>
           ))}
         </UnorderedList>
