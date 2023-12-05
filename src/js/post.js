@@ -8,7 +8,8 @@ import Navbar from "./navbar";
 
 const initialToPlaceholder = "To";
 const initialSeatsPlaceholder = 0;
-const userIdStored = localStorage.getItem("userId");
+let userIdStored = localStorage.getItem("userId");
+let tokenStored = localStorage.getItem("jwt");
 var stompClient = null;
 
 const PostWall = () => {
@@ -41,6 +42,10 @@ const PostWall = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
+
+    userIdStored = localStorage.getItem("userId");
+    tokenStored = localStorage.getItem("jwt");
+
     if (newPostData.type === "FoodPickup" && !editMode) {
       setNewPostData({
         ...newPostData,
@@ -53,6 +58,7 @@ const PostWall = () => {
       alert(successMessage);
       setSuccessMessage(null);
     }
+
     if (errorMessage) {
       alert(errorMessage);
       setErrorMessage(null);
@@ -60,14 +66,21 @@ const PostWall = () => {
 
     const fetchPosts = async () => {
       try {
-        const postsResponse = await fetch("http://localhost:8082/posts/active");
+        const postsResponse = await fetch("http://localhost:8080/posts/active", {
+          headers: {
+            'Authorization': tokenStored
+          }
+        });
         const posts = await postsResponse.json();
 
         const fetchCommentPromises = posts.map(async (post) => {
           try {
             const commentResponse = await fetch(
-              `http://localhost:8082/posts/${post.postId}/comments`
-            );
+              `http://localhost:8080/posts/${post.postId}/comments`, {
+              headers: {
+                'Authorization': tokenStored
+              }
+            });
             const comments = await commentResponse.json();
             return { ...post, comments: comments || [] };
           } catch (error) {
@@ -103,10 +116,11 @@ const PostWall = () => {
         comment: commentText,
       };
 
-      fetch(`http://localhost:8082/posts/${postId}/comments`, {
+      fetch(`http://localhost:8080/posts/${postId}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': tokenStored,
         },
         body: JSON.stringify(commentData),
       })
@@ -162,10 +176,11 @@ const PostWall = () => {
         status: editedPostData.status.toUpperCase(),
       };
 
-      fetch(`http://localhost:8082/posts/${editingPost.postId}`, {
+      fetch(`http://localhost:8080/posts/${editingPost.postId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': tokenStored,
         },
         body: JSON.stringify(postDataForBackend),
       })
@@ -204,29 +219,32 @@ const PostWall = () => {
 
       var url = "";
       var joinData = {};
-      switch (selectedPost.type) {
-        case "RIDE":
-          url = `http://localhost:8086/join?post=${selectedPost.title}`;
-          joinData = {
-            driverID: selectedPost.userId,
-            passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
-            from: selectedPost.from,
-            to: selectedPost.to,
-          };
-          break;
-        default:
-          url = `http://localhost:8086/request-food?post=${selectedPost.title}`;
-          joinData = {
-            driverID: selectedPost.userId,
-            passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
-          };
-          break;
-      }
+      // switch (selectedPost.type) {
+      //   case "RIDE":
+      //     url = `http://localhost:8080/join?post=${selectedPost.title}`;
+      //     joinData = {
+      //       driverID: selectedPost.userId,
+      //       passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
+      //       from: selectedPost.from,
+      //       to: selectedPost.to,
+      //       postId: selectedPost.postId,
+      //     };
+      //     break;
+      //   default:
+      //     url = `http://localhost:8080/request-food?post=${selectedPost.title}`;
+      //     joinData = {
+      //       driverID: selectedPost.userId,
+      //       passengerID: userIdStored, // "24190f52-f241-41b9-b623-fdc02c6b7cd2" // TO DO: Need to update to logged-in userId
+      //       postId: selectedPost.postId,
+      //     };
+      //     break;
+      // }
 
       fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: tokenStored,
         },
         body: JSON.stringify(joinData),
       })
@@ -306,7 +324,7 @@ const PostWall = () => {
               <option value="Created">CREATED</option>
               <option value="Ongoing">ONGOING</option>
               <option value="Full">FULL</option>
-              <option value="Complete">COMPLETE</option>
+              <option value="Completed">COMPLETED</option>
               <option value="Canceled">CANCELED</option>
             </select>
             <p>{post.timestamp}</p>
@@ -398,10 +416,11 @@ const PostWall = () => {
       status: newPostData.status.toUpperCase(),
     };
 
-    fetch("http://localhost:8082/posts", {
+    fetch("http://localhost:8080/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': tokenStored,
       },
       body: JSON.stringify(newPostDataForBackend),
     })
@@ -432,8 +451,11 @@ const PostWall = () => {
   };
 
   const handleDeletePost = (postId) => {
-    fetch(`http://localhost:8082/posts/${postId}`, {
+    fetch(`http://localhost:8080/posts/${postId}`, {
       method: "DELETE",
+      headers: {
+        'Authorization': tokenStored,
+      }
     })
       .then((response) => {
         if (response.ok) {
@@ -481,23 +503,27 @@ const PostWall = () => {
   const onNotification = (payload) => {
     console.log(payload);
     var payloadData = JSON.parse(payload.body);
+    const actualNotification = payloadData.notification;
 
     var showMap = false;
     var forPassenger = false;
     if (
-      payloadData.notification.includes("lat") &&
-      payloadData.notification.includes("lng")
+      actualNotification.notificationBody.includes("lat") &&
+      actualNotification.notificationBody.includes("lng")
     ) {
       showMap = true;
     }
-    if (payloadData.notification.includes("rejected")) {
+    if (actualNotification.notificationBody.includes("rejected")) {
       forPassenger = true;
     }
     const propsToPass = {
-      message: payloadData.notification,
+      message: actualNotification.notificationBody,
       showMap: showMap,
       forPassenger: forPassenger,
       notificationId: payloadData.notificationId,
+      postId: actualNotification.postId,
+      postTitle: actualNotification.postTitle,
+      passengerId: actualNotification.passengerID,
     };
     navigate("/join", { state: propsToPass });
   };
