@@ -320,9 +320,11 @@ function Profile() {
         <>
           <div className="profile-header">
             <img
-              src={profile.avatarUrl || "../campushare.png"} // Use a default image if avatarUrl is not available
+              src={profile.avatarUrl || Icon} // Use a default image if avatarUrl is not available
               alt="User profile"
-              className="profile-pic"
+              className=""
+              width="50px"
+              height="50px"
             />
             <h2>{profile.username}</h2>
             <p>{profile.email}</p>
@@ -352,10 +354,6 @@ function Profile() {
             <div className="detail-item">
               <span>Payment</span>
               <span>{profile.payment}</span>
-            </div>
-            <div className="detail-item">
-              <span>Rewards</span>
-              <span>{profile.rewards}</span>
             </div>
           </div>
 
