@@ -603,7 +603,7 @@ const PostWall = () => {
           onChange={(e) =>
             setNewPostData({
               ...newPostData,
-              noOfSeats: parseInt(e.target.value) || 0,
+              noOfSeats: parseInt(e.target.value),
             })
           }
           disabled={newPostData.type === "FoodPickup"}
