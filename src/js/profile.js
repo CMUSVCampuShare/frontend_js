@@ -44,24 +44,23 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
   //update the screen with new profile details
 
   const userId = localStorage.getItem("userId");
-  const token = localStorage.getItem("jwt"); // Get JWT token from localStorage
+  const tokenStored = localStorage.getItem("jwt"); // Get JWT token from localStorage
   const navigate = useNavigate();
 
   //PUT request
   const updateUser = async () => {
     try {
-      console.log(updateUser);
-      const response = await fetch(`http://localhost:8080/users/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(updateUser),
-          credentials: "include",
-        }
-      );
+      console.log(updatedProfile);
+      
+      const response = await fetch(`http://localhost:8081/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          'Authorization': tokenStored,
+        },
+        body: JSON.stringify(updatedProfile),
+        credentials: "include",
+      });
+
 
       if (response.ok) {
         setUpdatedProfile(response);
@@ -88,7 +87,7 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
               onChange={(e) =>
                 setUpdatedProfile((prev) => ({
                   ...prev,
-                  username: e.target.value,
+                  password: e.target.value,
                 }))
               }
             />
@@ -99,7 +98,7 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
               onChange={(e) =>
                 setUpdatedProfile((prev) => ({
                   ...prev,
-                  username: e.target.value,
+                  address: e.target.value,
                 }))
               }
             />
@@ -110,7 +109,7 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
               onChange={(e) =>
                 setUpdatedProfile((prev) => ({
                   ...prev,
-                  username: e.target.value,
+                  entryTime: e.target.value,
                 }))
               }
             />
@@ -121,7 +120,7 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
               onChange={(e) =>
                 setUpdatedProfile((prev) => ({
                   ...prev,
-                  username: e.target.value,
+                  exitTime: e.target.value,
                 }))
               }
             />
@@ -134,7 +133,7 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
                   onChange={(e) =>
                     setUpdatedProfile((prev) => ({
                       ...prev,
-                      username: e.target.value,
+                      noOfSeats: parseInt(e.target.value),
                     }))
                   }
                 />
@@ -145,7 +144,7 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
                   onChange={(e) =>
                     setUpdatedProfile((prev) => ({
                       ...prev,
-                      username: e.target.value,
+                      licenseNo: e.target.value,
                     }))
                   }
                 />
@@ -284,8 +283,8 @@ function Profile() {
 
   return (
     <div className="profile-container">
-      <Navbar />
-      {profile ? ( // Only attempt to access profile properties if profile is not null
+{/*       <Navbar />
+ */}      {profile ? ( // Only attempt to access profile properties if profile is not null
         <>
           <div className="profile-header">
             <img
