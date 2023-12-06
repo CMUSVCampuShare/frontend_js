@@ -41,8 +41,8 @@ function App() {
           <img src={logo} alt="logo" />
           CampuShare
         </header> */}
-{/*           <Navbar />
- */}
+          <Navbar />
+
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/chat" element={<Chat />} />

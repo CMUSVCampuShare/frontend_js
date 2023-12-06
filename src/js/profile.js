@@ -52,10 +52,11 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
     try {
       console.log(updatedProfile);
       
-      const response = await fetch(`http://localhost:8081/users/${userId}`, {
+      const response = await fetch(`http://localhost:8080/users/${userId}`, {
         method: "PUT",
         headers: {
-          'Authorization': tokenStored,
+          "Content-Type": "application/json",
+          Authorization: tokenStored,
         },
         body: JSON.stringify(updatedProfile),
         credentials: "include",
@@ -150,7 +151,7 @@ function EditProfileModal({ isOpen, onClose, profile, onSave }) {
                 />
               </>
             )}
-            ;
+            
           </FormControl>
         </ModalBody>
         <ModalFooter>
@@ -283,8 +284,8 @@ function Profile() {
 
   return (
     <div className="profile-container">
-{/*       <Navbar />
- */}      {profile ? ( // Only attempt to access profile properties if profile is not null
+{/*     <Navbar />
+ */}    {profile ? ( // Only attempt to access profile properties if profile is not null
         <>
           <div className="profile-header">
             <img
