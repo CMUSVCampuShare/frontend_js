@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { MarkerF } from "@react-google-maps/api";
 import "../css/join.css"; // Make sure to create a separate CSS file for styles
 
-const tokenStored = localStorage.getItem("jwt"); 
+const tokenStored = localStorage.getItem("jwt");
 
 const Join = () => {
   const location = useLocation();
@@ -44,7 +44,28 @@ const Join = () => {
     console.log("post title: " + postTitle);
     console.log("post id: " + postId);
     console.log("passenger id: " + passengerId);
-    handleDeleteNotification();
+    const url = `http://localhost:8080/api/rides/approveJoinRequest?rideId=${postId}&passengerId=${passengerId}`;
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: tokenStored,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to approve join request!");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      })
+      .finally(() => {
+        handleDeleteNotification();
+      });
   };
 
   const handleReject = () => {
@@ -52,7 +73,28 @@ const Join = () => {
     console.log("post title: " + postTitle);
     console.log("post id: " + postId);
     console.log("passenger id: " + passengerId);
-    handleDeleteNotification();
+    const url = `http://localhost:8080/api/rides/rejectJoinRequest?rideId=${postId}&rideTitle=${postTitle}&passengerId=${passengerId}`;
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: tokenStored,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to reject join request!");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      })
+      .finally(() => {
+        handleDeleteNotification();
+      });
   };
 
   const handleDeleteNotification = () => {
